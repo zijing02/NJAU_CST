@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>PaperTime最权威论文抄袭检测系统</title>
+<style type="text/css">
+<!--
+user_icon {
+color: #FFFFFF;
+}
+body,td,th {
+font-family: "微软雅黑";
+font-size: 13px;
+}
+h1,h2,h3,h4,h5,h6 {
+font-family: "宋体";
+}
+demo_padding {
+line-height: 30px;
+}
+html
+{
+overflow-x:hidden;
+overflow-y:scroll;
+}
+.liebiao {
+border-bottom-width: 1px;
+border-bottom-style: dashed;
+border-bottom-color: #CCCCCC;
+height: 0px;
+margin-top:10px;
+margin-bottom:10px;
+float: left;
+width: 90%;
+}
+.liebiao ul {
+list-style-type: none;
+display: block;
+margin: 0px;
+clear: none;
+}
+.zhengwen {
+padding-right: 15px;
+padding-left: 0px;
+margin-bottom:10px;
+font-size: 13px;
+line-height: 20px;
+color: #666666;
+}
+.zhengwencenter {
+padding-right: 15px;
+padding-left: 0px;
+margin-bottom:10px;
+font-size: 13px;
+line-height: 20px;
+color: #666666;
+text-align:center
+}
+.neikuang {
+background-color: #EBEBEB;
+border: 1px dashed #999999;
+padding-right: 10px;
+padding-left: 10px;
+}
+.shubu{
+float: left;
+height: 15px;
+width: 15px;
+background-color: #FFFFFF;
+border: 1px solid #999999;
+text-align: center;
+vertical-align: middle;
+display: block;
+font-size: 13px;
+}
+.kuang {
+border: 1px solid #999999;
+}
+.red{color:#FF0000}
+.orange{color:#FF6600}
+.green{color:#008000}
+.gray{color:#666666}
+
+a:hover {color:#000000}
+a:active {color:#000000}
+
+a{TEXT-DECORATION:none}
+
+mark{
+background-color:white;
+color:green;
+}
+.colors{
+background-color:white;
+color:green;
+}
+.blue{
+	color: #6fa7fe;
+}
+.copy-bt{
+	display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 10px;
+    background-color: #1E9FFF;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+-->
+</style>
+<script type="text/javascript" src="../detail_report/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="../detail_report/clipboard.js"></script>
+</head>
+<body>
+<div class="zhengwen">
+ 您的语句：<span class='red' >${senResult.sentence}</span>
+<br>
+<#if senResult.auto == 1> 
+<div class="jiqiren">
+机器人修改：<span class="blue" id="simId">${senResult.suggest}</span>
+<br>
+<button class="copy-bt" data-clipboard-action="copy" data-clipboard-target="#simId">复制</button>
+</div>
+</#if>
+<br>
+共找出相似内容：${senResult.simResultList?size}个
+</div>
+
+<#list senResult.simResultList as simResult>
+	<table width="100%" cellspacing="3" style="margin-bottom:15px;border: 1px solid #C0C0C0" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" cellpadding="3">
+	<tr>
+	<td align="right" width="100%">
+	<div class="shubu">${simResult_index+1}</div>
+	<font color="#666666">相似度：<span class="red">${(simResult.simDegree*100)?string("0.##")}%</span></font>
+	</td>
+	</tr>
+	<tr>
+	<td align="left" width="100%">
+	<font color="#666666">相似内容片段：</font><br>
+	${simResult.simSegment}
+	</td>
+	</tr>
+	<tr>
+	<td align="left" width="100%">
+	  <#if simResult.source == 0> 
+   		<font color="#666666">来源(互联网资源)</font><br>
+		  <font color="#666666">标题：${simResult.title}</font><br>
+		  <font color="#666666">链接：</font><a target='_blank' href="${simResult.publisher}">${simResult.displayUrl}</a><br>
+		<#elseif simResult.source == 3> 
+   		<font color="#666666">来源(PaperTime云论文库)</font><br>
+		  <font color="#666666">标题：${simResult.title}</font><br>
+		  <font color="#666666">链接：</font><a target='_blank' href="${simResult.publisher}">${simResult.displayUrl}</a><br>
+	  <#elseif  simResult.source == 1>
+   		<font color="#666666">来源(本地数据库)</font><br>
+			<font color="#666666">篇名：《${simResult.title}》</font><br>
+			<font color="#666666">文库：《${simResult.publisher}》</font><br>
+			<font color="#666666">年份： ${simResult.year}</font><br>
+			<font color="#666666">作者： ${simResult.author}</font><br>
+	  <#elseif  simResult.source == 2>
+   		<font color="#666666">来源(本地数据库)</font><br>
+			<font color="#666666">篇名：《${simResult.title}》</font><br>
+			<font color="#666666">文库：《${simResult.publisher}》</font><br>
+			<font color="#666666">年份： ${simResult.year}</font><br>
+			<font color="#666666">作者： ${simResult.author}</font><br>
+   	</#if>
+	</td>
+	</tr>
+	</table>
+</#list>
+
+<table width="100%" cellpadding="3" cellspacing="3" style="margin-bottom:15px;margin-top:15px;border: 1px solid #C0C0C0;" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF"><tbody>
+<tr><td width="100%"><div class="green" style="font-size:17px;padding-left:5px;">该句修改建议</div> </td></tr>
+
+<#list senResult.synonymList as syn>
+	<tr><td width="100%" align="left">${syn}<br></td></tr>
+</#list>
+</tbody></table>
+
+<div style="margin-bottom:50px"></div>
+</body>
+<script>
+    var clipboard = new Clipboard('.copy-bt');
+    clipboard.on('success', function(e) {
+        
+    });
+</script>
+</html>
