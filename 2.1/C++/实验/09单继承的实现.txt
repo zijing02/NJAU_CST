@@ -1,0 +1,400 @@
+1
+#include <iostream>
+using namespace std;
+class CBase{
+private:
+	int x;
+	void showx(){ cout << "CBase::x=" << x << endl; }
+protected:
+	int y;
+	void showy(){ cout << "CBase::y=" << y << endl; }
+public:
+	int z;
+	void showz(){ cout << "CBase::z=" << z << endl; }
+	CBase(int tx, int ty, int tz) :x(tx), y(ty){ z = tz; }
+	void showbasex(){ showx(); }
+
+};
+class CDeriveA :private CBase{
+private:
+	int ax;
+	void showax(){ showbasex(); cout << "CDeriveA::ax=" << ax << endl; }
+protected:
+	int ay;
+	void showay(){ showy(); cout << "CDeriveA::ay=" << ay << endl; }
+public:
+	int az;
+	void showaz(){ showz(); cout << "CDeriveA::az=" << az << endl; }
+	CDeriveA(int tx, int ty, int tz, int tax, int tay, int taz) :CBase(tx,ty,tz),ax(tax),ay(tay),az(taz){}
+	void showAxandBasexfromOuterA(){ showax(); }
+	void showAyandBaseyfromOuterA(){ showay(); }
+};
+class CDeriveB :protected CBase{
+private:
+	int bx;
+	void showbx(){ showbasex(); cout << "CDeriveB::bx=" << bx << endl; }
+protected:
+	int by;
+	void showby(){ showy(); cout << "CDeriveB::by=" << by << endl; }
+public:
+	int bz;
+	void showbz(){ showz(); cout << "CDeriveB::bz=" << bz << endl; }
+	CDeriveB(int tx, int ty, int tz, int tbx, int tby, int tbz) :CBase(tx, ty, tz), bx(tbx), by(tby), bz(tbz){}
+	void showBxandBasexfromOuterB(){ showbx(); }
+	void showByandBaseyfromOuterB(){ showby(); }
+};
+class CDeriveC :public CBase{
+private:
+	int cx;
+	void showcx(){ showbasex(); cout << "CDeriveC::cx=" << cx << endl; }
+protected:
+	int cy;
+	void showcy(){ showy(); cout << "CDeriveC::cy=" << cy << endl; }
+public:
+	int cz;
+	void showcz(){ showz(); cout << "CDeriveC::cz=" << cz << endl; }
+	CDeriveC(int tx, int ty, int tz, int tcx, int tcy, int tcz) :CBase(tx, ty, tz), cx(tcx), cy(tcy), cz(tcz){}
+	void showCxandBasexfromOuterC(){ showcx(); }
+	void showCyandBaseyfromOuterC(){ showcy(); }
+};
+void main(){
+	CDeriveA ca(11, 12, 13, 14, 15, 16);
+	//ca.showx();
+	//ca.showy();
+	//ca.showz();
+	//ca.showax();
+	ca.showAxandBasexfromOuterA();
+	//ca.showay();
+	ca.showAyandBaseyfromOuterA();
+	ca.showaz();
+
+	CDeriveB cb(21, 22, 23, 24, 25, 26);
+	//cb.showx();
+	//cb.showy();
+	//cb.showz();
+	//cb.showbx();
+	cb.showBxandBasexfromOuterB();
+	//cb.showby();
+	cb.showByandBaseyfromOuterB();
+	cb.showbz();
+
+	CDeriveC cc(31, 32, 33, 34, 35, 36);
+	//cc.showx();
+	//cc.showy();
+	//cc.showcx();
+	//cc.showcy();
+	cc.showCxandBasexfromOuterC();
+	cc.showCyandBaseyfromOuterC();
+	cc.showz();
+	cc.showcz();
+}
+2
+#include <iostream>
+#include <string>
+using namespace std;
+class Ancestor{
+protected:
+	string Aname;	char Agender;
+public:
+	Ancestor(string name, char gender) :Aname(name), Agender(gender) { cout << "The Ancestor is constructed!" << endl; }
+	void displayAncestor(){ cout << "The information of my Ancestor is: " << Aname << "  " << Agender << endl; }
+	~Ancestor(){ cout << "The Ancestor is unconstructed!" << endl; }
+};
+class GrandFather : public Ancestor{
+protected:
+	string Gname;	char Ggender;
+public:
+	GrandFather(string name1, char gender1, string name2, char gender2):Ancestor(name1,gender1),Gname(name2),Ggender(gender2){}
+	void displayMyself(){ cout << "The information of my GrandFather is: " << Gname << "  " << Ggender << endl; }
+	void displayGrandFather(){ displayAncestor(); displayMyself(); }
+	~GrandFather(){ cout << "The GrandFather is unconstructed!" << endl; }
+};
+class Father : public GrandFather{
+protected:
+	string Fname;	char Fgender;
+public:
+	Father(string name1, char gender1, string name2, char gender2, string name3, char gender3):GrandFather(name1,gender1,name2,gender2),Fname(name3),Fgender(gender3)	{cout << "The Father is constructed!" << endl; }
+	void displayMyself(){ cout << "The information of my Father is: " << Fname << "  " << Fgender << endl; }
+	void displayFather(){ displayGrandFather(); displayMyself(); }
+	~Father(){ cout << "The Father is unconstructed!" << endl; }
+};
+class Brother : public Father{
+protected:
+	string Bname;	char Bgender;
+public:
+	Brother(string name1, char gender1, string name2, char gender2, string name3, char gender3, string name4, char gender4) :Father(name1, gender1, name2, gender2, name3, gender3), Bname(name4), Bgender(gender4){cout << "The Brother is constructed!" << endl; }
+	void displayMyself(){ cout << "The information of my Brother is: " << Bname << "  " << Bgender << endl; }
+	void displayBrother(){ displayFather(); displayMyself(); }
+	~Brother(){ cout << "The Brother is unconstructed!" << endl; }
+};
+class Sister : public Father{
+protected:
+	string Sname;	char Sgender;
+public:
+	Sister(string name1, char gender1, string name2, char gender2, string name3, char gender3, string name4, char gender4) :Father(name1, gender1, name2, gender2, name3, gender3), Sname(name4), Sgender(gender4){ cout << "The Sister is constructed!" << endl; }
+	void displayMyself(){ cout << "The information of my Sister is: " << Sname << "  " << Sgender << endl; }
+	void displaySister(){ displayFather(); displayMyself(); }
+	~Sister(){ cout << "The Sister is unconstructed!" << endl; }
+};
+class Me : public Father{
+protected:
+	string Mname;	char Mgender;	Brother Bro; Sister Sis;
+public:
+	Me(string name1, char gender1, string name2, char gender2, string name3, char gender3, string name4, char gender4, Brother tbro, Sister tsis) :Father(name1, gender1, name2, gender2, name3, gender3), Mname(name4),Mgender(gender4),Bro(tbro),Sis(tsis){cout << "The Me is constructed!" << endl; }
+	void displayMe(){ displayFather(); Bro.displayMyself(); Sis.displayMyself(); cout << "The information of Me is: " << Mname << "  " << Mgender << endl; }
+	~Me(){ cout << "The Me is unconstructed!" << endl; }
+};
+void main(){
+	Brother bro("ZX", 'M', "ZF", 'M', "FQ", 'M', "Bro", 'M');
+	Sister  sis("ZX", 'M', "ZF", 'M', "FQ", 'M', "Sis", 'F');
+	Me me("ZX", 'M', "ZF", 'M', "FQ", 'M', "Me", 'M', bro, sis);
+	me.displayMe();
+}
+3.1
+#include <iostream>
+#include <string>
+using namespace std;
+const int SNUM = 2;
+const int TNUM = 2;
+const int ANUM = 2;
+class Person {
+protected:
+	string name, gender; int age;
+public:
+	Person() {}
+	Person(string tname, string tgender, int tage) :name(tname), gender(tgender), age(tage) {}
+};
+class Student : public Person {
+protected:
+	int sno; string major, impression;
+public:
+	Student() {}
+	Student(int tempno, string tempname, string tempgender, int tempage, string tempstr) :Person(tempname, tempgender, tempage) { sno = tempno, major = tempstr; Enroll(); }
+	void Enroll() { cout << "一个学生注册完成" << endl; }
+	void ShowStudent() { cout << sno << "  " << name << "  " << gender << "  " << age << "  " << major << endl; }
+	~Student() { cout << "unconstruct a student" << endl; }
+	void LikeOrNot(string tempimpression) { impression = tempimpression; }
+};
+class Teacher : public Person {
+protected:
+	int tno; string college, course;
+public:
+	Teacher() {}
+	Teacher(int tempno, string tempname, string tempgender, int tempage, string tempstr) :Person(tempname, tempgender, tempage) { tno = tempno, college = tempstr; Recruit(); }
+	void Recruit() { cout << "一名教师招聘完成" << endl; }
+	void ShowTeacher() { cout << tno << "  " << name << "  " << gender << "  " << age << "  " << college << endl; }
+	~Teacher() { cout << "unconstruct a teacher" << endl; }
+	void Course(string tempcourse) { course = tempcourse; }
+};
+class Administrator : public Person {
+protected:
+	int ano; string section; Student as; Teacher at;
+public:
+	Administrator() {}
+	Administrator(int tano, string tname, string tgender, int tage, string tsection) : Person(tname, tgender, tage), ano(tano), section(tsection) { Employ(); }
+	void Employ() { cout << "一个管理人员招聘完成" << endl; }
+	void ShowAdministrator() { cout << ano << "  " << name << "  " << gender << "  " << age << "  " << section << endl; }
+	void ManageStudent(Student tempas) { as = tempas; }
+	void ArrangeCourse(Teacher temptat) { at = temptat; }
+	~Administrator() { cout << "unconstruct an administrator" << endl; }
+};
+class University {
+	string uname, uaddress;  Student s[SNUM];	Teacher t[TNUM];	Administrator a[ANUM];
+public:
+	University() {}
+	University(string tname, string taddress, Student* sp, Teacher* tp, Administrator* ap) :uname(tname) {
+		for (int i = 0; i < SNUM; i++) { s[i] = sp[i]; }
+		for (int i = 0; i < TNUM; i++) { t[i] = tp[i]; }
+		for (int i = 0; i < ANUM; i++) { a[i] = ap[i]; }
+	}
+	void TermBegin() {}
+	void ShowUniversity() {
+	}
+};
+void main() {
+	cout << "请输入大学的名称和地址 ";
+	string tuname, tuaddress;
+	cin >> tuname >> tuaddress;
+	int i, tempno, tempage; string tempname, tempgender, tempstr;
+	Student ts[SNUM];Teacher tt[TNUM];Administrator ta[ANUM];
+	cout << "请按照如下格式输入" << SNUM << "个学生的信息:" << endl << "(学号 姓名 性别 年龄 专业)" << endl;
+	for (i = 0; i < SNUM; i++) {
+		cin >> tempno >> tempname >> tempgender >> tempage >> tempstr;
+		ts[i] = Student(tempno, tempname, tempgender, tempage, tempstr);
+		ta[i].ManageStudent(ts[i]);
+	}
+	cout << "请按照如下格式输入" << TNUM << "个教师的信息::" << endl << "(工号 姓名 性别 年龄 学院)" << endl;
+	for (i = 0; i < TNUM; i++) {
+		cin >> tempno >> tempname >> tempgender >> tempage >> tempstr;
+		tt[i] = Teacher(tempno, tempname, tempgender, tempage, tempstr);
+		ta[i].ArrangeCourse(tt[i]);
+	}
+	cout << "请按照如下格式输入" << ANUM << "个管理人员的信息:" << endl << "(工号 姓名 性别 年龄 部门)" << endl;
+	for (i = 0; i < ANUM; i++) {
+		cin >> tempno >> tempname >> tempgender >> tempage >> tempstr;
+		ta[i] = Administrator(tempno, tempname, tempgender, tempage, tempstr);
+	}
+	University u(tuname, tuaddress, ts, tt, ta);
+	u.ShowUniversity();
+}
+3.2
+
+#include <iostream>
+#include <string>
+using namespace std;
+const int SNUM = 2;
+const int TNUM = 2;
+const int ANUM = 2;
+class Person {
+protected:
+	string name, gender; int age;
+};
+class Student : public Person {
+protected:
+	int sno; string major, impression;
+public:
+	void Enroll() {
+		cin >> sno >> name >> gender >> age >> major;
+		cout << "一个学生注册完成！" << endl;
+	}
+	void ShowStudent() {}
+	void LikeOrNot(string tempimpression) { impression = tempimpression; }
+	~Student() { cout << "unconstruct a student" << endl; }
+};
+class Teacher : public Person {
+protected:
+	int tno; string college, course;
+public:
+	void Recruit() {
+		cin >> tno >> name >> gender >> age >> college;
+		cout << "一个教师招聘完成！" << endl;
+	}
+	void ShowTeacher() { cout << tno << "  " << name << "  " << gender << "  " << age << "  " << college << endl; }
+	void Course(string tempcourse) { course = tempcourse; }
+	~Teacher() { cout << "unconstruct a teacher" << endl; }
+};
+class Administrator : public Person {
+protected:
+	int ano; string section;  Student as; Teacher at;
+public:
+	void Employ() {
+		cin >> ano >> name >> gender >> age >> section;
+		cout << "一个管理人员招聘完成！" << endl;
+	}
+	void ShowAdministrator() { cout << ano << "  " << name << "  " << gender << "  " << age << "  " << section << endl; }
+	void ManageStudent(Student tempas) {  as = tempas; }
+	void ArrangeCourse(Teacher temptat) { at = temptat; }
+	~Administrator() { cout << "unconstruct an administrator" << endl; }
+};
+class University {
+	string uname, uaddress;  Student s[SNUM];	Teacher t[TNUM];	Administrator a[ANUM];
+public:
+	University() {}
+	void TermBegin() {
+		cout << "请输入大学的名称和地址: ";
+			cin >> uname >> uaddress;
+		int i;
+		cout << "请按照如下格式输入" << SNUM << "个学生的信息:" << endl << "(学号 姓名 性别 年龄 专业)" << endl;			for (i = 0; i < ANUM; i++) { s[i].Enroll(); a[i].ManageStudent(s[i]); }
+		cout << "请按照如下格式输入" << TNUM << "个教师的信息:" << endl << "(工号 姓名 性别 年龄 学院)" << endl;			for (i = 0; i < ANUM; i++) { t[i].Recruit(); a[i].ArrangeCourse(t[i]); }
+		cout << "请按照如下格式输入" << ANUM << "个管理人员的信息:" << endl << "(工号 姓名 性别 年龄 部门)" << endl;		for (i = 0; i < ANUM; i++) { a[i].Employ(); }
+
+	}
+	void ShowUniversity() {
+		cout << "该大学的基本信息显示如下:" << endl << uname << "  " << uaddress << endl;
+
+	}
+};
+/*
+南京农业大学浦口校区 点将台路40号
+201818101 张三 男 20 计算机科学与技术
+201828101 李四 女 19 网络工程
+2012135 王五 男 33 信息学院
+2018078 周丽 女 26 生科学院
+2009068 侯退 男 37 教务处
+2010135 钱芳 女 31 学工处 
+*/
+void main()
+{
+	University u;
+	u.TermBegin();
+	u.ShowUniversity();
+}
+4
+#include<iostream>
+#include<string.h>
+using namespace std;
+class cstr1{
+public:
+	cstr1() {}
+	cstr1(string tempstr1):str1(tempstr1) {}
+	string str1;
+	void showstr();
+	void changestr(string);
+};
+class cstr2 :public cstr1 {
+public:
+	string str2;
+	cstr2() {}
+	cstr2(string tempstr1, string tempstr2):cstr1(tempstr1) { str2 = tempstr2; }
+	void change() {
+		changestr(str2);
+	}
+};
+void cstr1::changestr(string str2) {
+	string* s = &str1;
+	*s = *s + str2;
+}
+void cstr1::showstr() {
+	cout << str1 << endl;
+}
+int main(){
+	cstr1 s1("ab"); cstr2 s2("ab","cd");
+	s1.showstr();
+	/*
+	s1.changestr("cd");			//在cstr1中做出的改变
+	s1.showstr();				//用cstr1调用就是abcd
+	s2.showstr();				//用cstr2调用就是ab
+	*/
+	/*
+	s2.change();				//在cstr2中做出的改变
+	s1.showstr();				//用cstr1调用就是ab
+	s2.showstr();				//用cstr2调用就是abcd
+	*/
+}
+
+5
+#include<iostream>
+#include<string.h>
+using namespace std;
+class employee {
+public:
+	int num; string name; double salary;
+	employee() {}
+	employee(int tempnum, string tempname, double tempsa) :num(tempnum) { name = tempname; salary = tempsa; }
+};
+class salesman :public employee {
+public:
+	double sales; double commrate;//占比
+	salesman() {}
+	salesman(int tempnum, string tempname, double tempsa, double tempcom) :employee(tempnum, tempname, tempsa) { commrate = tempcom; }
+	void pay();
+	void print();
+};
+void salesman::pay() { sales = commrate * salary; }
+void salesman::print() { cout << name << "员工的薪水是：" << commrate << "*" << salary << "=" << sales << endl; }
+class salesmanager :public salesman {
+public:
+	double msalary; salesman p;
+	salesmanager() {}
+	salesmanager(int tempnum, string tempname, double tempsa, salesman tp, double tempcom) :salesman(tempnum, tempname, tempsa, tempcom) { p = tp; }
+	void pay() { msalary = 8000 + commrate* salary; }
+	void print() { cout << name << "经理薪水是：" << "8000+" << commrate << "*" << salary << "=" << msalary << endl; }
+};
+int main() {
+	double s,com;
+	cout << "输入月销售额与提成率: "; cin >> s>>com;
+	salesman li(12, "李华", s, com);
+	salesmanager wang(1, "张三", s, li, com);
+	li.pay(); li.print(); wang.pay(); wang.print();
+}
+

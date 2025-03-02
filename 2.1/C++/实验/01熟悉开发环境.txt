@@ -1,0 +1,91 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+int main() {
+
+	//输出100以内的素数
+	//for (int n = 2; n <= 100; n++) {
+	//	int flag = 0;
+	//	for (int i = 2; i <= n / 2; i++) {
+	//		if (n % i == 0) {
+	//			flag = 1;
+	//			break;
+	//		}
+	//	}
+	//	if (flag == 0) 
+	//		cout << n<<"\t";
+	//}
+	// 
+	//连续判断素数
+	//int n;  char c = 'y';
+	//while (c == 'y') {
+	//	cout << "请输入一个数字:";
+	//	cin >> n;
+	//	int flag = 0;
+	//		for (int i = 2; i <= n / 2; i++) {
+	//			if (n % i == 0) {
+	//				flag = 1;
+	//				break;
+	//			}
+	//		}
+	//		if (flag == 0) cout << "是素数"<<"\n";
+	//		else cout << "不是素数"<<"\n";
+	//	cout << "是否继续判断？(y/n)";
+	//	cin >> c;
+	//}
+	// 
+	//求阶乘和
+	//double jiechen(double);
+	//double j, ans = 0; cin >> j;
+	//for (double i= 0; i < j; i++) {
+	//	cout << jiechen(i) << "\t";
+	//	ans += jiechen(i);
+	//}
+	//cout << "\n" << "和是：" << ans << "\n";
+	//
+	//比较字符串
+	//adc abe bec bad cde    ->    abe adc bad bec cde
+	//char t[5][10]; char s[10];
+	//for (int i = 0; i < 5; i++) 
+	//	cin >> t[i];
+	//for (int j = 0; j < 4; j++) {
+	//	for (int i = 0; i < 4 - j; i++) {
+	//		if (strcmp(t[i], t[i + 1]) > 0) {
+	//			strcpy(s, t[i]);
+	//			strcpy(t[i], t[i + 1]);
+	//			strcpy(t[i + 1], s);
+	//		}
+	//	}
+	//}
+	//for (int i = 0; i < 5; i++)
+	//	cout << t[i] << "\n";
+	
+	return 0;
+}
+double jiechen(double i) {
+	double ans = 1;
+	for (double j = 2; j <= i; j++) {
+		ans *= j;
+	}
+	return ans;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

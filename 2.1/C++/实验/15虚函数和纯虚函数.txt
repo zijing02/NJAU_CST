@@ -1,0 +1,453 @@
+exe
+15-1
+#include<iostream>
+using namespace std;
+class Student{
+public:
+	virtual void calTuition(){ cout << "计算学生学费" << endl; }
+};
+class Master : public Student{
+public:
+	void calTuition(){ cout << "计算硕士生学费" << endl; }
+};
+class Doctor : public Student{
+public:
+	void calTuition(){ cout << "计算博士生学费" << endl; }
+};
+void fn(Student& x){ x.calTuition(); }
+void main()
+{
+	Student s;   Master m;  Doctor d;
+	fn(s);           //计算一下学生s的学费
+	fn(m);          //计算一下硕士生m的学费
+	fn(d);          //计算一下博士生d的学费
+}
+15-2
+#include <iostream>
+using namespace std;
+/*
+Calling test(bc)
+In BaseClass, int x = 1
+In BaseClass, int x = 2
+Calling test(sc)
+In SubClass, float x = 1
+In SubClass, float x = 2
+*/
+class BaseClass{
+public:
+	virtual void fn(float x){ cout << "In BaseClass, int x=" << x << endl; }
+};
+class SubClass : public BaseClass{
+public:
+	void fn(float x){ cout << "In SubClass, float x=" << x << endl; }
+};
+void test(BaseClass& b){ int i = 1;   b.fn(i);   float f = 2.0;   b.fn(f); }
+void main()
+{
+	BaseClass bc;    SubClass sc;
+	cout << "Calling test(bc)\n";    test(bc);
+	cout << "Calling test(sc)\n";    test(sc);
+}
+15-3
+#include <iostream>
+using namespace std;
+class BaseClass{
+public:
+	virtual BaseClass afn(){ cout << "This is BaseClass.\n";  return *this; }
+	};
+class SubClass : public BaseClass{
+public:
+	BaseClass afn(){ cout << "This is SubClass.\n"; return *this; }
+};
+void test(BaseClass& x){	BaseClass b;   b = x.afn();}
+void main(){ BaseClass bc;   SubClass sc;   test(bc);   test(sc); }
+
+exp
+15-1
+#include <iostream>
+using namespace std;
+class People{
+	int age;
+public:
+	People(int t) :age(t){ cout << "Life is short, we should learn c++ harder!" << endl; }
+	virtual void showage(){ cout << "People:" << age << endl; }
+};
+class Baby : public People{
+	int bage;
+public:
+	Baby(int t1, int t2) :People(t1), bage(t2){}
+	void showage(){ cout << "Baby:" << bage << endl; }
+};
+class Student : public Baby{
+	int sage;
+public:
+	Student(int t1, int t2, int t3) :Baby(t1, t2){ sage = t3; }
+	void showage(){ cout << "Student:" << sage << endl; }
+};
+class Adult : public Student{
+	int aage;
+public:
+	Adult(int t1, int t2, int t3, int t4) :Student(t1, t2, t3), aage(t4){}
+	void showage(){ cout << "Adult:" << aage << endl; }
+};
+class Older : public Adult{
+	int oage;
+public:
+	Older(int t1, int t2, int t3, int t4, int t5) :Adult(t1, t2, t3, t4), oage(t5){}
+	void showage(){ cout << "Older:" << oage << endl; }
+};
+void main(){
+	Baby b(1, 6); Student s(7, 12, 18); Adult a(19, 30, 40, 50); Older o(60, 70, 80, 90, 100);
+	People p(0), *ptr[5] = { &p, &b, &s, &a, &o };
+	for (int i = 0; i<5; i++)
+		ptr[i]->showage();
+}
+
+15-2
+#include <iostream>
+#include <math.h>
+using namespace std;
+#define pi 3.14
+class Shape{
+public:
+	void SetData(){}
+	virtual void Perimeter() = 0;
+	virtual void Area() = 0;
+
+};
+class Circle : public Shape{
+	int r;
+public:
+	void SetData(int t){ r = t; }
+	void Perimeter(){ cout << "The circle's perimeter is:" << (2*pi*r) << endl; }
+	void Area(){ cout << "The triangle's area is:" << pi*r*r << endl; }
+};
+class Triangle : public Shape{
+	int s1, s2, s3;
+public:
+	void SetData(int t1, int t2, int t3){ s1 = t1; s2 = t2; s3 = t3; }
+	void Perimeter(){ cout << "The triangle's perimeter is:" << (s1 + s2 + s3) << endl; }
+	void Area(){ int temp = (s1 + s2 + s3) / 2; cout << "The triangle's area is:" << sqrt(temp*(temp - s1)*(temp - s2)*(temp - s3)) << endl; }
+};
+class Quadrilateral : public Shape{
+	int side;
+public:
+	Quadrilateral(int t1) :side(t1){}
+	void Perimeter(){ cout << "The square's perimeter is:" << 4 * side << endl; }
+	virtual void Area() = 0; //或者void Area(){}		
+};
+class Square : public Quadrilateral{
+	int side;
+public:
+	Square(int t1) :Quadrilateral(t1), side(t1){}
+	void Area(){ cout << "The sqare's area is:" << side*side << endl; }
+};
+void main()
+{
+	Shape* p;
+	Circle c; c.SetData(1); p = &c; p->Perimeter(); p->Area();
+	Triangle t; t.SetData(6, 8, 10); p = &t; p->Perimeter(); p->Area();
+	Square s(10); p = &s; p->Perimeter(); p->Area();
+}
+
+
+15-3
+#include<cstdlib>
+#include<ctime>
+#include<iostream>
+using namespace std;
+class org{
+private:
+	int lei;
+	bool age;
+	int eat;
+public:
+	org(){ lei = 0;	eat = 0; }
+	org(int b) :lei(b){ eat = 0; }
+	virtual void move(int &x, int &y, org *a[20][20]){}
+	virtual void breed(int times, int x, int y, org *a[20][20]){	}
+	int getlei(){ return  lei; }
+	void seteat(int a){ eat = a; }
+	void addeat(){ eat++; }
+	int outeat(){ return eat; }
+	virtual void starve(int x, int y, org *b[20][20]){}
+	void setage(bool a){ age = a; }
+	bool outage(){ return age; }
+};
+class my : public org{
+public:
+	my() :org(){}
+	my(int b) : org(b){}
+	virtual void outlei(){ cout << "my" << endl; }
+	void move(int &x, int &y, org *a[20][20]){
+		srand((unsigned)time(NULL));
+		int f = rand() % 4 + 1;
+		if (f == 1){
+			if (x - 1 >= 0){
+				if (a[x - 1][y] == NULL){
+					org *b = a[x][y];
+					a[x][y] = NULL;
+					x--;
+					a[x][y] = b;
+				}
+			}
+		}
+		if (f == 2){
+			if (x + 1 <= 19){
+				if (a[x + 1][y] == NULL){
+					org *b = a[x][y];
+					a[x][y] = NULL;
+					x++;
+					a[x][y] = b;
+				}
+			}
+		}
+		if (f == 3){
+			if (y - 1 >= 0){
+				if (a[x][y - 1] == NULL){
+					org *b = a[x][y];
+					a[x][y] = NULL;
+					y--;
+					a[x][y] = b;
+				}
+			}
+		}
+		if (f == 4){
+			if (y + 1 <= 19){
+				if (a[x][y + 1] == NULL){
+					org *b = a[x][y];
+					a[x][y] = NULL;
+					y++;
+					a[x][y] = b;
+				}
+			}
+		}
+	}
+	void breed(int times, int x, int y, org *a[20][20]){
+		if (times % 3 == 0){
+			srand((unsigned)time(NULL));
+			int f = rand() % 4 + 1;
+			if (f == 1){
+				if (x - 1 >= 0){
+					if (a[x - 1][y] == NULL){
+						org *b = new my(1);
+						x--;
+						a[x][y] = b;
+					}
+				}
+			}
+			if (f == 2){
+				if (x + 1 <= 19){
+					if (a[x + 1][y] == NULL){
+						org *b = new my(1);
+						x++;
+						a[x][y] = b;
+					}
+				}
+			}
+			if (f == 3){
+				if (y - 1 >= 0){
+					if (a[x][y - 1] == NULL){
+						org *b = new my(1);
+						y--;
+						a[x][y] = b;
+					}
+				}
+			}
+			if (f == 4){
+				if (y + 1 <= 19){
+					if (a[x][y + 1] == NULL){
+						org *b = new my(1);
+						y++;
+						a[x][y] = b;
+					}
+				}
+			}
+		}
+	}
+};
+class sy : public org{
+public:
+	sy(int a) :org(a){}
+	void move(int &x, int &y, org *a[20][20]){
+		srand((unsigned)time(NULL));
+		int f = rand() % 4 + 1;
+		bool p = false;
+		if (x - 1 >= 0){
+			if (a[x - 1][y] != NULL){
+				if (a[x - 1][y]->getlei() == 1){
+					a[x - 1][y] = a[x][y];
+					a[x][y] = NULL;
+					x--;
+					p = true;
+					a[x][y]->seteat(0);
+				}
+			}
+		}
+		if (x + 1 <= 19 && p == false){
+			if (a[x + 1][y] != NULL){
+				if (a[x + 1][y]->getlei() == 1){
+					a[x + 1][y] = a[x][y];
+					a[x][y] = NULL;
+					x++;
+					p = true;
+					a[x][y]->seteat(0);
+				}
+			}
+		}
+		if (y - 1 >= 0 && p == false){
+			if (a[x][y - 1] != NULL){
+				if (a[x][y - 1]->getlei() == 1){
+					a[x][y - 1] = a[x][y];
+					a[x][y] = NULL;
+					y--;
+					p = true;
+					a[x][y]->seteat(0);
+				}
+			}
+		}
+		if (y + 1 <= 19 && p == false){
+			if (a[x][y + 1] != NULL){
+				if (a[x][y + 1]->getlei() == 1){
+					a[x][y + 1] = a[x][y];
+					a[x][y] = NULL;
+					y++;
+					p = true;
+					a[x][y]->seteat(0);
+				}
+			}
+		}
+		if (f == 1 && p == false){
+			if (x - 1 >= 0){
+				if (a[x - 1][y] == NULL){
+					a[x - 1][y] = a[x][y];
+					a[x][y] = NULL;
+					x--;
+					a[x][y]->addeat();
+				}
+			}
+		}
+		if (f == 2 && p == false){
+			if (x + 1 <= 19){
+				if (a[x + 1][y] == NULL){
+					a[x + 1][y] = a[x][y];
+					a[x][y] = NULL;
+					x++;
+					a[x][y]->addeat();
+				}
+			}
+		}
+		if (f == 3 && p == false){
+			if (y - 1 >= 0){
+				if (a[x][y - 1] == NULL){
+					a[x][y - 1] = a[x][y];
+					a[x][y] = NULL;
+					y--;
+					a[x][y]->addeat();
+				}
+			}
+		}
+		if (f == 4 && p == false){
+			if (y + 1 <= 19){
+				if (a[x][y + 1] == NULL){
+					a[x][y + 1] = a[x][y];
+					a[x][y] = NULL;
+					y++;
+					a[x][y]->addeat();
+				}
+			}
+		}
+	}
+	virtual void breed(int times, int x, int y, org *a[20][20]){
+		if (times % 8 == 0){
+			srand((unsigned)time(NULL));
+			int f = rand() % 4 + 1;
+			if (f == 1){
+				if (x - 1 >= 0){
+					if (a[x - 1][y] == NULL){ a[x - 1][y] = new sy(2); }
+				}
+			}
+			if (f == 2){
+				if (x + 1 <= 19){
+					if (a[x + 1][y] == NULL){ a[x + 1][y] = new sy(2); }
+				}
+			}
+			if (f == 3){
+				if (y - 1 >= 0){
+					if (a[x][y - 1] == NULL){ a[x][y - 1] = new sy(2); }
+				}
+			}
+			if (f == 4){
+				if (y + 1 <= 19){
+					if (a[x][y + 1] == NULL){ a[x][y + 1] = new sy(2); }
+				}
+			}
+		}
+	}
+	virtual void starve(int x, int y, org *b[20][20]){
+		if (b[x][y]->outeat() == 3){ b[x][y] = NULL; }
+	}
+};
+
+int main(int argc, char* argv[])
+{
+	org *a[20][20] = { NULL };
+	int times = 1, z = 0, s = 0;
+	char kong = ' ';
+	for (int i = 0; i<20; i += 2){
+		for (int j = 0; j<20; j += 2){
+			my *b = new my(1);
+			a[i][j] = b;
+		}
+	}
+	a[5][5] = new sy(2);
+	a[7][7] = new sy(2);
+	a[9][9] = new sy(2);
+	a[11][11] = new sy(2);
+	a[13][13] = new sy(2);
+	kong = cin.get();
+	while (kong == '\n'){
+		z = 0;
+		s = 0;
+		for (int i = 0; i<20; i++){
+			for (int j = 0; j<20; j++){
+				if (a[i][j] != NULL){
+					if (!a[i][j]->outage()){
+						int x, y;
+						x = i;
+						y = j;
+						a[i][j]->move(x, y, a);
+						if (a[x][y]->getlei() == 2){
+							a[x][y]->starve(x, y, a);
+							if (a[x][y] == NULL)
+								break;
+						}
+						a[x][y]->breed(times, x, y, a);
+					}
+				}
+			}
+		}
+		for (int i = 0; i<20; i++){
+			for (int j = 0; j<20; j++){
+				if (a[i][j] != NULL){
+					a[i][j]->setage(false);
+					if (a[i][j]->getlei() == 1){
+						z++;
+						cout << 'O' << ' ';
+					}
+					else if (a[i][j]->getlei() == 2){
+						cout << 'X' << ' ';
+						s++;
+					}
+				}
+				else{ cout << ' ' << ' '; }
+			}
+			cout << endl;
+		}
+		cout << z << " " << s << endl;
+		times++;
+		cin.get(kong);
+	}
+	system("pause");
+	return 0;
+}

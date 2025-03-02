@@ -1,0 +1,94 @@
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+int cnt=1;
+int main(){
+	//1水仙花统计与判断
+/*	int i,t=0,m;
+	for(i=100;i<1000;i++){
+		m=i;t=0;
+		while(m){
+			t+=(m%10)*(m%10)*(m%10);
+			m=m/10;
+		}
+		if(t==i) cout<<t<<"\t";
+	}
+*/
+/*
+	int i,t,m,n,s=0;
+	for(i=100;i<1000;i++){
+		t=i%10;m=i/100;n=(i/10)%10;
+		s=t*t*t+m*m*m+n*n*n;
+		if(s==i) cout<<s<<"\t";
+	}
+*/
+/*
+	int i,m,t;cin>>i;m=i;t=0;
+	while(m){
+		t+=(m%10)*(m%10)*(m%10);
+		m=m/10;
+	}
+	if(t==i) cout<<"yes"<<"\t";
+*/
+	//2汉诺塔
+	void hanoi(int,char,char,char);
+	void move(char,int,char);
+	int n;cin>>n;
+	char x='A',y='B',z='C';
+	hanoi(n,x,y,z);
+	return 0;
+}	
+void move(char a,int n,char b){
+	cout<<cnt++<<":"<<n<<" "<<a<<"->"<<b<<endl;
+}
+void hanoi(int n,char x,char y,char z){
+	if(n==1)move(x,1,z);//如果只有一个直接移动
+	else{
+		hanoi(n-1,x,z,y);//将x塔上的n-1个盘子移动到y塔上，z作为辅助塔
+		move(x,n,z);//将x塔上的第n个盘子移动到塔上
+		hanoi(n-1,y,z,x);//将y盘上的n-1个盘子移动到z塔上，x作为辅助塔
+	}
+}
+#include<iostream>
+#include<cstdio>
+#include<limits.h>
+using namespace std;
+int n, m1[30] = { 0 }, m2[30] = { 0 }, m3[30] = { 0 }, ans[15] = { 0 }, mark = 0;
+void setvalue(int x, int y, int k) {
+	ans[x] = y;				//ans第x行值变为y表示第x行y列
+	m1[y] = k;				//同一列的值锁定
+	m2[x + y] = k;			//同顺对角线的值锁定
+	m3[x - y + n] = k;		//同逆对角线的值锁定
+}
+void dfs(int step) {//搜索第step行
+	if (step > n) {
+		mark++;				//结果数目加一
+		if (mark <= INT_MAX) {
+			for (int j = 1; j<= n; j++) {
+				cout << ans[j] << " ";		//每一行的第j列是可以放置的
+			}
+			cout << endl;
+		}
+		return;
+	}
+	for (int j = 1; j <= n; j++){
+		if (m1[j] || m2[step + j] || m3[step - j + n])continue;	//如果某一个值不满足就跳过
+		setvalue(step, j, 1);	//跳过之后把该点的值变化
+		dfs(step + 1); //向下dfs
+		setvalue(step, j, 0);
+	}
+}
+int main() {
+	//3八皇后,经典dfs
+	//规律：以a[i][j]为例，同列的点j的值相同，同逆对角线的i+j值相同，同顺对角线i-j的值相同，所以三个一位数组就够了
+	cin >> n;
+	dfs(1);
+	cout << mark;
+
+	return 0;
+}
+
+
+
+

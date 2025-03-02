@@ -1,0 +1,223 @@
+10-1
+#include <iostream>
+#include <string>
+using namespace std;
+class GrandFather {
+private:
+	int  CardID;
+	void showCardID() { cout << "GrandFather::CardID=" << CardID << endl; }
+protected:
+	int Age;
+	void showAge() { cout << "GrandFather::Age=" << Age << endl; }
+public:
+	string Name;
+	void showName() { cout << "GrandFather::Name = " << Name << endl; }
+	GrandFather(string name, int age, int cardid) { Name = name; Age = age; CardID = cardid; }
+		//void showGrandFatherCardID(){showCardID();}    //预留的显示GrandFather类中CardID信息的接口；
+};
+class Father :public GrandFather {
+private:
+	int CardID; string Name;
+	void showCardID() { cout << "Father::CardID=" << CardID << endl; }
+protected:
+
+public:
+	void showName() { cout << "Father::Name = " << Name << endl; }
+	Father(string tempname, int tempage, int tempid, string tempname2, int tempage2, int tempid2) :GrandFather(tempname, tempage, tempid) { Father::CardID = tempid2; Name = tempname2; Age = tempage2; }
+
+
+	//void showGrandFatherCardIDinFather(){showGrandFatherCardID();}  //Father类中用于显示GrandFather类的CardID信息的接口；
+	//void showFatherCardID(){showCardID();}                          //预留的显示Father类中CardID信息的接口；
+};
+class Child :public Father {
+private:
+	int CardID;
+	void showCardID() { cout << "Child::CardID=" << CardID << endl; }
+protected:
+	int Age;
+	void showAge() { cout << "Child::Age=" << Age << endl; }
+public:
+	string Name;
+	//void showName() { cout << "Child::Name = " << Name << endl; }
+	Child(string tempname, int tempage, int tempid, string tempname2, int tempage2, int tempid2, string tempname3, int tempage3, int tempid3) :Father(tempname, tempage, tempid, tempname2, tempage2, tempid2) {
+		Child::CardID = tempid3; Name = tempname3; Age = tempage3;
+	}
+
+
+	//void showGrandFatherCardIDinChild(){showGrandFatherCardIDinFather();}//Child类中用于显示GrandFather类的CardID信息的接口；
+	//void showFatherCardIDinChild(){showFatherCardID();}//预留的显示Child类中CardID信息的接口；
+};
+int main() {
+	//以下代码为验证同名覆盖机制和局部优先原则；
+	GrandFather g("GrandFather", 70, 123);
+	g.showName();
+	//g.showAge();
+	//g.showCardID();
+	Father f("GrandFather", 70, 123, "Father", 40, 456);
+	f.showName();
+	//f.showAge();
+	//f.showCardID();
+	Child c("GrandFather", 70, 123, "Father", 40, 456, "Child", 10, 789);
+	//c.showName();
+	//c.showAge();
+	//c.showCardID();
+
+	//以下代码为验证支配规则（即作用域规则）；
+	f.GrandFather::showName();
+	c.GrandFather::showName();
+	c.Father::showName();
+
+	//以下代码为验证最近优先原则（需要注释掉Child类中的showName()成员函数）；
+	c.showName();
+	return 0;
+}
+
+10-2
+#include <iostream>
+using namespace std;
+class Base {
+private:
+	int x;
+protected:
+	int y;
+public:
+	int z;
+	void showxyz() { cout << "Base::x=" << x << "  Base::y=" << y << "  Base::z=" << z << endl; }
+	Base(int t1, int t2, int t3) :x(t1), y(t2), z(t3) {}
+};
+class Derive :public Base {
+private:
+	int dx;
+protected:
+	int dy;
+public:
+	int dz;
+	Derive(int i1, int i2, int i3, int i4, int i5, int i6) :Base(i1, i2, i3) { dx = i4; dy = i5; dz = i6; }
+
+};
+void main() {
+	Base b(1, 2, 3);
+	cout << "公有派生类对象赋值给基类对象前，基类对象的数据状态如下：" << endl;
+	b.showxyz();
+	Derive d(11, 12, 13, 14, 15, 16);
+	b = d;
+	cout << "公有派生类对象赋值给基类对象后，基类对象的数据状态如下：" << endl;
+	b.showxyz();
+	Base& rb = d;
+	cout << "公有派生类对象初始化基类对象引用后，基类对象的数据状态如下：" << endl;
+	rb.showxyz();
+	Base* pb = &d;
+	cout << "公有派生类对象地址赋值给基类对象指针后，基类对象的数据状态如下：" << endl;
+	pb->showxyz();
+}
+
+10-3
+#include <iostream>
+#include <string>
+using namespace std;
+class Automobile;
+class Park {
+	int N, income, numAuto; Automobile** spaces;
+public:
+	Park(int N) {
+		spaces = new Automobile * [N];
+		for (int i = 0; i < N; i++)  spaces[i] = NULL;
+		this->N = N;
+		income = 0;
+		numAuto = 0;
+	}
+	~Park() { delete[] spaces; }
+	void showInfo();
+	bool assignSpace(Automobile* pa);
+	bool reclaimSpace(Automobile* pa, int fee);
+};
+class Automobile {
+protected:
+	string plateNO;
+public:
+	Automobile(string plateNO) :plateNO(plateNO) {};
+	void enter(Park& park) { park.assignSpace(this); };
+	void leave(Park& park) {};
+	string getPlateNO() { return plateNO; };
+};
+class Truck : public Automobile {
+protected:
+	double capacity;
+public:
+	Truck(string plateNO, double capacity) :Automobile(plateNO), capacity(capacity) {}
+	void leave(Park& park) { park.reclaimSpace(this, 3); };
+};
+class Bus : public Automobile {
+protected:
+	int numPassengers;
+public:
+	Bus(string plateNO, int numPassengers) :Automobile(plateNO), numPassengers(numPassengers) {}
+	void leave(Park& park) { park.reclaimSpace(this, 2); };
+};
+class Car : public Automobile {
+protected:
+	string brand;
+public:
+	Car(string plateNO, string brand) : Automobile(plateNO), brand(brand) {}
+	void leave(Park& park) { park.reclaimSpace(this, 1); };
+};
+void Park::showInfo() {
+	if (numAuto == 0)
+		cout << "停车场目前停放了" << numAuto << "辆汽车，共收入" << income << "元停车费!";
+	else {
+		cout << "停车场目前停放了" << numAuto << "辆汽车：";
+		for (int i = 0; i < N; i++)
+			if (spaces[i] != NULL)
+				cout << spaces[i]->getPlateNO() << ",";
+		cout << "共收入" << income << "元停车费!" << endl;
+	}
+}
+bool Park::assignSpace(Automobile* pa) {
+	for (int i = 0; i < N; i++) {
+		if (spaces[i] == NULL) {
+			spaces[i] = pa;
+			numAuto++;
+			cout << pa->getPlateNO() << "进入停车场，分配停车位!" << endl;
+			return true;
+		}
+	}
+	cout << "无法为" << pa->getPlateNO() << "分配停车位!" << endl;
+	return false;
+}
+bool Park::reclaimSpace(Automobile* pa, int fee) {
+	for (int i = 0; i < N; i++) {
+		if (spaces[i] == pa) {
+			spaces[i] = NULL;
+			numAuto--;
+			income += fee;
+			cout << pa->getPlateNO() << "离开停车场，缴纳停车费" << fee << "元!" << endl;
+			return true;
+		}
+	}
+	cout << "停车场中没有车牌为" << pa->getPlateNO() << "的汽车!";
+	return false;
+}
+void main() {
+	int N = 0;
+	cout << "请输入停车位数量：";
+	cin >> N;                      //输入停车位数量，此处输入2
+	Park park(N);                  //创建一个停车场对象
+	Truck truck("苏A-01234", 20);   //创建卡车对象
+	truck.enter(park);              //truck进入停车场，分配车位
+	Car car1("苏A-56789", "Audi A8");      //创建轿车对象
+	car1.enter(park);                   //car1进入停车场，分配停车位
+	car1.leave(park);                   //car1离开停车场，缴纳停车费
+	Bus bus("苏A-43210", 50);          //创建公交车对象
+	bus.enter(park);                    //bus进入停车场，分配车位
+	/*显示当前停放的车辆的车牌号码，以及当前的全部停车费收入*/
+	park.showInfo();
+	Car car2("苏A-98765", "Benz S400");   //创建轿车对象
+	car2.enter(park);
+	//car2进入停车场，分配停车位。因为没有空余停车位，所以无法分配
+	bus.leave(park);                      //bus离开停车场，缴纳停车费
+	truck.leave(park);                     //truck离开停车场，缴纳停车费
+	/*显示当前停放的车辆的车牌号码，以及当前的全部停车费收入*/
+	park.showInfo();
+}
+
+

@@ -1,0 +1,165 @@
+13-1-1
+#include<iostream>
+using namespace std;
+template<class T>
+class tem {
+	T* data;
+	int size;
+public:
+	tem(int);
+	~tem() { delete[]data; }
+	T& operator[](int i) { return data[i]; }
+};
+template<class T>
+tem<T>::tem(int n) {
+	data = new T[n];
+	size = n;
+}
+int main() {
+	tem<int>x(5);
+	for (int i = 0; i < 5; i++) {
+		x[i] = i;
+		cout << x[i] << " ";
+	}
+	cout << endl;
+	return 0;
+}
+13-1-2
+#include<iostream>
+using namespace std;
+template<class T>
+class list {
+public:
+	list();
+	void add(T&t) {
+		node* temp = new node;
+		temp->pt = &t;
+		temp->next = pfirst;
+		pfirst = temp;
+	}
+	void remove(T&);
+	T* find(T&);
+	void print();
+	~list();
+protected:
+	struct node {
+		node* next;
+		T* pt;
+	};
+	node* pfirst;
+};
+template<class T>
+list<T>::list() {
+	pfirst = 0;
+}
+template<class T>
+void list<T>::remove(T& t) {
+	node* q = 0;
+	if (*pfirst->pt == t) {
+		q = pfirst;
+		pfirst = pfirst->next;
+	}
+	else {
+		for (node* p = pfirst; p->next; p = p->next) 
+			if (*(p->next->pt) == t) {
+				q = p->next;
+				p->next = q->next;
+				break;
+			}
+	}
+	if (q) {
+		delete q->pt;
+		delete q;
+	}
+	else 
+		cout << "没有该节点";
+}
+template<class T>
+T* list<T>::find(T& t) {
+	for (node* p = pfirst; p->next; p = p->next) {
+		if (*(p->pt) == t)
+			return p->pt;
+	}
+	return 0;
+
+}
+template<class T>
+void list<T>::print(){
+	for (node* p = pfirst; p->next; p = p->next)
+		cout << *p->pt << "\t";
+	cout << endl;
+}
+template<class T>
+list<T>::~list() {
+	node* p = pfirst;
+	while (p) {
+		pfirst = pfirst->next;
+		delete p->pt;
+		delete p;
+		p = pfirst;
+	}
+}
+int main() {
+	list<float>fl;
+	for (int i = 0; i < 7; i++) 
+		fl.add(*new float(i + 0.3));
+	fl.print();
+	float b = 3.3;
+	float* pa = fl.find(b);
+	if (pa)
+		fl.remove(*pa);
+	fl.remove(*new float(2.3));
+	fl.print();
+	return 0;
+}
+
+13-2
+#include<iostream>
+#include<math.h>
+using namespace std;
+const int N = 5;
+template <class T>
+T Max(T value[], int size) {
+	T max = value[0];
+	for (int i = 0; i < size; i++) 
+		max = max > value[i] ? max : value[i];
+	return max;
+}
+void main() {
+	int i, arr[N];
+	double dou[N];
+	for (i = 0; i < N; i++) {
+		arr[i] = (i + 1) * 2;
+		cout << arr[i] << "\t";
+	}
+	cout << endl << "最大值为" << Max(arr, N) << endl;
+	for (i = 0; i < N; i++) {
+		dou[i] = (i + 1) + sqrt(i + 1);
+		cout << dou[i] << "\t";
+	}
+	cout << endl << "最大值为" << Max(dou, N) << endl;
+}
+13-3
+#include<iostream>
+using namespace std;
+template <class T1, class T2, class T3>
+class Test {
+	T1 data1;  T2 data2;  T3 data3;
+public:
+	Test(T1 x, T2 y, T3 z) { data1 = x;  data2 = y;  data3 = z; }
+	void Display();
+};
+template <class T1, class T2, class T3>
+void Test<T1, T2, T3>::Display() {
+	cout << data1 << "\t" << data2 << "\t" << data3 << endl;
+}
+
+void main() {
+	Test<int, int, double> obj1(1, 2, 3.3);    obj1.Display();
+	Test<char, float, double> obj2('A', 1.1, 2.2); obj2.Display();
+	Test<string, int, string> obj3("c++", 98, "分"); obj3.Display();
+
+
+}
+
+

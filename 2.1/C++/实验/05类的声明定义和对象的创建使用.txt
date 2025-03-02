@@ -1,0 +1,323 @@
+exe-1
+#include<iostream>
+#include<cstdio>
+using namespace std;
+class Date {
+public:
+	void set(int d, int m, int y) {
+		day = d; month = m; year = y;
+	}
+	void print() {
+		cout << day << "/" << month << "/" << year;
+	}
+private:
+	int day; int month; int year;
+};
+int main() {
+	Date t;
+	t.set(2, 3, 4);
+	t.print();
+	return 0;
+}
+
+exper-1 矩阵
+#include<iostream>
+#include<cstdio>
+using namespace std;
+class matrix {
+public:
+	void set(int m, int n, int a[][100]) {
+		d1 = m; d2 = n;
+	}
+	void input(int m,int n,int a[][100]) {
+		m = d1; n = d2; cout << "输入矩阵元素：" << endl;
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < n; j++)
+				cin >> a[i][j];		
+	}
+	void output(int m, int n, int a[][100]) {
+		m = d1; n = d2;
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++)
+				cout << a[i][j] << " ";
+			cout << endl;
+		}
+	
+	}
+	void multiply(int m, int n, int a[][100]) {
+		int t; m = d1; n = d2; 
+		cout << "倍数："; cin >> t;
+		cout << "加倍后的矩阵："<<"\n";
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++)
+				cout << a[i][j] * t << " ";
+			cout << endl;
+		}
+	}
+	void transpose(int m, int n, int a[][100]) {
+		m = d1; n = d2;
+		cout << "转置后的数组:" << "\n";
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++)
+				cout << a[j][i] << " ";
+			cout << endl;
+		}
+	}
+	void rotate(int m,int n,int a[][100]) {
+		int angle; cout << "输入角度:" << endl; cin >> angle; m = d1; n = d2;
+		int i, j, b[100][100] = { 0 }, q[100][100] = { 0 } , ti, t;
+		for (i = 0; i < m; i++)
+			for (j = 0; j < n; j++)
+				q[i][j] = a[i][j];
+		t = m > n ? m : n;
+		for (int cnt = 0; cnt < angle / 90; cnt++) {
+			for (i = 0; i < n; i++) {
+				ti = m;
+				for (j = 0; j < m; j++) {
+					b[i][j] = q[--ti][i];
+				}
+			}
+			n = m + n; m = n - m;  n= n - m;
+			for (i = 0; i < t; i++) {
+				for (j = 0; j < t; j++) {
+					q[i][j] = b[i][j];
+				}
+			}
+		}
+		cout << "旋转后的矩阵:" << endl;
+		for (i = 0; i < m; i++) {
+			for (j = 0; j < n; j++)
+				cout << q[i][j] << " ";
+			cout << endl;
+		}
+	}
+private:
+	int d1, d2; int a[100][100];
+};
+int main() {
+	matrix a;
+	int m, n, s[100][100]; cin >> m >> n;
+	a.set(m, n, s);
+	a.input(m, n, s);
+	a.output(m, n, s);
+	a.multiply(m, n, s);
+	a.transpose(m, n, s);
+	a.rotate(m, n, s);
+
+	return 0;
+}
+exper-2 计算器
+#include<iostream>
+#include<cstdio>
+using namespace std;
+class calculator {
+	double k1, k2, result; char k3;
+public:
+	calculator(double x,double y,char z) {
+		k1 = x; k2 = y; k3 = z;
+	}
+	double operators(double a1,double a2,char a3) {
+		switch (a3) {
+		case('+'):cout << "a1 + a2 = " << a1 + a2 << endl; return a1 + a2;
+		case('-'):cout << "a1 - a2 = " << a1 - a2 << endl; return a1 - a2;
+		case('*'):cout << "a1 * a2 = " << a1 * a2 << endl; return a1 * a2;
+		case('/'):cout << "a1 / a2 = " << a1 / a2 << endl; return a1 / a2;
+		default:cout << "运算符错误" << endl;
+
+		}
+	}
+	void redo(double r1) {
+		char a4; cout << "是否继续？（y/n）:"; cin >> a4;
+		double r2; char r3;
+		if (a4 == 'N' || a4 == 'n') {
+			cout << "结束运算";
+			exit(0);
+		}
+		if (a4 == 'y' || a4 == 'Y') {
+			cout << "输入新运算数:"; cin >> r2;
+			cout << "输入新运算符:"; cin >> r3;
+			calculator obj(r1, r2, r3);
+			obj.operators(r1, r2, r3);
+		}
+
+	}
+
+};
+int main() {
+	double a1, a2, t1; char a3;
+p:
+	cout << "输入运算数1:"; cin >> a1;
+	cout << "输入运算数2:"; cin >> a2;
+	cout << "输入运算符:"; cin >> a3;
+	calculator j(a1, a2, a3);
+	if ((t1 = j.operators(a1, a2, a3)) == 0) {
+		cout << "运算符错误";
+		goto p;
+	}
+	
+k:
+	j.redo(t1);
+	goto k;
+	return 0;
+}
+exper-3
+#include<iostream>
+#include<cstdio>
+using namespace std;
+const int MaxSize = 10;
+class A {
+	int length, data[MaxSize];
+public:
+	void in(int n, int a[]) {
+		length = n;
+		for (int i = 0; i < n; i++)
+			data[i] = a[i];
+	}
+	void display() {
+		for (int i = 0; i < length; i++)
+			cout << data[i] << " ";
+	}
+	void sort() {
+		for (int i = 0; i < length - 1; i++) {
+			for (int j = 0; j < length - i - 1; j++) {
+				if (data[j] > data[j + 1]) {
+					data[j] = data[j] + data[j + 1];
+					data[j + 1] = data[j] - data[j + 1];
+					data[j] = data[j] - data[j + 1];
+				}
+			}
+		}
+		cout << "排序后的数组：";
+		for (int i = 0; i < length; i++)
+			cout << data[i] << " ";
+	}
+	void insert() {
+		sort(); cout << endl << "请输入插入的数字:";
+		int k; cin >> k;
+		if (length + 1 > MaxSize) cout << "无法插入";
+		else
+			for (int i = 0; i <= length; i++) {
+				if (((data[i] < k) && (data[i + 1] > k)) || i == length) {
+					for (int j = length + 1; j > i+1; j--)
+						data[j] = data[j - 1];
+					data[i+1] = k;
+					break;
+				}
+			}
+		length++;
+		for (int i = 0; i < length; i++)
+			cout << data[i] << " ";
+	}
+	void del() {
+		int k; cin >> k; cout << "输入删除的数字：";
+		if (length == 0)cout << "表为空，无法删除";
+		else
+			for (int i = 0; i < length; i++) {
+				if (data[i] == k) {
+					for (int j = i; j < length; j++) {
+						data[j] = data[j + 1];
+					}
+				}
+			}
+		length--;
+		for (int i = 0; i < length; i++)
+			cout << data[i] << " ";
+	}
+	void find() {
+		int i, k; cin >> k;
+		for (i = 0; i < length; i++) {
+			if (data[i] == k)
+				cout << i;
+		}
+		if (i == length)cout << "没有这个数字";
+	}
+};
+int main() {
+	int i, n, olda[10], choose, x, y, location;
+	cout << "输入数组长度:"; cin >> n;
+	if (n > MaxSize) cout << "超长，请输入小于" << MaxSize << "的数字";
+	cout << "输入数组元素:";
+	for (i = 0; i < n; i++)
+		cin >> olda[i];
+	A newa;
+	newa.in(n, olda);
+	cout << "1.显示 2.排序 3.插入 4.删除 5.查找 6.退出" << endl;
+	cin >> choose;
+	switch (choose) {
+	case 1: newa.display(); break;
+	case 2:newa.sort(); break;
+	case 3:newa.insert(); break;
+	case 4:newa.del(); break;
+	case 5:newa.find(); break;
+	case 6:exit(1); break;
+	default:cout << "输入错误"; break;
+	}
+	return 0;
+}
+
+exper-4
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<iomanip>
+#include<stdlib.h>
+#define NUM 3
+using namespace std;
+class Singer {
+	string name, gender, song; int age;
+public:
+	Singer() { cout << "提示信息：调用Singer构造函数!" << endl; }
+	~Singer() { cout << "提示信息：调用Singer析构函数!" << endl; }
+	void Enroll() {
+		cout << "请输入这次报名选手的信息(姓名、性别、年龄、演唱曲目)：";
+		cin >> name >> gender >> age >> song;
+		cout << endl;
+	}
+	void Display() {
+		cout << name << " " << gender << " " << age << " " << song << endl;
+
+	}
+	void Modify() {
+		int choose;
+		cout << "1.姓名  2.性别  3.年龄  4.演唱曲目" << endl << "请选择需要修改的选项：";
+		cin >> choose;
+		switch (choose) {
+		case 1: cin >> name; break;
+		case 2: cin >> gender; break;
+		case 3: cin >> age; break;
+		case 4: cin >> song; break;
+		}
+		cout << "歌手信息修改成功！" << endl;
+	}
+};
+void main() {
+	int i, num; Singer s[NUM]; char flag1 = 'y', flag2 = 'y';
+	while (tolower(flag1) == 'y') {
+		cout << "*************************************************************************" << endl;
+		cout << "请输入这次报名歌手的数量（<=3）：";
+		cin >> num;
+		for (i = 0; i < num; i++) 
+			s[i].Enroll(); 
+		cout << "报名歌手的信息如下所示：" << endl;
+		for (i = 0; i < num; i++) 
+			s[i].Display(); 
+		cout << "是否需要修改报名歌手的信息(Y/N)：";
+		cin >> flag2;
+		if (tolower(flag2) == 'y') {
+			cout << "请输入需要修改的歌手信息序号：";
+			int seq;	cin >> seq;
+			s[seq - 1].Modify();
+			cout << "修改后的歌手信息如下所示：" << endl;
+			s[seq - 1].Display();
+		}
+		cout << "是否继续输入报名歌手的信息?(Y/N) ";
+		cin >> flag1;
+	}
+}
+
+
+
+
+
+
+

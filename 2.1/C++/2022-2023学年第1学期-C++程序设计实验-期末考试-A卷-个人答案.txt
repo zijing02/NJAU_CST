@@ -1,0 +1,128 @@
+#include<iostream>
+using namespace std;
+class A {
+	char c;
+public:
+	A(char n) :c(n) {}
+	~A() { cout << c << endl; }
+};
+class B :public A {
+	char c;
+public:
+	B(char n) :A(n+1),c(n){}
+	~B() { cout << c; }
+};
+int main() {
+	B b(65);
+	return 0;
+}
+
+
+#include<iostream>
+using namespace std;
+template<class T>
+class t {
+	T* data;
+	int size;
+public:
+	t(int);
+	~t() { delete []data; }
+	T& operator[](int i) { return data[i]; }
+
+};
+template<class T>
+t<T>::t(int n) {
+	data = new T[n];
+	size = n;
+}
+void main() {
+	t<int> x(5);
+	 for (int i = 0; i < 5; i++) 
+		 x[i] = i;
+	 for (int i = 0; i < 5; i++)
+		 cout << x[i];
+}
+
+real和image换成double
+#include<iostream>
+using namespace std;
+class Complex {
+	int real, image;
+public:
+	Complex() { real = 0; image = 0; }
+	Complex operator>>(Complex& c) { 
+		cin >> c.real; cin >> c.image; return c;
+	}
+	Complex operator<<(Complex &c) { 
+		if (c.image > 0)		cout << c.real << "+" << c.image << "i" << endl;
+		else if (c.image < 0) cout << c.real << c.image << "i" << endl;
+		else cout << c.real << endl;
+		return c;
+	}
+	Complex operator+(Complex &c) { 
+		real = real + c.real; image = image + c.image; return *this;
+	}
+	Complex operator-(Complex &c) { 
+		real = real - c.real; image = image - c.image; return *this;
+	}
+	friend Complex operator*(Complex &c1, Complex &c2) { 
+		c1.real = c1.real * c2.real - c1.image * c2.image; c1.image = c1.real * c2.image + c1.image * c2.real; return c1;
+	}
+	friend Complex operator/(Complex &c1, Complex &c2) {
+		c1.real = (c1.real * c2.real + c1.image * c2.image) / (c2.real * c2.real + c2.image * c2.image);
+		c1.image = ((c2.image * c2.image + c2.real * c2.real) + (c1.image * c2.real - c1.real * c2.image)) / (c2.image * c2.image + c2.real * c2.real);
+		return c1;
+	}
+};
+int main() {
+	Complex c1, c2, c3, c4;;
+	cout << "输入第一个:";	c1.operator>>(c1); 
+	cout << "输出第一个:";	c1.operator<<(c1);
+	cout << "输入第二个:";  c2.operator>>(c2);
+	cout << "输出第二个:";	c2.operator<<(c2);
+	c3 = c1; c4 = c2; c3 = c3 + c4; c3.operator<<(c3);
+	c3 = c1; c4 = c2; c3 = c3 - c4; c3.operator<<(c3);
+	c3 = c1; c4 = c2; c3 = c3 * c4; c3.operator<<(c3);
+	c3 = c1; c4 = c2; c3 = c3 / c4; c3.operator<<(c3);
+	return 0;
+}
+
+#include <iostream>
+using namespace std;
+class People {
+	int age;
+public:
+	People(int t) :age(t) { cout << "Life is short, we should learn c++ harder!" << endl; }
+	virtual void showage() { cout << "People:" << age << endl; }
+};
+class Baby : public People {
+	int bage;
+public:
+	Baby(int t1, int t2) :People(t1), bage(t2) {}
+	void showage() { cout << "Baby:" << bage << endl; }
+};
+class Student : public Baby {
+	int sage;
+public:
+	Student(int t1, int t2, int t3) :Baby(t1, t2) { sage = t3; }
+	void showage() { cout << "Student:" << sage << endl; }
+};
+class Adult : public Student {
+	int aage;
+public:
+	Adult(int t1, int t2, int t3, int t4) :Student(t1, t2, t3), aage(t4) {}
+	void showage() { cout << "Adult:" << aage << endl; }
+};
+class Older : public Adult {
+	int oage;
+public:
+	Older(int t1, int t2, int t3, int t4, int t5) :Adult(t1, t2, t3, t4), oage(t5) {}
+	void showage() { cout << "Older:" << oage << endl; }
+};
+void main() {
+	Baby b(1, 6); Student s(7, 12, 18); Adult a(19, 30, 40, 50); Older o(60, 70, 80, 90, 100);
+	People p(0), * ptr[5] = { &p, &b, &s, &a, &o };
+	for (int i = 0; i < 5; i++)
+		ptr[i]->showage();
+}
+

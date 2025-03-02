@@ -1,0 +1,263 @@
+exe-1
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int main() {
+	int n; cin >> n;
+	int* a = new int[n]; 
+	for (int i = 0; i < n; i++) 
+		cin >> a[i];
+	for (int i = 0; i < n; i++)
+		cout << a[i] << " ";
+	delete []a;
+	return 0;
+}
+exe-2
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+int a[5];
+int main() {
+	int exchange(int,int);
+	int& put(int);
+	int m=1, n=2;
+	cout << "Before exchanging:" << m << "\t" << &m << "\t" << n << "\t" << &n << "\n";
+	swap(m, n);
+	cout << "After exchange:" << m << "\t" << &m << "\t" << n << "\t" << &n << "\n";
+	int q=3;	put(q) = 10;	cout << q;
+	return 0;
+}
+void exchange(int &x,int &y) {
+	x = x + y;	y = x - y;	x = x - y;
+}
+int& put(int q) {
+	if (q < 5 && q >= 0)
+		return a[q];
+	else
+		cout << "error";
+}
+exe-3
+普通类
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+class A{
+public:
+	void set(int x, int y) {
+		xp = x; yp = y;
+	}
+	void print() {
+		cout << xp << " " << yp;
+	}
+private:
+	int xp, yp;
+};
+int main() {
+	A a;
+	a.set(10, 20);
+	a.print();
+	return 0;
+}
+
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<stdlib.h>
+using namespace std;
+int main() {
+	string newString;// 法一
+	string message("hello");//法二，创建的同时进行赋值
+	cout << message;
+	char charArray[] = { 'H','e','l','l','o','\0' };//需要注意的是，最后需要以"\0"结尾，这是用c语言的方式创建字符串
+	string message1(charArray);//即将其赋值到message1中
+	string s1("Welcome");
+	s1.append(" to c++"); //添加" to c++"到s1
+	cout << s1 << endl;//Welcome to c++
+
+	string s2("Welcome");
+	s1.append(" to c and c++", 3, 2); //添加"c"到s2
+	cout << s2 << endl;//Welcome c
+
+	string s3("Welcome");
+	s1.append(" to c and c++", 5); //添加"to c"到s3，注意此处和搜索不同
+	cout << s3 << endl;//Welcome to c
+
+	//string s4("Welcome");
+	//s1.append(4, "G"); //添加"GGGG" 到s4
+	//cout << s4 << endl;// WelcomeGGGG
+	return 0;
+}
+
+
+内外联
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+//内联
+inline int judge(int x) {
+	return (x % 2 == 0) ? 0 : 1;
+}
+//外联
+//int judge(int x) {
+//	return (x % 2 == 0) ? 0 : 1;
+//}
+//对比：内联所使用的时间短于外联
+int main() {
+	for (int i = 0; i < 100; i++) {
+
+		if (judge(i))cout << "奇";
+		else cout << "偶";
+	}
+	return 0;
+}
+
+exper-1
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int main() {
+    int d1, d2, i, j, n; char c = 'y'; cin >> d1 >> d2;
+    int** a;
+    a = (int**)malloc(sizeof(int*) * d1);
+    for (i = 0; i < d1; i++)
+        *(a + i) = (int*)malloc(sizeof(int) * d2);
+    if (a == NULL)
+        cout << "分配失败\n";
+    cout << "输入数组：" << "\n";
+    for (i = 0; i < d1; i++)
+        for (j = 0; j < d2; j++)
+            cin >> a[i][j];
+    cout << "原数组:" << "\n";
+    for (i = 0; i < d1; i++) {
+        for (j = 0; j < d2; j++)
+            cout << a[i][j] << " ";
+        cout << endl;
+    }
+    while (c == 'y') {
+        cout << "输入倍数:";    cin >> n;    cout << endl;
+        cout << "加倍后的数组:" << "\n";
+        for (i = 0; i < d1; i++) {
+            for (j = 0; j < d2; j++)
+                cout << a[i][j] * n << " ";
+            cout << endl;
+        }
+        cout << "还要继续吗（y/n）";
+        cin >> c;
+    }
+    return 0;
+}
+
+exper-2
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int main() {
+    int d1, d2, i, j, n; char c = 'y'; cin >> d1 >> d2;
+    int** a;
+    n = d1 > d2 ? d1: d2;
+    a = (int**)malloc(sizeof(int*) * n);
+    for (i = 0; i < d1; i++)
+        *(a + i) = (int*)malloc(sizeof(int) * n);
+    if (a == NULL)
+        cout << "分配失败\n";
+    while (c == 'y') {
+        cout << "输入数组：" << "\n";
+        for (i = 0; i < d1; i++)
+            for (j = 0; j < d2; j++)
+                cin >> a[i][j];
+        cout << "原数组:" << "\n";
+        for (i = 0; i < d1; i++) {
+            for (j = 0; j < d2; j++)
+                cout << a[i][j] << " ";
+            cout << endl;
+        }
+        cout << "转置后的数组:" << "\n";
+        for (i = 0; i < d2; i++) {
+            for (j = 0; j < d1; j++)
+                cout << a[j][i] << " ";
+            cout << endl;
+        }
+        cout << "还要继续吗（y/n）";
+        cin >> c;
+    }
+    return 0;
+}
+
+exper-3
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int main() {
+	void rotate(int **a, int d1, int d2, int angle);
+	int d1, d2, i, j, n, angle; char c = 'y'; cin >> d1 >> d2;
+    int** a,**s;
+    n = d1 > d2 ? d1: d2;
+	a = (int**)malloc(sizeof(int*) * n);	s = (int**)malloc(sizeof(int*) * n);
+	for (i = 0; i < d1; i++) {
+		*(a + i) = (int*)malloc(sizeof(int) * n);
+		*(s + i) = (int*)malloc(sizeof(int) * n);
+	}
+	if (a == NULL || s == NULL)
+        cout << "分配失败\n";
+
+	cout << "输入矩阵:" << endl;
+	for (i = 0; i < d1; i++)
+		for (j = 0; j < d2; j++)
+			cin >> a[i][j];
+	cout << "原矩阵是:" << endl;
+	for (i = 0; i < d1; i++) {
+		for (j = 0; j < d2; j++)
+			cout << a[i][j] << " ";
+		cout << endl;
+	}
+
+	while (c == 'y') {
+		for (i = 0; i < d1; i++)
+			for (j = 0; j < d2; j++)
+				s[i][j] = a[i][j];
+		cout << "旋转的角度："; cin >> angle;
+		if ((angle != 90) && (angle != 180) && (angle != 270))
+			cout << "错误的角度";
+		else 	rotate(s, d1, d2, angle);
+		cout << "还要继续旋转吗（y/n）：";
+		cin >> c;
+	}
+	return 0;
+}
+//新矩阵的第i行是原矩阵的第i列倒放
+void rotate(int **q, int d1, int d2, int angle) {
+	int i, j, b[100][100] = { 0 }, a[100][100] = { 0 },  m, t;
+	for (i = 0; i < d1; i++)
+		for (j = 0; j < d2; j++)
+			a[i][j] = q[i][j];
+	t = d1 > d2 ? d1 : d2;
+	for (int cnt = 0; cnt < angle / 90; cnt++) {
+		for (i = 0; i < d2; i++) {
+			m = d1;
+			for (j = 0; j < d1; j++) {
+				b[i][j] = a[--m][i];
+			}
+		}
+		d2 = d1 + d2; d1 = d2 - d1; d2 = d2 - d1;
+		for (i = 0; i < t; i++) {
+			for (j = 0; j < t; j++) {
+				a[i][j] = b[i][j];
+			}
+		}
+	}
+	for (i = 0; i < d1; i++) {
+		for (j = 0; j < d2; j++)
+			cout << a[i][j] << " ";
+		cout << endl;
+	}
+}
+
+
+
+
+
+
+

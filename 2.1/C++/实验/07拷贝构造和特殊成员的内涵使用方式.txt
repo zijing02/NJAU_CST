@@ -1,0 +1,161 @@
+1
+#include<iostream>
+#include<stdlib.h>
+#include<string.h>
+using namespace std;
+class Box {
+	int length, width, height;
+public:
+	Box();
+	Box(Box&);
+	Box(Box&, Box&);
+	Box(int l, int w, int h) :length(l), width(w){
+		height = h;
+	}
+	void compute_perimeter();
+	void compute_superficialarea();
+	void compute_volume();
+};
+void Box::compute_perimeter() {
+	cout << "周长：" << 4 * (length + width + height) << endl;
+}
+void Box::compute_superficialarea() {
+	cout << "表面积：" << 2 * (length * width + length * height + width * height) << endl;
+}
+void Box::compute_volume() {
+	cout << "体积：" << length * width * height << endl;
+}
+Box::Box(Box& a) {
+	length = 2 * a.length;
+	width = 2 * a.width;
+	height = 2 * a.height;
+}
+Box::Box(Box& a, Box& b) {
+	length = a.length+b.length;
+	width = a.width + b.width;
+	height = a.height + b.height;
+}
+int main() {
+	int l, w, h;
+	char flag = 'y';
+	Box b(1, 1, 1);
+	while (flag == 'y') {
+		cout << "Please input the length, width and height of the box: ";
+		cin >> l >> w >> h;
+		Box b1(l, w, h);
+		b1.compute_perimeter();
+		b1.compute_superficialarea();
+		b1.compute_volume();
+		Box b2(b1);
+		cout << "The perimeter, superficialarea and volume of a box with double length, width and height is as follows:" << endl;
+		b2.compute_perimeter();
+		b2.compute_superficialarea();
+		b2.compute_volume();
+		Box b3(b1, b2);
+		cout << "The perimeter, superficialarea and volume of a box with merging the length, width and height of box1 and box2 is as follows:" << endl;
+		b3.compute_perimeter();
+		b3.compute_superficialarea();
+		b3.compute_volume();
+		cout << "Do you want to continue to compute the perimeter, superficialarea and volume of a box(y or n)? ";
+		cin >> flag;
+	}
+	return 0;
+}
+2.1
+#include <iostream>
+#include <string>
+using namespace std;
+class Course {
+public:
+	int cno;    string cname;
+	Course(int tempcno, string tempcname) :cno(tempcno), cname(tempcname) {}
+	void course_show();
+};
+void Course::course_show() {
+	cout << " " << cno << " " << cname;
+}
+class Score {
+	int score;
+public:
+	Score(int tempss) :score(tempss) {}
+	void score_show();
+};
+void Score::score_show() {
+	cout << " " << score << endl;
+}
+class Student {
+	int sno;string sname, gender, grade;Course sc;	Score  ss;
+public:
+	Student(int tempsno, string tempsname, string tempgender, string tempgrade, Course tempsc, Score tempss) :
+		sno(tempsno), sname(tempsname), gender(tempgender), grade(tempgrade), sc(tempsc), ss(tempss) {}
+	void student_show();
+};
+void Student::student_show() {
+	cout << sno << " " << sname << " " << gender; sc.course_show(); ss.score_show();
+}
+
+void main() {
+	Course cs1(19218120, "C++");	Score sc1(90);
+	Student st1(201811219, "张三", "男", "计科161", cs1, sc1);
+	st1.student_show();
+}
+2.2
+#include <iostream>
+#include <string>
+#include <ctype.h>
+using namespace std;
+const int cnumber = 2;
+class Course {
+	string cno, cname;
+public:
+	Course() {}
+	Course(string cn, string name) :cno(cn), cname() {}
+	void course_show();
+};
+void Course::course_show() {
+	cout << " " << cno << " " << cname;
+}
+class Score {
+	int score;
+public:
+	Score() {}
+	Score(int sco) :score(sco) {}
+	void score_show();
+};
+void Score::score_show() {
+	cout << " " << score;
+}
+class Student {
+	int sno; string sname, gender, grade;	Course scourse;	Score sscore;
+public:
+	Student() {}
+	void student_show();
+	Student(int tempsno, string tempsname ,string tempgender, string tempgrade,	Course tempscourse,	Score tempsscore) :
+		sno(tempsno), sname(tempsname), gender(tempgender), grade(tempgrade), scourse(tempscourse), sscore(tempsscore) {}
+};
+void Student::student_show(){
+	cout << sno << "  " << sname << "  " << gender << "  " << grade << "  ";
+	scourse.course_show(); sscore.score_show(); cout << endl;
+}
+int main() {
+	Student  st[cnumber];	Course  cs[cnumber];	Score  ss[cnumber];
+	char flag = 'Y';
+	while (toupper(flag) == 'Y') {
+		cout << "请输入" << cnumber << "个课程及其分数信息（例如：2016116101 张三 男 计科161 COST3114 C++ 90）:" << endl;
+		int i, msno, mscore;	string msname, mgender, mgrade, mcno, mcname;
+		for (i = 0; i < cnumber; i++) {
+			cin >> msno >> msname >> mgender >> mgrade >> mcno >> mcname >> mscore;
+			Course tcs(mcno, mcname);		cs[i] = tcs;
+			Score tss(mscore);		ss[i] = tss;
+			Student tst(msno, msname, mgender, mgrade, tcs, tss);		st[i] = tst;
+		}
+		cout << "学生课程成绩信息如下:" << endl;
+		for (i = 0; i < cnumber; i++) 	st[i].student_show(); 
+		cout << "----------------------------------------------------------------------" << endl;
+		cout << "继续输入课程成绩吗?(Y/N)";
+		cin >> flag;
+	}
+	return 0;
+}
+
+	

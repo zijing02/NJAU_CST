@@ -1,0 +1,254 @@
+17-1
+#include <iostream>
+#include <string>
+using namespace std;
+double triangle(double a, double b, double c)
+{
+	double area; string t;
+	if (a + b > c&&a + c > b&&b + c > a)
+	{
+		double s = (a + b + c) / 2;
+		area = sqrt(s*(s - a)*(s - b)*(s - c));
+	}
+	else{
+		t = "It’s not a triangle!";
+		throw t;
+	}
+	return area;
+}
+void main()
+{
+	double a, b, c;
+	cout << "请输入三角形的三边：" << endl;
+	cin >> a >> b >> c;
+	try
+	{
+		cout << "三角形面积为：" << triangle(a, b, c) << endl;
+		//判断三角形的三边是否均大于0；如是，则求解面积；
+	}
+	catch (string)
+	{
+		cout << "输入的三边有误！" << endl;
+	}
+}
+
+17-2
+#include <iostream>
+#include <string>
+using namespace std;
+double squareroot(double &a)
+{
+	double n; int i = 0;
+	if (a >= 0)//判断输入的数是否为负数；如是，则抛出异常；
+		n = sqrt(a);
+	else
+		throw i;
+	throw n;
+}
+void main()
+{
+	double m; cin >> m;
+	char h = 'Y';
+	try
+	{
+		squareroot(m);
+	}
+	catch (int)
+	{
+		cout << "输入的数为负数，无法开方！" << endl;
+	}
+	catch (double n){
+		cout << "平方根是：" << n << endl;
+	}
+	system("pause");
+}
+17-3
+#include <iostream>
+#include <string>
+using namespace std;
+int fac(int n)
+{
+	int result = 1;
+	if (n<0)
+		throw "Argument for factorial negative";
+	else if (n>16)
+		throw n;
+	while (n)
+	{
+		result *= n;
+		n--;
+	}
+	return result;
+}
+void main()
+{
+	int n;
+	char h = 'Y';
+	while (h == 'Y' || h == 'y')
+	{
+		cout << "Please input a number n to calculte n!:";	cin >> n;
+		try{
+			cout << n << "!=" << fac(n) << endl;
+		}
+		catch (int){
+			cout << "数字太大" << endl;
+		}
+		cout << "是否继续输入？Y/N" << endl;
+		cin >> h;
+	}
+}
+17-4
+//#include <iostream>
+//#include <fstream>
+//#include <vector>
+//#include <string>
+//using namespace std;
+//#define SIZE 10
+//class Stack
+//{
+//private:
+//	int stack[SIZE];
+//	int tos;
+//public:
+//	friend class Full;
+//	friend class Empty;
+//	Stack(){ tos = -1; }
+//	~Stack(){}
+//	void push(int a)
+//	{
+//		if (tos >= SIZE - 1)
+//			throw Full(a);
+//		stack[++tos] = a;
+//	}
+//	int pop()
+//	{
+//		if (tos<0)
+//			throw Empty();
+//		return stack[tos--];
+//	}
+//	int top()const { return tos; }
+//};
+//class Empty
+//{
+//public:
+//	Empty(){}
+//	void show(){ cout << "stack is empty!" << endl; }
+//};
+//class Full
+//{
+//private:
+//	int a;
+//public:
+//	Full(int i) :a(i){}
+//	int getValue(){ return a; }
+//};
+//void main()
+//{
+//	Stack s;
+//	char b[200], i = 0;
+//	ifstream infile("data.txt",ios::in);
+//	infile >> b;
+//	if (!infile)
+//	{
+//		s.push(b[i++]);
+//		cerr << "open data.txt error!" << endl;
+//		exit(1);
+//	}
+//
+//}
+
+17-4
+#include<iostream>
+using namespace std;
+const int SIZE = 10;
+using namespace std;
+class Full
+{
+private:
+	int a;
+public:
+	Full(int i);
+	int getValue();
+};
+class Empty
+{
+public:
+	void show();
+};
+class Stack
+{
+private:
+	int stack[SIZE];
+	int tos;
+public:
+	Stack();
+	void push(int a);
+	int pop();
+	int top()const;
+};
+Full::Full(int i)
+{
+	a = i;       // 栈满后加入的元素，赋值给a
+}
+int Full::getValue()
+{
+	return a;     //抛出栈满后的元素
+}
+void Empty::show()
+{
+	cout << "stack is empty!" << endl;
+}
+Stack::Stack()//构造函数
+{
+	tos = -1;      //类似栈的头指针，用来判断栈满栈空
+}
+void Stack::push(int a)//入栈
+{
+	if (tos >= SIZE - 1)   //先判断栈满栈空，此时说明栈满
+	{
+		throw  Full(a);  //抛出栈满后的元素
+	}
+	else
+	{
+		stack[++tos] = a;  //否则就入栈
+	}
+}
+int Stack::pop()//出栈
+{
+	if (tos == -1)        //此时栈为空
+	{
+		throw  Empty(); //这个是根据catch捕获的数据类型来决定要抛出什么类型的数据
+	}
+	else
+	{
+		return stack[tos--];  //出栈相应的tos--
+	}
+}
+int main()
+{
+	Stack s;
+	int b[20], i = 0;
+	try
+	{
+		cin >> b[i];
+		while (b[i])
+		{
+			s.push(b[i]);
+			++i;
+			cin >> b[i];
+		}
+		for (i = 0; i < SIZE; i++)
+			cout << s.pop();
+	}
+	catch (Full e)
+	{
+		cout << "Exception: Stack Full..." << endl;
+		cout << "The value not push in stack: " << e.getValue() << endl;
+	}
+	catch (Empty e)
+	{
+		e.show();
+	}
+	return 0;
+}
+

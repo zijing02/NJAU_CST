@@ -1,0 +1,84 @@
+11-1
+#include <iostream>
+using namespace std;
+class Wood {
+public:
+	int wamount;
+	Wood(int temp) :wamount(temp) { UseWood(); }
+	void UseWood() { cout << "The furniture uses " << wamount << " pieces woods." << endl; }
+};
+class Mental {
+public:
+	int mamount;
+	Mental(int temp) :mamount(temp) { UseMental(); }
+	void UseMental() { cout << "The furniture uses " << mamount << " pieces mentals." << endl; }
+};
+class Furniture : public Wood, public Mental {
+public:
+	Furniture(int t1, int t2) :Wood(t1), Mental(t2) {}
+};
+class Sofa : public Furniture {
+protected:
+	int sofacapacity;  double sofaweight;
+public:
+	Sofa(int t1, int t2, int t3, int t4) : Furniture(t1, t2) { sofacapacity = t3; sofaweight = t4; show(); }
+	void show() { cout << "The sofa weights " << sofaweight << " and can sit " << sofacapacity << " persons." << endl; }
+
+};
+class Bed : public Furniture {
+protected:
+	int bedcapacity;  double bedweight;
+public:
+	Bed(int t1, int t2, int t3, int t4) :Furniture(t1, t2), bedcapacity(t3), bedweight(t4) { CanLie(); }
+	void CanLie() { cout << "The bed weights " << bedweight << " and can lie " << bedcapacity << " persons." << endl; }
+};
+class SofaBed : public Sofa, public Bed {
+public:
+	SofaBed(int t1, int t2, int t3, int t4, int t5, int t6, int t7, int t8) :Sofa(t1, t2, t3, t4), Bed(t5, t6, t7, t8) { ItsFunction(); }
+	void ItsFunction() { cout << "The sofabed uses " << Sofa::wamount + Bed::wamount << " pieces woods and " << Sofa::mamount + Bed::mamount << " pieces mentals,and weights " << Sofa::sofaweight + Bed::bedweight << " and can accommodate " << Sofa::sofacapacity + Bed::bedcapacity << " persons." << endl; }
+
+
+};
+void main() { SofaBed test(40, 20, 4, 100, 60, 30, 2, 150); }
+
+11-2
+#include<iostream>
+#include<windows.h>
+using namespace std;
+class Date {
+	int Year, Month, Day;
+public:
+	Date(int y = 0, int m = 0, int d = 0) { Year = y; Month = m; Day = d; }
+	void SetDate(int y, int m, int d) { Year = y; Month = m; Day = d; }
+	void ShowDate() { cout << Year << "-" << Month << "-" << Day << "\t"; }
+};
+class Time {
+	int Hour, Minute, Second;
+public:
+	Time(int h = 0, int m = 0, int s = 0) { Hour = h; Minute = m; Second = s; }
+	void SetTime(int h, int m, int s) { Hour = h; Minute = m; Second = s; }
+	void ShowTime() { cout << Hour << ":" << Minute << ":" << Second << "\t"; }
+};
+class DateTime :public Date, public Time {
+public:
+	DateTime(int year = 0, int month = 0, int day = 0, int hour = 0, int minute = 0, int second = 0) :Date(year, month, day), Time(hour, minute, second) { ShowDateTime(); }
+	void SetDateTime(int year = 0, int month = 0, int day = 0, int hour = 0, int minute = 0, int second = 0) { SetDate(year, month, day); SetTime(hour, minute, second); ShowNewDateTime(); }
+	void ShowDateTime() { cout << "当前日期时间为："; ShowDate(); ShowTime(); }
+	void ShowNewDateTime() { cout << "修改后的时间为："; ShowDate(); ShowTime(); }
+};
+void main() {
+	SYSTEMTIME sys;
+	GetLocalTime(&sys);
+	DateTime dt(sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute, sys.wSecond);
+	char flag = 'y';int i1, i2, i3, i4, i5, i6;
+	cout << endl << "是否需要修改日期和时间？(y/n)";
+	cin >> flag;
+	while (tolower(flag) == 'y') {
+		cout << "请输入新的日期和时间：";
+		cin >> i1 >> i2 >> i3 >> i4 >> i5 >> i6;
+		dt.SetDateTime(i1, i2, i3, i4, i5, i6);
+		cout << endl << "------------------------------------------" << endl;
+		cout << "是否继续修改日期和时间?(y/n)";
+		cin >> flag;
+	}
+}
