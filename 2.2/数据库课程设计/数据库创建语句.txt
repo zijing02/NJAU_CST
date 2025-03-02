@@ -1,0 +1,197 @@
+--数据库
+Create database DatabaseCourseDesign 
+on(
+	name = DatabaseCourseDesign_data,
+	filename = 'd:\sql\DatabaseCourseDesign.mdf')
+log on(
+	name = DatabaseCourseDesign_log,
+	filename = 'd:\sql\DatabaseCourseDesign.ldf'
+)
+go
+
+--1.运货商
+drop table if exists shippers
+Create table shippers(
+	ID int primary key,
+    sname nvarCHAR(80) not NULL,
+    phone nvarchar(48) not NULL,
+	tool nvarchar(10) not NULL
+)
+
+--2.客户
+drop table if exists customers
+Create table customers(
+	cID nvarchar(20) primary key,
+    cname nvarCHAR(80) not NULL,
+	pname nvarchar(60) not NULL,
+	pjob nvarchar(60) not NULL,
+	caddress nvarchar(120)not NULL,
+	city nvarchar(120) not NULL,
+	area nvarchar(30) not NULL,
+	postcode nvarchar(20) not NULL,
+	country nvarchar(30),
+	phone nvarchar(48) not NULL,
+	fax nvarchar(48),
+	id int,
+	password int
+)
+
+--3.类别
+drop table if exists category
+Create table category(
+	ID int primary key,
+	cname nvarCHAR(30) not NULL,
+    	explain ntext,
+	picture image,
+	setup datetime not NULL,
+	updatetime datetime not NULL,
+	base64_img nvarchar(MAX)
+)
+
+--4.供应商
+drop table if exists suppliers
+Create table suppliers(
+	ID int primary key,
+   	sname nvarchar(80) not NULL,
+   	pname nvarchar(60) not NULL,
+	pjob nvarchar(60) not NULL,
+	addre nvarchar(120) not NULL,
+	city nvarchar(30) not NULL,
+	area nvarchar(30) not NULL,
+	postcode nvarchar(20) not NULL,
+	country nvarchar(30) not NULL,
+	phone nvarchar(48) not NULL,
+	fax nvarchar(48),
+	homepage ntext
+)
+
+--5.产品
+drop table if exists products
+Create table products(
+	ID int primary key,
+	cname nvarchar(80) not NULL,
+	num nvarchar(40) not NULL,
+	price money not NULL,
+	inventory smallint not NULL,
+	ordernum smallint not NULL,
+	reordernum  smallint,
+	supplystate bit not NULL
+	sid int not NULL,
+	cid int not NULL,
+	picture_base64 nvarchar(MAX),
+	foreign key(sID) references suppliers(ID),
+	foreign key(cID) references cateory(ID),
+)
+
+
+--6.订单
+drop table if exists orders
+Create table orders(
+	ID int primary key,
+	customerID nvarchar(20) not NULL,
+	employeeID int,
+	orderdate datetime not NULL,
+	startdate datetime not NULL,
+	arrivaldate datetime not NULL,
+	confirmtime datetime not NULL,
+	delivercost money not NULL,
+	oname nvarchar(80) not NULL,
+	addr nvarchar(80) not NULL,
+	city nvarchar(30) not NULL,
+	area nvarchar(30) not NULL,
+	postcode nvarchar(30) not NULL,
+	country nvarchar(20) not NULL,
+	paymethod nvarchar(20) not NULL,
+	insurance int not NULL
+	foreign key(customerID) references customers(cID),
+	foreign key(employeeID) references suppliers(ID),
+
+)
+
+--7.订单详细
+drop table if exists orderdetail
+Create table orderdetail(
+	orderID int not NULL,
+	productID int not NULL,
+	num smallint not NULL,
+	remark ntext,
+	foreign key(productID) references products(ID),
+	foreign key(orderID) references orders(ID)
+)
+
+--8.生产批次
+drop table if exists pici
+Create table pici(
+	ID int primary key
+)
+
+--9.生产信息
+drop table if exists proinfo
+Create table proinfo(
+	piciID int,
+	productID int,
+	prodate datetime not NULL,
+	expiration datetime not NULL,
+	foreign key(productID) references products(ID),
+	foreign key(piciID) references pici(ID)
+)
+
+--10.运费规则
+drop table if exists rules
+Create table rules(
+	ruleID int primary key,
+	weight int,
+	cost int,
+	criterion int
+)
+
+--插入运费
+--1.计算总数，判定标准
+WITH TotalQuantity AS (  
+    SELECT   
+        orders.ID,    
+        SUM(orderdetail.num) as total_quantity  
+    FROM orders     
+    JOIN orderdetail ON orders.ID = orderdetail.orderID    
+    GROUP BY orders.ID  
+)  
+  
+SELECT   
+    tq.ID,    
+    tq.total_quantity,    
+    r.criterion as criterion1  
+FROM TotalQuantity tq  
+LEFT JOIN rules r ON tq.total_quantity BETWEEN r.weight AND r.weight1  
+WHERE r.criterion IS NOT NULL -- 假设只想要匹配到规则的记录  
+ORDER BY tq.total_quantity; -- 假设需要按ID排序
+
+--2.插入
+UPDATE orders     
+SET orders.delivercost = (    
+    SELECT tq.total_quantity * rules.criterion    
+    FROM (    
+        SELECT     
+            od.orderID AS orders_ID,      
+            SUM(od.num) as total_quantity    
+        FROM orderdetail od      
+        GROUP BY od.orderID    
+    ) tq    
+    JOIN rules ON tq.total_quantity BETWEEN rules.weight AND rules.weight1    
+    WHERE tq.orders_ID = orders.ID   
+    --LIMIT 1 -- 假设每个订单只匹配一个criterion，但这通常不是一个好的做法  
+)    
+WHERE EXISTS (    
+    SELECT 1    
+    FROM orderdetail od    
+    WHERE od.orderID = orders.ID    
+);
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div id="myDiv"></div>
+<script>
+let resp = "[{\"area\": \"\\u897f\\u5357\", \"total_num\": 5060}, {\"area\": \"\\u897f\\u5317\", \"total_num\": 592}, {\"area\": \"\\u534e\\u5357\", \"total_num\": 4659}, {\"area\": \"\\u534e\\u5317\", \"total_num\": 21839}, {\"area\": \"\\u534e\\u4e1c\", \"total_num\": 13402}, {\"area\": \"\\u534e\\u4e2d\", \"total_num\": 107}, {\"area\": \"\\u4e1c\\u5317\", \"total_num\": 4871}]";
+let data_list = JSON.parse(resp);
+let data = data_list.map(item => ({
+    x: [item.area],
+    y: [item.total_num],
+    type: 'bar',
+    name: item.area  
+}));
+let layout = {  
+    title: '地区数据统计' // 这里是标题的内容，你可以按需更改  
+};
+Plotly.newPlot('myDiv', data, layout);
+</script>
+</body>
+</html>

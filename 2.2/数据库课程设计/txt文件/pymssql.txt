@@ -1,0 +1,21 @@
+import pymssql
+
+connect = pymssql.connect('ZIJING-PC', 'sa', '19222126', 'kechengsheji')  # 服务器名，账户，密码，数据库名
+
+if connect:
+    print("数据库连接成功")
+
+cursor = connect.cursor()
+cursor.execute("create table test(id int)")
+cursor.execute("drop table test")
+
+print("操作执行")
+connect.commit()    #提交
+connect.close()     #关闭游标
+connect.close()     #如果不关，python一直占用
+
+
+
+
+
+

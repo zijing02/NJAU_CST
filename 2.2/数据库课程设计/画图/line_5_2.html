@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div id="myDiv"></div>
+    <script>
+        let resp = "[{\"season\": \"summer\", \"total_quantity\": 8159}, {\"season\": \"autumn\", \"total_quantity\": 11361}, {\"season\": \"spring\", \"total_quantity\": 15258}, {\"season\": \"winter\", \"total_quantity\": 15752}]"
+        let data_list = JSON.parse(resp);
+        // 提取地区和总数到单独的数组  
+        let season = data_list.map(item => item.season);
+        let total_quantity = data_list.map(item => item.total_quantity);
+        let data = [{
+            x: season, // 地区数组  
+            y: total_quantity, // 总数值数组  
+            type: 'scatter',
+            mode: 'markers+lines', // 添加标记和垂直线  
+            name: '季节数据统计折线图'
+        }];
+        let layout = {
+            title: '季节数据统计折线图'
+        };
+        Plotly.newPlot('myDiv', data, layout);  
+    </script>
+</body>
+</html>

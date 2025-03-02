@@ -1,0 +1,64 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>  
+</head>  
+<body>  
+    <div id="myDiv"></div>  
+    <script>  
+        let resp = "[{\"area\": \"\\u4e1c\\u5317\", \"cname\": \"\\u767e\\u8fbe\\u7535\\u5b50\", \"total_num\": 17}, {\"area\": \"\\u4e1c\\u5317\", \"cname\": \"\\u4fdd\\u4fe1\\u4eba\\u5bff\", \"total_num\": 16}, {\"area\": \"\\u4e1c\\u5317\", \"cname\": \"\\u6c60\\u6625\\u5efa\\u8bbe\", \"total_num\": 21}, {\"area\": \"\\u4e1c\\u5317\", \"cname\": \"\\u5927\\u94b0\\u8d38\\u6613\", \"total_num\": 519}, {\"area\": \"\\u4e1c\\u5317\", \"cname\": \"\\u4e1c\\u5357\\u5b9e\\u4e1a\", \"total_num\": 29}, {\"area\": \"\\u4e1c\\u5317\", \"cname\": \"\\u798f\\u661f\\u5236\\u8863\\u5382\\u80a1\\u4efd\\u6709\\u9650\\u516c\\u53f8\", \"total_num\": 321}, {\"area\": \"\\u4e1c\\u5317\", \"cname\": \"\\u5bcc\\u6cf0\\u4eba\\u5bff\", \"total_num\": 100}]";  
+        let data_list = JSON.parse(resp);  
+          
+        // 创建柱状图的数据  
+        let traces = [];  
+        let uniqueCnames = new Set(); // 用来收集唯一的客户名称  
+        data_list.forEach(item => {  
+            uniqueCnames.add(item.cname);  
+        });  
+          
+        uniqueCnames.forEach(cname => {  
+            let xValues = data_list  
+                .filter(item => item.cname === cname)  
+                .map(item => item.area);  
+            let yValues = data_list  
+                .filter(item => item.cname === cname)  
+                .map(item => item.total_num);  
+              
+            // 如果某个地区没有该客户的数据，则添加0作为占位符  
+            const allAreas = new Set(data_list.map(item => item.area));  
+            xValues = Array.from(allAreas).map(area => {  
+                const index = xValues.indexOf(area);  
+                return index !== -1 ? xValues[index] : area;  
+            });  
+            yValues = Array.from(allAreas).map(area => {  
+                const index = xValues.indexOf(area);  
+                return index !== -1 ? yValues[index] : 0;  
+            });  
+              
+            traces.push({  
+                x: xValues,  
+                y: yValues,  
+                type: 'bar',  
+                name: cname  
+            });  
+        });  
+          
+        let layout = {  
+            title: '不同地区不同客户数量统计柱图',  
+            xaxis: {  
+                tickangle: -45,  
+                tickfont: {  
+                    size: 14,  
+                    color: 'rgb(107, 107, 107)'  
+                }  
+            },  
+            yaxis: {  
+                title: '客户总数量'  
+            },  
+            barmode: 'group' // 如果有多个系列在同个x轴位置需要堆叠，则使用'stack'  
+        };  
+          
+        Plotly.newPlot('myDiv', traces, layout);  
+    </script>  
+</body>  
+</html>

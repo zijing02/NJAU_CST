@@ -1,0 +1,74 @@
+# import io
+# import base64
+# from PIL import Image
+
+# image_path = r'D:\dongzijing\桌面\university\杂货\picture\3e812b4eba0af056c825589362af7bb7.jpg'
+
+# image = Image.open(image_path)
+
+# image_bytes = io.BytesIO(image.tobytes())
+
+# base64_encoded = base64.b64encode(image_bytes.getvalue()).decode()
+
+# # print(base64_encoded)
+
+# image_data = base64.b64decode(base64_encoded)
+
+# image = Image.open(io.BytesIO(image_data))
+
+# image.show()
+
+
+# import io
+# import base64
+# from PIL import Image
+
+# image_path = r'D:\dongzijing\桌面\university\杂货\picture\3e812b4eba0af056c825589362af7bb7.jpg'
+
+# image = Image.open(image_path)
+
+# buffer = io.BytesIO()
+# image.save(buffer, format='JPEG')
+# buffer.seek(0)
+
+# # Encode the bytes buffer to Base64
+# base64_encoded = base64.b64encode(buffer.read()).decode()
+
+# # print(base64_encoded)
+
+# # Decode the Base64 to bytes
+# image_data = base64.b64decode(base64_encoded)
+
+# # Load the image from the bytes
+# image = Image.open(io.BytesIO(image_data))
+
+# image.show()
+
+# import io
+# import base64
+# from PIL import Image
+
+# # image_path = r'D:\dongzijing\桌面\university\杂货\picture\3e812b4eba0af056c825589362af7bb7.jpg'
+
+# # # Open the image and automatically detect the format
+# # image = Image.open(image_path)
+# # image_format = image.format
+
+# # # Save the image to a bytes buffer using the detected format
+# # buffer = io.BytesIO()
+# # image.save(buffer, format=image_format)
+# # buffer.seek(0)
+
+# # # Encode the bytes buffer to Base64
+# # base64_encoded = base64.b64encode(buffer.read()).decode()
+
+# base64_encoded = ""
+# # Decode the Base64 to bytes
+# image_data = base64.b64decode(base64_encoded)
+
+# # Load the image from the bytes
+# image = Image.open(io.BytesIO(image_data))
+
+# image.show()
+
+

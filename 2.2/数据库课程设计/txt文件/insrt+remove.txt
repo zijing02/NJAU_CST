@@ -1,0 +1,130 @@
+SqlOperation
+def InsertCategory(info:models.category):
+    cursor.execute('insert into category(ID,cname,explain,setup,updatetime) values(%d,%s,%s,%s,%s)',
+                   (info.id,info.cname,info.explain,info.setup,info.update))
+    connect.commit()
+
+def InsertCustomer(info:models.customers):#(cID,cname,pname,pjob,cadd,city,area,postcode,country,phone,fax,) 
+    cursor.execute('insert into customers values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d,%d)',
+                   (info.cID,info.cname,info.pname,info.pjob,info.caddress,info.city,info.area,info.postcode,info.country,info.phone,info.fax,info.id,info.password))
+    connect.commit()
+
+def InsertOrderDetail(info:models.orderdetail):#(orderID,productID,num,remark)
+    cursor.execute('insert into orderdetail values(%d,%d,%d,%s)',
+                   (info.orderid,info.productid,info.num,info.remark))
+    connect.commit()
+
+def InsertOrder(info:models.orders):#(ID,orderdate,starttime,arrivaltime,confirmtime,cost,name,addr,city,area,postcode,paymethon,insurance)
+    cursor.execute('insert into orders values(%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d)',
+                   (info.ID,info.customerID,info.employeeID,info.orderdate,info.starttime,info.arrivaltime,info.confirmtime,
+                    info.cost,info.name,info.addr,info.city,info.area,info.postcode,info.country,info.paymethod,info.insurance))
+    connect.commit()
+
+def InsertPici(info:models.pici):
+    cursor.execute('insert into pici values(%d)',(info.piciInput.ID))
+    connect.commit()
+
+def InsertProducts(info:models.products):#(ID,name,num,price,inventory,ordernum,reordernum,supplystate)
+    cursor.execute('insert into products values(%d,%s,%s,%d,%d,%d,%d,%s)',
+                   (info.ID,info.name,info.num,info.price,info.inventory,info.ordernum,info.reordernum,info.supplystate))
+    connect.commit()
+
+def InsertProinfo(info:models.proinfo):#(ID,productID,prodate,expiration)
+    cursor.execute('insert into proinfo values(%d,%d,%s,%s)',
+                   (info.piciID,info.productID,info.prodate,info.expirationdate))
+    connect.commit()
+
+def InsertRules(info:models.rule):#(ruleID,weight,cost,criterion)
+    cursor.execute('insert into rules values(%d,%d,%d,%d)',
+                   (info.ruleInput.id,info.ruleInput.weight,info.ruleInput.cost,info.ruleInput.cri))
+    connect.commit()
+
+def InsertShippers(info:models.shippers):#(sID,sname,phone,tool)
+    cursor.execute('insert into shippers values(%d,%s,%s,%s)',
+                   (info.sID,info.sname,info.phone,info.tool))
+    connect.commit()
+
+def InsertSuppliers(info:models.suppliers):#(ID,name,pname,pjob,address,city,area,postcode,country,phone,fax,homepage)
+    cursor.execute('insert into suppliers values(%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+                   (info.ID,info.name,info.pname,info.pjob,info.address,info.city,info.area,info.postcode,info.country,info.phone,info.fax,info.homepage))
+    connect.commit()
+
+def RemoveInfo(info:models.tableInfo):
+    if(info.tablename == 'category'):
+        cursor.execute('delete from category where ID = %d',info.id)
+        connect.commit()
+    elif(info.tablename == 'customers'):
+        cursor.execute('delete from customers where cID = %s',info.id)    
+        connect.commit()    
+    elif(info.tablename == 'orderdetail'):
+        cursor.execute('delete from customers where orderID = %d and productID = %d',info.id,info.id1)
+        connect.commit()    
+    elif(info.tablename == 'orders'):
+        cursor.execute('delete from customers where ID = %d',info.id)    
+        connect.commit()        
+    elif(info.tablename == 'pici'):
+        cursor.execute('delete from pici where ID = %d',info.id)    
+    elif(info.tablename == 'products'):
+        cursor.execute('delete from customers where ID = %d',info.id)    
+        connect.commit()        
+    elif(info.tablename == 'proinfo'):
+        cursor.execute('delete from customers where piciID = %d and productID= %d',info.id,info.id1)    
+        connect.commit()        
+    elif(info.tablename == 'rules'):
+        cursor.execute('delete from rules where ruleID = %d',info.id)    
+        connect.commit()        
+    elif(info.tablename == 'shippers'):
+        cursor.execute('delete from customers where ID = %d',info.id)    
+        connect.commit()        
+    elif(info.tablename == 'suppliers'):
+        cursor.execute('delete from customers where ID = %d',info.id)    
+        connect.commit()       
+
+
+
+PythonSqlBackend
+
+@app.post("/InsertCategory/")
+async def InsertCategory(info:models.category):
+    return SqlOperation.InsertCategory(info)
+
+@app.post("/InsertCustomers/")
+async def InsertCustomers(info:models.customers):
+    return SqlOperation.InsertCustomer(info)
+
+@app.post("/InsertOrderDetail/")
+async def InsertOrderDetail(info:models.orderdetail):
+    return SqlOperation.InsertOrderDetail(info)
+
+@app.post("/InsertOrder/")
+async def InsertOrder(info:models.orders):
+    return SqlOperation.InsertOrder(info)
+
+@app.post("/InsertPici/")
+async def InsertPici(info:models.pici):
+    return SqlOperation.InsertPici(info)
+
+@app.post("/InsertProducts/")
+async def InsertProducts(info:models.products):
+    return SqlOperation.InsertProducts(info)
+
+@app.post("/InsertProinfo/")
+async def InsertProinfo(info:models.category):
+    return SqlOperation.InsertCategory(info)
+
+@app.post("/InsertRule/")
+async def InsertRule(info:models.rule):
+    return SqlOperation.InsertRules(info)
+
+@app.post("/InsertShippers/")
+async def InsertShippers(info:models.shippers):
+    return SqlOperation.InsertShippers(info)
+
+@app.post("/InsertSuppliers/")
+async def InsertSuppliers(info:models.suppliers):
+    return SqlOperation.InsertSuppliers(info)
+
+@app.post("/Remove")
+async def Remove(info:models.tableInfo):
+    return SqlOperation.RemoveInfo(info)
+
