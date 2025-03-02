@@ -1,0 +1,7 @@
+﻿  algorithm_design.cpp
+  problem_1.cpp
+  problem_2.cpp
+D:\VSProject\algorithm_design\algorithm_design\problem_2.cpp(3,11): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\VSProject\algorithm_design\algorithm_design\problem_2.cpp(3,28): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  正在生成代码...
+  algorithm_design.vcxproj -> D:\VSProject\algorithm_design\x64\Debug\algorithm_design.exe
