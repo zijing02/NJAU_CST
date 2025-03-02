@@ -1,0 +1,13 @@
+Form_main = 160, 177, 585, 534, C, 16, 14, 697, 640, C
+Query_ByName_2 = 12, 81, 732, 618, C, 35, 22, 730, 629, C
+Query_ByName_1 = 198, 198, 719, 639, C, 71, 14, 723, 455, C
+Form_head = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+Form_Statistic = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+input_form = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+Query_AreaNo = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+Query_Info_MoreCondition = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+Set_AreaNo = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+Update_Form_1 = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+Update_Form_2 = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+view_all = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+function_module = 25, 25, 797, 562, Z
