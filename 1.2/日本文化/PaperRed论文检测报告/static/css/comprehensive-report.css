@@ -1,0 +1,537 @@
+/* 论文基础信息 */
+/* 上 */
+/* 上左 */
+.contennt {
+    width: 100%;
+}
+
+#main {
+    margin-bottom: 30px;
+}
+
+.contennt .infoLeft {
+    /* padding: 30px 28px 14px 28px; */
+    width: 50%;
+    border-radius: 10px;
+    float: left;
+}
+
+.infoLeft .t {
+    overflow: hidden;
+    margin-bottom: 37px;
+}
+
+    .infoLeft .t .t_l {
+        width: 45%;
+        display: inline-block;
+    }
+
+        .infoLeft .t .t_l h3 {
+            font-size: 14px;
+            color: #1d7eff;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+
+            .infoLeft .t .t_l h3 span {
+                font-size: 12px;
+                color: #333333;
+                margin-left: 10px;
+            }
+
+    .infoLeft .t .t_r {
+        width: 50%;
+        float: right;
+    }
+
+        .infoLeft .t .t_r .item {
+            display: inline-block;
+            width: 32%;
+            text-align: center;
+        }
+
+            .infoLeft .t .t_r .item .item_t {
+                color: #e44d1e;
+                font-size: 18px;
+            }
+
+            .infoLeft .t .t_r .item .item_b {
+                font-size: 12px;
+                color: #333333;
+            }
+
+.infoLeft .b {
+}
+
+.infoLeft h3 {
+    font-size: 14px;
+    color: #1d7eff;
+    margin-bottom: 23px;
+}
+
+.infoLeft .item_box {
+}
+
+    .infoLeft .item_box li {
+        font-size: 12px;
+        color: #333333;
+        width: 49%;
+        display: inline-block;
+        line-height: 1;
+        margin-bottom: 11px;
+    }
+/* 上左 */
+/* 上右 */
+.contennt .infoRight {
+    padding: 30px 28px 14px 28px;
+    width: 45%;
+    border-radius: 10px;
+    float: right;
+}
+
+    .contennt .infoRight h3 {
+        margin-bottom: 28px;
+        line-height: 1;
+        font-size: 16px;
+        color: #333333;
+        font-weight: bold;
+    }
+
+    .contennt .infoRight .mychart {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+        .contennt .infoRight .mychart li {
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+            .contennt .infoRight .mychart li > span {
+                color: #333333;
+                font-size: 12px;
+                display: inline-block;
+                width: 20%;
+                line-height: 20px;
+                vertical-align: top;
+            }
+
+            .contennt .infoRight .mychart li .progress {
+                width: 60%;
+                display: inline-block;
+                margin-bottom: 0;
+                border-radius: 0;
+                margin-right: 20px;
+            }
+
+                .contennt .infoRight .mychart li .progress > span {
+                    display: inline-block;
+                    vertical-align: middle;
+                    height: 100%;
+                }
+
+            .contennt .infoRight .mychart li b {
+                line-height: 20px;
+                vertical-align: top;
+            }
+
+            .contennt .infoRight .mychart li .redTxt {
+                color: red;
+            }
+
+            .contennt .infoRight .mychart li .orangeTxt {
+                color: orange;
+            }
+
+            .contennt .infoRight .mychart li .greenTxt {
+                color: green;
+            }
+
+            .contennt .infoRight .mychart li .progress > .red {
+                background-color: red;
+            }
+
+            .contennt .infoRight .mychart li .progress > .green {
+                background-color: green;
+            }
+
+            .contennt .infoRight .mychart li:nth-of-type(1) .progress > span {
+                width: 55%;
+            }
+
+            .contennt .infoRight .mychart li:nth-of-type(2) .progress > span {
+                width: 32%;
+            }
+
+            .contennt .infoRight .mychart li:nth-of-type(3) .progress > span {
+                width: 54%;
+            }
+
+            .contennt .infoRight .mychart li:nth-of-type(4) .progress > span {
+                width: 10%;
+            }
+
+            .contennt .infoRight .mychart li:nth-of-type(5) .progress > span {
+                width: 13%;
+            }
+
+            .contennt .infoRight .mychart li:nth-of-type(6) .progress > span {
+                width: 7%;
+            }
+
+.infoRight > div {
+    /* margin-top: 55px; */
+}
+
+    .infoRight > div > h5 {
+        font-size: 17px;
+        color: #989898;
+        line-height: 1;
+        margin-bottom: 6px;
+    }
+
+    .infoRight > div > P {
+        font-size: 14px;
+        color: #333333;
+        line-height: 1;
+        margin-bottom: 6px;
+    }
+
+        .infoRight > div > P:nth-of-type(2) {
+            font-size: 14px;
+            color: #989898;
+        }
+/* 上右 */
+/* 上 */
+/* 下 */
+/* 下 */
+/* 论文基础信息 */
+/* 论文片段信息 */
+/* 上 */
+.cont_top {
+    text-align: center;
+}
+
+    .cont_top ul {
+        margin: auto;
+        margin-bottom: 33px;
+        padding-bottom: 30px;
+        display: inline-block;
+    }
+
+        .cont_top ul li {
+            display: inline-block;
+            margin-right: 65px;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+            .cont_top ul li:last-of-type {
+                margin-right: 0;
+            }
+
+            .cont_top ul li h4 {
+                margin-bottom: 34px;
+                font-size: 14px;
+                color: #333333;
+            }
+
+            .cont_top ul li h5 {
+                font-size: 14px;
+                color: #f95b5b;
+            }
+
+            .cont_top ul li .green {
+                font-size: 14px;
+                color: #4ca84c;
+            }
+/* 上 */
+/* 下 */
+.conMychart {
+    padding: 30px;
+}
+
+#mychart {
+    height: 368px;
+    position: relative;
+}
+
+.conMychart > ul {
+    position: absolute;
+    right: 65px;
+    top: 243px;
+}
+
+    .conMychart > ul > li {
+        display: inline-block;
+    }
+
+        .conMychart > ul > li > span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+        }
+
+        .conMychart > ul > li:nth-of-type(1) > span {
+            background-color: #4ca84c;
+        }
+
+        .conMychart > ul > li:nth-of-type(2) > span {
+            background-color: #ff8650;
+            margin-left: 15px;
+        }
+
+        .conMychart > ul > li:nth-of-type(3) > span {
+            background-color: #f95b5b;
+            margin-left: 15px;
+        }
+/* 下 */
+/* 论文片段信息 */
+/* banner */
+.banner {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+    .banner img {
+    }
+/* banner */
+/* 来源 */
+.sim {
+}
+
+    .sim .simCon {
+        padding: 20px 0 10px 20px;
+    }
+
+        .sim .simCon > h3 {
+            color: #333333;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+            .sim .simCon > h3 > span {
+                color: #333333;
+                font-size: 14px;
+                font-weight: normal;
+            }
+
+        .sim .simCon > ul {
+            padding: 10px 0;
+        }
+
+            .sim .simCon > ul > li {
+                margin-top: 10px;
+                line-height: 20px;
+            }
+
+                .sim .simCon > ul > li > .li-head {
+                    overflow: hidden;
+                    margin: 5px 0;
+                }
+
+                    .sim .simCon > ul > li > .li-head > span {
+                        font-size: 12px;
+                        display: block;
+                        float: left;
+                        margin-right: 6px;
+                        line-height: 20px;
+                        min-width: 12px;
+                        text-align: right;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > .progress {
+                        float: left;
+                        width: 15%;
+                        margin-right: 12px;
+                        border-radius: 0;
+                        margin-bottom: 0;
+                        height: 16px;
+                        margin: 2px 10px 2px 0;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > b {
+                        line-height: 20px;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > .progress > span {
+                        display: inline-block;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > .progress > .green {
+                        height: 100%;
+                        background-color: green;
+                        width: 34%;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > .progress > .red {
+                        height: 100%;
+                        background-color: red;
+                        width: 55%;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > b {
+                        font-size: 12px;
+                        font-weight: bold;
+                        vertical-align: top;
+                        line-height: 20px;
+                        display: inline-block;
+                        margin-right: 30px;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > .redTxt {
+                        color: red;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > .greenTxt {
+                        color: green;
+                    }
+
+                    .sim .simCon > ul > li > .li-head > button {
+                        font-size: 12px;
+                        color: #58a3ff;
+                        position: relative;
+                        vertical-align: top;
+                        line-height: 20px;
+                        padding: 0;
+                        margin-right: 19px;
+                    }
+
+                        .sim .simCon > ul > li > .li-head > button > .btn {
+                            padding: 0;
+                            line-height: 20px;
+                            vertical-align: top;
+                        }
+
+                        .sim .simCon > ul > li > .li-head > button > i {
+                            display: inline-block;
+                            position: absolute;
+                            top: 42%;
+                            right: -12px;
+                            border: 5px solid #58a3ff;
+                            border-style: solid dashed dashed dashed;
+                            border-color: #58a3ff transparent transparent transparent;
+                        }
+
+                    .sim .simCon > ul > li > .li-head > p {
+                        color: #333333;
+                        font-size: 14px;
+                        display: inline-block;
+                        width: 70%;
+                        line-height: 20px;
+                    }
+
+@media (max-width: 1100px ) {
+    .sim .simCon > ul > li > .li-head > p {
+        width: 60% !important;
+    }
+}
+
+.sim .simCon > ul > li > .detail {
+    display: none;
+    padding: 17px 24px;
+    background-color: #f2f2f2;
+}
+
+    .sim .simCon > ul > li > .detail > p {
+        font-size: 12.25px;
+        color: #212529;
+        line-height: 18px;
+    }
+/* 来源 */
+@media (max-width: 1400px) {
+    .infoLeft .t .t_l {
+        width: 50%;
+        display: inline-block;
+    }
+
+    .infoLeft .t .t_r {
+        width: auto;
+        float: right;
+        width: 50%;
+    }
+
+        .infoLeft .t .t_r .item {
+            display: inline-block;
+            text-align: center;
+            width: 32%;
+        }
+
+            .infoLeft .t .t_r .item .item_t {
+                color: #e44d1e;
+                font-size: 18px;
+            }
+
+            .infoLeft .t .t_r .item .item_b {
+                font-size: 12px;
+                color: #333333;
+            }
+}
+
+
+.authenticity {
+    position: absolute;
+    top: 36%;
+    left: 31%;
+    margin-left: -10px;
+    margin-top: 0px;
+    border: 2px solid #f54141;
+    text-align: center;
+    color: #f54141;
+    z-index: 10;
+    padding: 5px;
+    transform: rotate(30deg);
+}
+
+.authenticity > .inBox {
+    border: 1px solid #f54141;
+    padding: 10px 26px;
+}
+
+.authenticity > .inBox > .sim {
+    font-size: 18px;
+    line-height: 18px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.authenticity > .inBox > .sim2 {
+    position: relative;
+    margin: 0;
+    height: 1px;
+}
+
+.authenticity > .inBox > .sim2 > .simTxt1 {
+    position: absolute;
+    right: -16px;
+    top: -4px;
+    float: right;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-right: 6px solid #f54141;
+    border-bottom: 6px solid transparent;
+    transform: rotate(12deg);
+}
+
+.authenticity > .inBox > .sim2 > .simTxt2 {
+    position: absolute;
+    left: -16px;
+    top: -4px;
+    float: right;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-left: 6px solid #f54141;
+    border-bottom: 6px solid transparent;
+    transform: rotate(-3deg);
+}
+
+.authenticity > .inBox > .name {
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: bold;
+    border-top: 1px solid #f54141;
+    padding-top: 8px;
+    margin-bottom: 0;
+}

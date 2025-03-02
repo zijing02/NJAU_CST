@@ -1,0 +1,17 @@
+﻿@page {
+    @top-center {
+        content: element(header);
+    }
+}
+
+.header {
+    position: inherit;
+}
+
+@page {
+     size: 8.5in 11in;
+
+     @bottom-center {
+          content: counter(page);
+      }
+}

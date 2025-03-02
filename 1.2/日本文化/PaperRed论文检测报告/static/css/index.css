@@ -1,0 +1,456 @@
+
+.main {
+    width: 980px;
+    margin: 40px auto;
+    background: #fff;
+}
+
+.main .top1 {
+    overflow: hidden;
+    padding: 25px 0 0 0;
+}
+
+.main .title {
+    font-weight: bold;
+    overflow: hidden;
+    height: 31px;
+    line-height: 31px;
+    font-size: 24px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    position: relative;
+}   
+
+.main .title .line {
+    width: 746px;
+    height: 1px;
+    background: #DDDDDD;
+    position: absolute;
+    right: 31px;
+    top: 15px;
+} 
+
+.title-line {
+    width: 12px;
+    height: 31px;
+    background: #0A53FF;
+    float: left;
+    margin-right: 18px;
+}
+
+.c-width {
+    margin: 17px 30px;
+    overflow: hidden;
+}
+
+.cw-row {
+    margin-bottom: 6px;
+    overflow: hidden;
+}
+
+.cw-row .cw-left {
+    
+    width: 70px;
+    float: left;
+}
+
+.cw-row .cw-right {
+    
+    width: 818px;
+    margin-left: 20px;
+    float: left;
+    overflow: hidden;
+}
+
+.cw-row .cw-right p {
+    float: left;
+    width: 25%;
+}
+
+.cw-row .p1 {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #888888;
+}
+
+.cw-row .p2 {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    margin-left: 20px;
+}
+
+.color-red {
+    color: #FC0006 !important;
+}
+
+.cw-row .fzb {
+    font-size: 30px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+}
+
+.chart {
+    position: relative;
+}
+
+.chart #myChart {
+    position: absolute;
+    right: 180px;
+    top: 0;
+}
+
+.width20 {
+    float: left;
+    width: 18%;
+    text-align: center;
+}
+
+.width20 div {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+}
+
+.width20 .bg-div {
+    width: 60px;
+    height: 12px;
+    margin: 10px auto;
+}
+
+.color-gary .bg-div{
+    background: #888888;
+}
+
+.color-blue .bg-div{
+    background: #2F76BB;
+}
+
+.color-red .bg-div{
+    background: #FC0006;
+}
+
+.color-green .bg-div{
+    background: #239F2B;
+}
+.color-brownness .bg-div{
+    background: #912608;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+
+.concept {
+    width: 100%;
+    height: 29px;
+    background: #3a8bc7;
+    position: relative;
+}
+
+.concept>div{
+    position: absolute;
+}
+
+.red-div {
+    background: red;
+    width: 2px;
+    height: 29px;
+    top: 0;
+    left: 0;
+}
+
+.green-div {
+    background: #22AC38;
+    width: 20px;
+    height: 29px;
+    top: 0;
+    left: 20px;
+}
+
+.brownness-div {
+    background: #A43605;
+    width: 20px;
+    height: 29px;
+    top: 0;
+    left: 40px;
+}
+
+.cwy-left {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    float: left;
+}
+
+.cwy-right {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    float: right;
+}
+
+.simp_table {
+    border: 1px solid #999999;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 43px;
+}
+
+
+
+.simp_table tr td {
+    border-right: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+}
+
+.xh {
+    width: 80px;
+    text-align: center;
+}
+
+.simp_table thead {
+    height: 48px;
+    border-bottom: 1px solid #999999;
+    background-color: #F2F4F9;
+}
+
+.simp_table thead tr td {
+    text-align: center;
+    height: 48px;
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+}
+
+.simp_table .org_content {
+    width: 540px;
+    vertical-align: top;
+    padding-top: 10px;
+}
+
+.simp_table .org_content>div{
+    width: 500px;
+    margin: 0 auto;
+}
+
+.simp_table .org_content  .org-title{
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.simp_table .org_content  .org-title a{
+    display: block;
+    color: #2f86cf;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    
+}
+
+
+.simp_table .org_content  .org-desc{
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #888888;
+    margin: 5px auto;
+}
+
+.simp_table .copy {
+    width: 187px;
+    text-align: center;
+}
+
+.simp_table .quote {
+    width: 114px;
+    text-align: center;
+}
+
+.tbs  .content, .tbs  .from {
+    width: 420px;
+}
+
+
+.tbs  .content>div, .tbs .from>div{
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+
+.tbs  .content .org-title{
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+}
+
+.tbs  .content  .org-title .c-blue {
+    color: #0A53FF;
+}
+
+.tbs  .from .bg {
+    background: #DBF1FF;
+    padding: 10px;
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+}
+
+.tbs tbody td{
+    vertical-align: top;
+}
+
+
+
+.footer {width: 980px;background: #fff;margin: 40px auto;position: relative;}
+.footer .top1 {padding: 20px 0;}
+.footer .top1 .title{
+    font-size: 24px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    height: 31px;
+    line-height: 31px;
+}
+
+/* .footer .p-div {
+    width: 601px;
+    margin-left: 29px;
+    padding-bottom: 40px;
+} */
+
+.footer .p-div {
+    margin: 0 29px;
+    padding-bottom: 40px;
+}
+
+.footer p {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    line-height: 30px;
+}
+
+.foot-right {
+    width: 260px;
+    height: 300px;
+    background: #DBF1FF;
+    position: absolute;
+    top: 25px;
+    right: 31px;
+    z-index: 100000;
+}
+
+
+
+.foot-right .qrcode {
+    width: 145px;
+    height: 146px;
+    display: block;
+    margin: 14px auto 7px auto;
+}
+
+.foot-right p {
+    text-align: center;
+    color: #0A53FF;
+    line-height: 2;
+}
+
+
+.logo-div {
+    width: 980px;
+    margin: 40px auto -38px auto;
+    background: #fff;
+    overflow: hidden;
+}
+
+.logo-div img {
+    display: block;
+    margin: 14px auto;
+}
+
+.logo-div div {
+    font-size: 20px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.notice .tab-bd ul .summary dl dt {
+    display: block;
+    height: 35px;
+    line-height: 35px;
+    font-size: 16px;
+}
+
+.notice .tab-bd ul .summary dl dt .sumInfo {
+    float: left;
+    font-weight: bold;
+    background: url(../img/li.gif?v20150608) left center no-repeat;
+    background-position: 0px -685px;
+    padding-left: 15px;
+    font-size: 16px;
+}
+
+.notice .tab-bd ul .summary dl dt .sumTotal {
+    float: right;
+    font-size: 14px;
+    color: #2f86cf;
+    font-weight: bold;
+}
+
+
+.notice .tab-bd ul .summary dl dd {
+    font-size: 14px;
+    color: #6e6e6e;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    padding-left: 18px;
+    height: 35px;
+    line-height: 35px;
+}
+
+.yuanwen {
+  word-wrap: break-word;
+    white-space: normal;
+    word-break: break-all;
+}
+
+.yuanwen em {
+    color: #ff0000;
+    font-style: normal;
+}
+
+.yuanwen em.reference {
+    color: #e28a05;
+    font-style: normal;
+}
+
+.yuanwen em.gray {
+    color: #808080;
+    font-style: normal;
+}
+
+.Sim1 em {
+    color: rgb(255 0 0);
+    font-style: normal;
+}
