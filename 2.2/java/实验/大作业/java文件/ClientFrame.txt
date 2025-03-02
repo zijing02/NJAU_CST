@@ -1,0 +1,98 @@
+package week16;
+
+import javax.swing.*;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+public class ClientFrame extends JFrame {
+    private JTextArea messageArea;
+    private JTextField inputField;
+    private JButton sendButton;
+    private ObjectOutputStream outputStream;
+
+    public ClientFrame(ObjectOutputStream outputStream) {
+        this.outputStream = outputStream;
+
+        setTitle("Client");
+        setSize(400, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        messageArea = new JTextArea(20, 30);
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+
+        inputField = new JTextField(30);
+        sendButton = new JButton("Send");
+
+        JPanel panel = new JPanel();
+        panel.add(scrollPane);
+        panel.add(inputField);
+        panel.add(sendButton);
+
+        sendButton.addActionListener(e -> {
+            String message = inputField.getText();
+            showMessage("Client send: " + message);
+            try {
+                outputStream.writeObject(new Information(message));
+                outputStream.flush();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            inputField.setText("");
+        });
+        add(panel);
+    }
+
+    public void showMessage(String message) {
+        messageArea.append(message + "\n");
+    }
+
+//    public static void main(String[] args) {
+//        try {
+//            Socket socket = new Socket("localhost", 12345);
+//            System.out.println("Connected to server");
+//
+//            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+//            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+//
+//            ClientFrame clientFrame = new ClientFrame(outputStream);
+//            clientFrame.setVisible(true);
+//
+//            while (true) {
+//                Information info = (Information) inputStream.readObject();
+//                clientFrame.showMessage("Server send: " + info.getMessage());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public static void main(String[] args) {
+        try {
+            Socket socket = new Socket("localhost", 12345);
+            System.out.println("Connected to server");
+
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+            ClientFrame clientFrame = new ClientFrame(outputStream);
+            clientFrame.setVisible(true);
+
+            Thread serverResponseThread = new Thread(() -> {
+                try {
+                    while (true) {
+                        Information info = (Information) inputStream.readObject();
+                        clientFrame.showMessage("Server send: " + info.getMessage());
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            });
+            serverResponseThread.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,58 @@
+package week16;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+class ClientHandler implements Runnable {
+    private Socket socket;
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+        
+        try {
+            inputStream = new ObjectInputStream(socket.getInputStream());
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            ServerFrame serverFrame = new ServerFrame(outputStream);
+            serverFrame.setVisible(true);
+
+            serverFrame.showMessage("Server started");
+            serverFrame.showMessage("Waiting for client connection...");
+            serverFrame.showMessage("Client connected");
+
+            while (true) {
+                Information info = (Information) inputStream.readObject();
+                serverFrame.showMessage("Client Send: " + info.getMessage());
+                outputStream.writeObject(new Information("Server received: " + info.getMessage()));
+                outputStream.flush();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (socket != null) {
+                    socket.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+}

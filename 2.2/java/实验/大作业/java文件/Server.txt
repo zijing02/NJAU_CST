@@ -1,0 +1,34 @@
+package week16;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+    public static void main(String[] args) {
+//        try {
+//            ServerSocket serverSocket = new ServerSocket(12345);
+////            System.out.println("Server started");
+//
+//            Socket socket = serverSocket.accept();
+////            System.out.println("Client connected");
+//
+//            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+//            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+//            
+//            ServerFrame serverFrame = new ServerFrame(outputStream);
+//            serverFrame.setVisible(true);
+//            
+//            while (true) {
+//                Information info = (Information) inputStream.readObject();
+//                System.out.println("Client Send: " + info.getMessage());
+//                outputStream.writeObject(new Information("Server received: " + info.getMessage()));
+//                outputStream.flush();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    	ServerFrame.main(args);
+    }
+}

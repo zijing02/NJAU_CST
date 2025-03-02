@@ -1,0 +1,89 @@
+t1
+task.java
+public class task {
+	public static void main(String args[]) {
+		System.out.println("hello word");		
+	}
+}
+
+t2
+task.java
+package task;
+
+public class task{
+	public static void main(String[] args) {
+		Doll beibei=new Doll("贝贝");
+		beibei.speak();
+	Doll jingjing=new Doll("晶晶");
+		jingjing.speak();
+	Doll huanhuan=new Doll("欢欢");
+		huanhuan.speak();
+	Doll yingying=new Doll("莹莹");
+		yingying.speak();
+	Doll nini=new Doll("妮妮");
+		nini.speak();
+
+	}
+}
+Doll.java
+package task;
+
+public class Doll {
+	private String name;
+	public Doll(String name) {this.name=name;}
+	public void setName(String name) {this.name = name;}
+	public String getName() {return name;}
+	public void speak() {System.out.println(name);}
+}
+
+t3
+task.java
+package task;
+
+import java.security.PublicKey;
+import java.util.Scanner;
+public class task {
+	public static void main(String args[]) {
+		Scanner sc=new Scanner(System.in);
+//		double c=sc.nextDouble();
+		complex a = new complex(1,2);
+//		a=new complex(sc.nextDouble(),sc.nextDouble());
+		complex b = new complex(3,4);
+		a.get();
+		a.add(b);a.min(b);a.div(b);a.mul(b);
+	}
+}
+
+complex.java
+package task;
+
+import java.nio.channels.Pipe;
+
+public class complex {
+	private double real,img;
+	public complex() {}
+	public complex(double r,double i) {real = r;img = i;}
+	void set(double r,double i) {real=r;img=i;}
+	void get(double i,double r) {System.out.print("("+real+","+img+")");}
+	public void add(complex a) {
+		real=real + a.real;
+		img=img + a.img;
+		p();
+	}
+	public void min(complex a) {
+		real=real - a.real;
+		img=img - a.img;
+		p();
+	}
+	public void mul(complex a) {
+		real=real*a.real - img*a.img;
+		img=real*a.img + img*a.real;
+		p();
+	}
+	public void div(complex a) {
+		real=(real*a.real+img*a.img)/(a.img*a.img + a.real*a.real);
+		img=(img*a.real-real*a.img)/(a.img*a.img + a.real*a.real);
+		p();
+	}
+	void p() {System.out.print("("+real+","+img+")");System.out.println();}
+}
