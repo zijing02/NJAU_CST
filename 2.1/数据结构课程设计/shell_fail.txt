@@ -1,0 +1,35 @@
+	for (gap = 2; gap < num; gap *= 2) {
+		for (i = 0; i < num; i += gap) {
+			if (i + 1 >= num)continue;
+			if (cnt1++ && a[i] > a[i + 1]) {
+				cnt2++;
+				a[i] = a[i] + a[i + 1];
+				a[i + 1] = a[i] - a[i + 1];
+				a[i] = a[i] - a[i + 1];
+			}
+		}
+		for (i = 0; i < num; i += 2 * gap) {
+			if (i + gap > num)
+				for (t = i; t < num; t++)
+					b[t++] = a[i++];
+			if (i + 2 * gap > num) {
+				for (t = i, m = i, j = i + gap; (m < i + gap) || (j < num);) {
+					if (m == i + gap) b[t++] = a[j++];
+					else if (j == num) b[t++] = a[m++];
+					else if (cnt1++ && a[m] < a[j]) b[t++] = a[m++];
+					else b[t++] = a[j++];
+					cnt2++;
+				}
+			}
+			else {
+				for (t = i, m = i, j = i + gap; (m < i + gap) || (j < i + 2 * gap);) {
+					if (m == i + gap) b[t++] = a[j++];
+					else if (j == i + 2 * gap) b[t++] = a[m++];
+					else if (cnt1++ && a[m] < a[j]) b[t++] = a[m++];
+					else b[t++] = a[j++];
+					cnt2++;
+				}
+			}
+		}
+		for (i = 0; i < num; i++) a[i] = b[i];
+	}
