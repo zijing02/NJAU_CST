@@ -1,0 +1,11 @@
+y := False;
+x := True;
+if x + ¬y then
+    z := x ∧ c
+    while x * (x + y) do
+        temp := x * y;
+        if y >= x then
+            result := x;
+        else
+            result := y;
+z := result ∨ y

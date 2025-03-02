@@ -1,0 +1,4 @@
+a := True;
+b ?= False;
+if a+b then c := b else if b∧b then c := a;
+while a*a do o := b

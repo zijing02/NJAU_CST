@@ -1,0 +1,13 @@
+
+b := True;
+c := False;
+a :=1;
+x :=5;
+if b ∨ c then
+	x=x*2;  
+	if ¬ c then 
+		d := b
+	else 
+		d := c;
+while d do 
+	x := x-a

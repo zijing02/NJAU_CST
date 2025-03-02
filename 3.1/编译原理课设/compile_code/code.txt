@@ -1,0 +1,4 @@
+if True || False then a:=(b+c)*a else a:=-b+c;
+while b<=c && a<>c do b:=b+a;
+ans:=a+b+c;ans:=ans+d
+#

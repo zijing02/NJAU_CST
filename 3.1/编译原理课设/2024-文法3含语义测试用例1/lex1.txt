@@ -1,0 +1,6 @@
+b := True;
+c := True;
+d := b+c+c;
+if d∨c then p := d else if c∧c then d := b;
+while c*c do o := r;
+t := True

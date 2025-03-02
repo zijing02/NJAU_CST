@@ -1,0 +1,6 @@
+x := True;
+y := False;
+a :=5；
+while a!=0 do 
+	a := a-1;
+	if x ∧ y then a := a-1 else if  x then a := a-2
