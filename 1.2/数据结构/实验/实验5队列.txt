@@ -1,0 +1,159 @@
+//链队列
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+typedef struct QNode {
+	int data;
+	struct QNode* next;
+}QNode,*QueuePtr;
+typedef struct {
+	QueuePtr front;
+	QueuePtr rear;
+}LinkQueue;
+int Init(LinkQueue& Q) {
+	Q.front = Q.rear = (QueuePtr)malloc(sizeof(QNode));
+	Q.front->next = NULL;
+	return 1;
+}
+void En(LinkQueue& Q, int e) {			//入队
+	QueuePtr p = (QueuePtr)malloc(sizeof(QNode));
+	p->data = e;
+	p->next = NULL;
+	Q.rear->next = p;				//将新节点插入到队尾
+	Q.rear = p;						//修改队尾指针
+}
+int De(LinkQueue& Q, int& e) {		//出队:删除Q的队头元素，用e返回值
+	if (Q.front == Q.rear)return 0;
+	QueuePtr p = Q.front->next;		//p指向队头元素结点
+	e = p->data;
+	Q.front->next = p->next;		//修改链队列头结点指针
+	if (Q.rear == p)Q.rear = Q.front;		//对于链队列只有一个元素节点的情况要同时修改队尾指针
+	free(p);
+	return 1;
+}
+void GetFirst(LinkQueue Q) {
+	if (Q.front == Q.rear) cout<<"空";
+	cout << Q.front->next->data << endl;;
+}
+int JudgeEmpty(LinkQueue Q) {
+	if (Q.front == Q.rear) {
+		cout << "Y" << endl;
+		return 0;
+	}
+	cout << "N" << endl;
+	return 1;
+}
+int Destroy(LinkQueue& Q) {			//从前往后释放空间
+	while (Q.front) {
+		Q.rear = Q.front->next;
+		free(Q.front);
+		Q.front = Q.rear;
+	}
+	return 1;
+}
+void Printf(LinkQueue Q) {
+	QueuePtr p = Q.front->next;
+	while (p) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << endl;
+}
+int main() {
+	int n, m, h, e;	LinkQueue Q;
+	cin >> n;
+	Init(Q);
+	for (int i = 0; i < n; i++) {
+		cin >> m;
+		En(Q, m);
+	}
+	cin >> h;
+	for (int i = 0; i < h; i++) {
+		De(Q, e);
+	}
+	if (JudegEmpty(Q)) {
+		GetFirst(Q);
+		Printf(Q);
+	}
+	return 0;
+}
+//顺序队列(部分代码有问题但调试不出来，主要问题是不输入回车就内存读取错误)
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+#define Maxsize 100
+//typedef struct {			//将front、rear设置成指针，操作会变得更加复杂
+//	int* base;
+//	int* front;
+//	int* rear;
+//}SqQueue;
+//int Init(SqQueue& Q) {
+//	Q.base = (int*)malloc(sizeof(int));
+//	if (!Q.base)exit(0);
+//	Q.front = Q.rear = Q.base;
+//}
+//int En(SqQueue& Q, int e) {
+//	int *p = Q.rear;
+//	if (Q.rear - Q.base == Maxsize - 1)p = Q.base;
+//	else p++;
+//	if (p = Q.front)return 0;
+//	*Q.rear = e; Q.rear = p;
+//}
+typedef struct {		
+	int* base;
+	int front;			//在非空队列中，头指针始终指向队头元素，尾指针始终指向队尾元素的下一位置
+	int rear;
+}SqQueue;
+int Init(SqQueue& Q) {
+	Q.base = (int*)malloc(sizeof(int));
+	if (!Q.base)exit (0);
+	Q.front = Q.rear = 0;
+}
+int En(SqQueue& Q, int e) {
+	if ((Q.rear + 1) % Maxsize == Q.front)return 0;		//判断是否满了
+	Q.base[Q.rear] = e;
+	Q.rear = (Q.rear + 1) % Maxsize;			//每次插入新元素时尾指针+1
+}
+int De(SqQueue& Q, int e) {
+	if (Q.rear == Q.front)return 0;				//判断是否为空
+	e = Q.base[Q.front];
+	Q.front = (Q.front + 1) % Maxsize;			//每次删除元素时头指针+1
+	return 1;
+}
+int GetFirst(SqQueue Q) {
+	if (Q.rear == Q.front)return 0;
+	cout << Q.base[Q.front] << endl;
+	return 1;
+}
+int JudgeEmpty(SqQueue Q) {
+	if (Q.rear == Q.front) {
+		cout << "Y" << endl;
+		return 0;
+	}
+	cout << "N" << endl;
+	return 1;
+}
+void Printf(SqQueue Q) {
+	for (int p = Q.front; p < Q.rear; p++) 
+		cout << Q.base[p] << " ";
+	cout << endl;
+}
+int main() {
+	int n, m; cin >> n;
+	SqQueue Q;
+	Init(Q);
+	for (int i = 0; i < n; i++) {
+		cin >> m;
+		En(Q, m);
+	}
+	cin >> m;
+	for (int i = 0; i < m; i++)
+		De(Q, n);
+	if (JudgeEmpty(Q)) {
+		GetFirst(Q);
+		Printf(Q);
+	}
+	return 0;
+}

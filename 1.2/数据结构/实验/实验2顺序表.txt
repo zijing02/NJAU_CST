@@ -1,0 +1,468 @@
+//顺序表的创建，初始化
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>
+using namespace std;
+#define SIZE 10 //初始分配量
+#define LISTINCREMENT 3 //分配增量
+typedef struct {
+	int* elem; //存储空间基址 
+	int length; //当前长度 
+	int listsize; //当前分配的存储容量
+}SqList;
+void InitList(SqList& L) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)exit(0);
+	L.length = 0;
+	L.listsize = SIZE;
+}
+void Create(SqList& L, int n) {
+	for (int i = 0; i < n; i++) {
+		cin >> *L.elem;
+		L.length++;
+		L.elem++;
+	}
+}
+void Printf(SqList& L, int n) {		//此处的n可有可无，是为了第4题判断是否有共同元素的准备(虽然也用不上)
+	L.elem = L.elem - L.length;//指针的头必须回到0位置否则没办法正确打印
+	int i = 0, t = L.length;
+	cout << "表的元素如下：" << "\t";
+	for (t; t >= 1; t--) {
+		cout << *(L.elem) << "\t";
+		L.elem++;
+	}
+	printf("\n");
+}
+int main() {
+	int n;cin >> n;SqList L;
+	InitList(L); Create(L, n);
+	cout << "顺序表中元素的个数为：" << L.length << endl;
+	Printf(L, n);
+
+	return 0;
+}
+
+//1
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+#define SIZE 10 //初始分配量
+#define LISTINCREMENT 3 //分配增量
+typedef struct {
+	int * elem; //存储空间基址 
+	int length; //当前长度 
+	int listsize; //当前分配的存储容量
+}SqList;
+void InitList(SqList& L,int n) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)exit(0);
+	L.length = 0;
+	L.listsize = SIZE;
+	for (int i = 0; i < n; i++) {
+		cin >> *L.elem;
+		L.length++;
+		L.elem++;
+	}
+}
+void Insert(SqList& L, int i, int e) {
+	int* newbase;
+	int * q, * p;
+	if (i<1 || i>L.length + 1)  cout<<"错误";
+	if (L.length >= L.listsize) {
+		newbase = (int*)(realloc)(L.elem, (L.listsize + LISTINCREMENT) * sizeof(int));
+		if (!newbase)exit(0);
+		L.elem = newbase; L.listsize += LISTINCREMENT;
+	}
+	q = (L.elem - 1 - (L.length - i));
+	p = L.elem - 1;
+	for (p; p >= q; p--) 
+		*(p + 1) = *p;
+	*q = e;
+	++L.length;		//插入后表的长度加一
+	++L.elem;       //使得elem始终保持在表的尾巴
+}
+void Delete(SqList&L,int i,int &e) {
+	int* p, * q;
+	if (i<1 || i>L.length)  cout << "错误";
+	p = (L.elem - 1 - (L.length-i));	//p为要删除的元素的位置
+	e = *p;						//用e接受删除的数字
+	q = L.elem - 1;				//q为表最后的元素位置
+	for (p; p < q;p++) 
+		*p = *(p+1);			//依次向后覆盖
+	--L.length;					//删除后表的长度-1
+	L.elem--;					//使得elem始终保持在表的尾巴
+}
+void Locate(SqList L, int e) {
+	int* p, t;	p = L.elem - L.length;
+	for (t = 1; t <= L.length; t++) {
+		if (*p == e) {
+			cout << t;
+			break;
+		}
+		*p = *(p++);
+	}
+	if (t > L.length) cout << "表中没有该数字";
+}
+void Printf(SqList&L,int n) {		//此处的n可有可无，是为了第4题判断是否有共同元素的准备(虽然也用不上)
+	L.elem = L.elem - L.length;//指针的头必须回到0位置否则没办法正确打印
+	int i = 0,t=L.length;
+	cout << "表的元素如下：" << "\t";
+	for (t; t >= 1; t--) {
+		cout << *(L.elem) << "\t";
+		L.elem++;
+	}
+	printf("\n");	
+}
+int main() {
+	int n,i,d,e; 	cin >> n;	SqList L;
+
+	//原函数组成
+	//InitList(L, n);
+	//cout << "顺序表中元素的个数为：" << L.length << endl;
+	//Printf(L, n);
+
+	//cout << "输入插入的位置以及数字：";
+	//cin >> i >> d;
+	//Insert(L,i,d);
+	//cout << "顺序表中元素的个数为：" << L.length << endl;
+	//Printf(L, n);
+
+	//cout << "输入删除的位置：";
+	//cin >> i;
+	//Delete(L, i, e);
+	//cout << e << endl;
+	//cout << "顺序表中元素的个数：" << L.length << endl;	
+	//Printf(L, n);
+
+	//cout << "输入查找的数字：";
+	//cin >> i;
+	//Locate(L, i);
+
+	//cout << "最终";
+	//Printf(L, n);
+
+	//按题给条件调用
+	InitList(L, n);
+	cin >> i;
+	Delete(L, i, e);
+	cin >> i;
+	Printf(L, n);
+	cout << e << endl;
+	Locate(L, i);
+
+	return 0;
+}
+
+
+//2
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+#define SIZE 10 //初始分配量
+#define LISTINCREMENT 3 //分配增量
+typedef struct {
+	int * elem; //存储空间基址 
+	int length; //当前长度 
+	int listsize; //当前分配的存储容量
+}SqList;
+void InitList(SqList& L,int n) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)exit(0);
+	L.length = 0;
+	L.listsize = SIZE;
+	for (int i = 0; i < n; i++) {
+		cin >> *L.elem;
+		L.length++;
+		L.elem++;
+	}
+}
+void Insert(SqList& L, int i) {
+	int* newbase;
+	int* q, * p, t;
+	if (L.length >= L.listsize) {
+		newbase = (int*)(realloc)(L.elem, (L.listsize + LISTINCREMENT) * sizeof(int));
+		if (!newbase)exit(0);
+		L.elem = newbase; L.listsize += LISTINCREMENT;
+	}
+	p = L.elem - L.length;     //从最开始遍历,直到目标位置
+	++L.length;		//插入后表的长度加一
+	++L.elem;       //使得elem始终保持在表的尾巴
+	q = L.elem - 1;			//从插入的位置每个都向后走，得从后面开始
+	for (t = 1; t <= L.length; t++) {
+		if (*p >= i) {			
+			for (int len = L.length; len > t; len--) {
+				*q = *(q - 1);	//问题：为什么这里用q--或者--q都不行
+				q--;
+			}
+			*(q) = i;
+			break;
+		}
+		*p = *(p++);
+	}
+	if (t >= L.length) {
+		*(L.elem - 1) = i;
+	}
+
+}
+void Printf(SqList&L,int n) {
+	L.elem = L.elem - L.length;//指针的头必须回到0位置否则没办法正确打印
+	int i = 0,t=L.length;
+	cout << "表的元素如下：" << "\t";
+	for (t; t >= 1; t--) {
+		cout << *(L.elem) << "\t";
+		L.elem++;
+	}
+	printf("\n");	
+}
+int main() {
+	int n,i; 	cin >> n;	SqList L;
+	InitList(L, n);
+	cin >> i;
+	Insert(L, i);
+	Printf(L, n);
+	return 0;
+}
+
+
+//3
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+#define SIZE 10 //初始分配量
+#define LISTINCREMENT 3 //分配增量
+typedef struct {
+	int * elem; //存储空间基址 
+	int length; //当前长度 
+	int listsize; //当前分配的存储容量
+}SqList;
+void InitList(SqList& L,int n) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)exit(0);
+	L.length = 0;
+	L.listsize = SIZE;
+	for (int i = 0; i < n; i++) {
+		cin >> *L.elem;
+		L.length++;
+		L.elem++;
+	}
+}
+void Delete(SqList& L) {
+	int* p, * q, t;
+	p = L.elem - L.length;	//p为表的开头
+	for (t = 1; t < L.length; t++) {
+		if (*p == *(p + 1)) {
+			for (q = p; q < L.elem; q++) {
+				*q = *(q + 1);
+			}
+			L.length--;          //每删除一个数字就要退一位
+			L.elem--;
+			t--;
+			*p=*(p--);
+		}
+		*p = *(++p);//向后遍历
+	}
+}
+void Printf(SqList&L,int n) {
+	L.elem = L.elem - L.length;//指针的头必须回到0位置否则没办法正确打印
+	int i = 0,t=L.length;
+	cout << "表的元素如下：" << "\t";
+	for (t; t >= 1; t--) {
+		cout << *(L.elem) << "\t";
+		L.elem++;
+	}
+	printf("\n");	
+}
+int main() {
+	//8 2 5 5 8 11 20 20 20
+	//10 2 2 2 2 5 5 5 5 9 9
+	int n; 	cin >> n;	SqList L;
+	InitList(L, n);
+	Delete(L);
+	Printf(L, n);
+	return 0;
+}
+
+
+//4
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+#define SIZE 10 //初始分配量
+#define LISTINCREMENT 3 //分配增量
+int n3 = 0;
+typedef struct {
+	int * elem; //存储空间基址 
+	int length; //当前长度 
+	int listsize; //当前分配的存储容量
+}SqList;
+void InitList(SqList& L,int n) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)	exit(0);
+	L.length = 0;
+	L.listsize = SIZE;
+	if (n != 0) {
+		for (int i = 0; i < n; i++) {
+			cin >> *L.elem;
+			L.length++;
+			L.elem++;
+		}
+	}
+}
+void connect(SqList L1, SqList L2, SqList& L3) {
+	int* p, * q;
+	p = L1.elem - L1.length; 
+	for (int i = 1; i <= L1.length; i++) {
+		q = L2.elem - L2.length;
+		for (int j = 1; j <= L2.length; j++) {
+			if (*p == *q) {
+				*L3.elem = *p;
+				L3.length++;
+				L3.elem++;
+				n3++;
+			}
+			q++;
+		}
+		p++;
+	}
+	
+}
+void Printf(SqList& L, int n) {
+	if (n) {
+		L.elem = L.elem - L.length;//指针的头必须回到0位置否则没办法正确打印
+		int i = 0, t = L.length;
+		cout << "表的元素如下：" << "\t";
+		for (t; t >= 1; t--) {
+			cout << *(L.elem) << "\t";
+			L.elem++;
+		}
+		printf("\n");
+	}
+	else cout << "没有共同元素";
+}
+int main() {
+	//5 2 5 8 11 20  6 3 8 9 11 15 20
+	//8 11 20
+	int n1, n2; SqList L1; SqList L2; SqList L3;
+	cin >> n1;	InitList(L1, n1);	cin >> n2;	InitList(L2, n2);	InitList(L3, 0);
+	connect(L1, L2, L3);
+	Printf(L1, n1); Printf(L2, n2);	Printf(L3, n3);
+	return 0;
+}
+
+
+//5
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+#define SIZE 10 //初始分配量
+#define LISTINCREMENT 3 //分配增量
+typedef struct {
+	int * elem; //存储空间基址 
+	int length; //当前长度 
+	int listsize; //当前分配的存储容量
+}SqList;
+void InitList(SqList& L,int n) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)	exit(0);
+	L.length = 0;
+	L.listsize = SIZE;
+	if (n != 0) {
+		for (int i = 0; i < n; i++) {
+			cin >> *L.elem;
+			L.length++;
+			L.elem++;
+		}
+	}
+}
+void compare(SqList L1, SqList L2) {
+	int* p, * q, n1 = L1.length, n2 = L2.length, n = 0, i;
+	p = L1.elem - L1.length; q = L2.elem - L2.length;
+	n = n1 < n2 ? n1 : n2;				//取两个表中较小的长度进行遍历
+	if (n1 == 0 && n2 != 0)cout << "A<B";
+	else if (n1 == 0 && n2 == 0)cout << "A==B";
+	else if (n1 != 0 && n2 == 0)cout << "A>B";
+	else {
+		for (i = 1; i <= n; i++) {
+			if (*p > *q) {
+				cout << "A>B";
+				break;
+			}
+			else if (*p < *q) {
+				cout << "A<B";
+				break;
+			}
+			p++; q++;
+		}
+		if (i > n && n1 != n2)cout << (L1.length > L2.length ? "A>B" : "A<B");
+		if (i > n && n1 == n2)cout << "A=B";
+	}	
+}
+void Printf(SqList& L, int n) {
+	if (n) {
+		L.elem = L.elem - L.length;//指针的头必须回到0位置否则没办法正确打印
+		int i = 0, t = L.length;
+		cout << "表的元素如下：" << "\t";
+		for (t; t >= 1; t--) {
+			cout << *(L.elem) << "\t";
+			L.elem++;
+		}
+		printf("\n");
+	}
+	else cout << "没有共同元素";
+}
+int main() {
+	//5 2 5 8 11 20  4 2 9 11 15
+	//5 2 5 8 11 20  4 2 5 8 11
+	//5 2 5 8 11 20  5 2 5 8 11 20
+	int n1, n2; SqList L1; SqList L2; 
+	cin >> n1;	InitList(L1, n1);	cin >> n2;	InitList(L2, n2);	
+	Printf(L1, n1); Printf(L2, n2);
+	compare(L1, L2);
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

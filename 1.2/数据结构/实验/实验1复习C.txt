@@ -1,0 +1,355 @@
+必做题
+//1
+/*
+#include<stdio.h>
+int main() {
+	struct Student{
+		long int num; char name[20]; char sex; char addr[20];
+	}a = { 10101,"LiLin",'M',"123 Beijing Road" };
+	printf("NO.:%ld\nname:%s \nsex:%c\naddress:%s\n", a.num, a.name, a.sex, a.addr);
+	return 0;
+}
+*/
+//2
+/*
+#include<stdio.h>
+struct Student {
+	int num; float score; struct Student* next;
+};
+int main(){
+	struct Student a, b, c, * head, * p;
+	a.num = 10101; a.score = 89.5; a.next = &b;
+	b.num = 10103; b.score = 90; b.next = &c;
+	c.num = 10107; c.score = 85; c.next = NULL;
+	head = &a; p = head;
+	do {
+		printf("%ld%5.1f\n", p->num, p->score);
+		p = p->next;
+	} while (p != NULL);
+	return 0;
+}
+*/
+//3
+/*
+#include<stdio.h>
+void swap(int* x, int* y) {
+	int t; t = *x; *x = *y; *y = t;
+}
+int main() {
+	int a = 5, b = 6;
+	printf("a=%d b=%d\n", a, b);
+	swap(&a, &b);
+	printf("a=%d b=%d", a, b);
+	return 0;
+}
+*/
+//4
+/*
+#include<stdio.h>
+void swap(int &x, int &y) {
+	int t; t = x; x = y; y = t;
+}
+int main() {
+	int a = 5, b = 6;
+	printf("a=%d b=%d\n", a, b);
+	swap(a, b);
+	printf("a=%d b=%d", a, b);
+	return 0;
+}
+*/
+//5
+/*
+#include<stdio.h>
+#include<stdlib.h>	
+#define n 10
+void find(int* p) {
+	int k = 0, i = 0 , max = 0;
+	//当成数组
+	for (int i = 0; i < n; i++) {
+		if (max < p[i]) {
+			max = p[i];
+			k = i;
+		}
+	}
+	//纯指针
+	while (i < n){
+		if (max < *p) {
+			max = *p;
+			k = i; 
+		}
+		p = p + 1;
+		i++;
+	}
+	printf("%d", k + 1);
+}
+int main() {
+	int a[n] = { 0 };
+	for (int i = 0; i < n; i++) {
+		a[i] = rand();		printf("%d\t", a[i]);
+	}printf("\n");
+	find(a);
+	return 0;
+}
+*/
+//6
+/*
+#include<stdio.h>
+#include<stdlib.h>	
+#define n 10
+void count(double* p) {
+	double sum = 0, ave; int cnt = 0;
+	for (int i = 0; i < n; i++) {
+		sum += *p; p = p + 1;
+		//或者sum+=p[i];
+	}
+	ave = sum / n;
+	for (int i = 0; i < n; i++) {
+		p = p - 1;				//此处需要归0，要不后面没法做。如果是用的p[i]就不用归0
+	}
+	printf("%.0f %.0f",sum, ave);
+	for (int i = 0; i < n; i++) {
+		if (*p > ave) { cnt++; }
+		p = p + 1;
+		//或者
+		//if(p[i]<ave)cnt++;
+	}
+	printf("\n%d", cnt);
+}
+int main(){
+	double a[n];
+	for (int i = 0; i < n; i++) {
+		a[i] = rand();
+		printf("%.0f\t", a[i]);
+	}printf("\n");
+	count(a);
+	return 0;
+}
+*/
+//7
+/*
+2020001 李文 90 98 90
+2020002 于刚 85 93 88
+2020003 王伟 60 80 70
+2020004 丁杰 96 98 85
+2020005 沈帆 76 85 90
+输出85.6
+2020004 丁杰 96 98 85
+#include<iostream>		
+#include<cstdio>	
+using namespace std;	
+struct Student {
+	int num; char name[10]; double s1; double s2; double s3; double sum = 0; double ave;
+}a[5];
+int main(){
+	double average = 0, max = 0; int j = 0;
+	for (int i = 0; i < 5; i++) {
+		cin >> a[i].num >> a[i].name >> a[i].s1 >> a[i].s2 >> a[i].s3;
+		a[i].sum = a[i].s1 + a[i].s2 + a[i].s3; 
+		a[i].ave = a[i].sum / 3.0; 
+		average += a[i].ave;
+		if (max < a[i].ave) {
+			max = a[i].ave;
+			j = i;
+		}
+
+		//此处可替换为
+		//if(a[j].ave<a[i].ave){
+		//	j = i;
+		//}亦可比较出最大值
+
+	}cout << "三门课的平均成绩是：" << average / 5.0 << endl;
+	cout << "最高分学生的数据是：" << a[j].num << "\t" << a[j].name << "\t" << a[j].s1 << "\t" << a[j].s2 << "\t" << a[j].s3;
+	return 0;
+}
+*/
+//选做题
+//8  猴子选大王(约瑟夫环)
+#include<iostream>
+using namespace std;
+//用数组实现约瑟夫环问题
+int a[110] = { 0 };   //元素值为0表示未出局 
+//i既代表数组的下标，也代表每个人的编号
+//k是用来计数的，一旦k的值达到m，代表此人需要出局，并且k需要重新计数，这样才能够找出所有需要出局的人
+//数组的0代表未出局的人，数组非0代表出局的人，未出局的人需要报数，出局的人不需要报数 
+int main()
+{
+	int N, M;
+	int cnt = 0, i = 0, k = 0;  //cnt表示目前出局的人数 
+	cin >> N >> M;  //表示总共有n人，数到数字m时出局 
+	while (cnt != N) //因为要求N个人的出局顺序，因此当cnt（用来统计已经出局的人）未达到n时，需要循环不断报数 
+	{
+		i++;   //i是每个人的编号 
+		if (i > N) i = 1;  //这里需要特别注意：i的值是不断累加的，一旦发现i的值>N，那么i需要重新从第1个人开始
+		//数组要从第一个元素重新开始一个一个往后判断 
+		if (a[i] == 0)   //只有元素值为0的人才需要报数，元素值为非0的代表已经出局了，不用报数 
+		{
+			k++;
+			if (k == M)     //代表已经某个人已经报了M这个数，需要出局 
+			{
+				a[i] = 1;  //编号为i的这个人出局 
+				cnt++;   //出局的人数+1 
+				cout << i << " ";  //输出出局的人的编号 
+				k = 0;   //清空k，让下一个人重新从1开始报数   
+			}
+		}
+	}
+	return 0;
+}
+//编写函数 struct student* creat(void)，建立一个有 n 名学生数据的头指针为 head 的单向动态
+//链表。链表的结点类型为 struct student，如下所示：
+//struct student //链表结点
+//{
+//	long num; //学号
+//	int score; //分数
+//	struct student* next; //结点指针域
+//};
+//(2)．编写函数 struct student* insert(struct student* head)，从头指针为 head 的学生链表的表尾插入一
+//个新的学生数据结点。
+//(3)．编写函数 struct student* del(struct student* head, long key), 从头指针为 head 的学生链表中删除
+//学号为 key 的那个结点。
+//(4).编写函数 int sum(struct student* head)，返回头指针为 head 的学生链表中所有结点分数的和值。
+//(5).编写函数 void find(struct student* head)， 输出头指针为 head 的学生链表中分数最高的学生的
+//学号和分数。
+//(6).编写函数 void print(struct student* head)， 输出头指针为 head 的学生链表中所有结点的内容
+//#include<stdio.h>
+//#include<stdlib.h>
+//#define n 6
+//struct Student {
+//	long num; //学号
+//	int score; //分数
+//	struct Student* next; //结点指针域
+//}a[n];
+//int main() {
+//	Student* head, * p;
+//	for (int i = 0; i < n; i++) {
+//		a[i].score = rand() % 100+10;
+//		a[i].num = rand() % 100000000;
+//		printf("%d:%d\n", a[i].num, a[i].score);
+//		if (i < n - 1)a[i].next = &a[i + 1];
+//		else a[i].next = NULL;
+//	}
+//	head = &a[0]; p = head;
+//	printf("----------\n");
+//	while (p != NULL) {
+//		printf("%d:%d\n", p->num, p->score);
+//		p = p->next;
+//	}
+//	return 0;
+//}
+//链表创建、头插、尾插、删除、翻转、删除相同元素、遍历、判断链表是否为空
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct Node {
+    int data;
+    struct Node* next;
+}Node;
+int main() {
+    //主函数中不能指定一个头指针，应该定义一个头指针指向头结点
+    Node* head = (Node*)malloc(sizeof(Node));//分配内存
+    head->next = NULL;
+    createLink(head, 10);//创建链表
+    travelLink(head);//遍历链表
+    insertForward(head, 100);//头插法
+    insertBack(head, 200);//尾插法
+    travelLink(head);//遍历链表
+    deleteSame(head);//删除相同元素
+    travelLink(head);//遍历链表
+    reverseLink(head);//翻转链表元素
+    travelLink(head);//遍历链表
+    deleteLink(head);//删除链表
+    isEmpty(head);//判断链表是否为空
+    return 0;
+}
+//创建链表
+void createLink(Node* head, int size) {
+    Node* rear = head;
+    int i;
+    for (i = 0; i < size; ++i) {
+        Node* newnode = (Node*)malloc(sizeof(Node));
+        newnode->next = NULL;
+        scanf("%d", &newnode->data);
+        rear->next = newnode;
+        rear = newnode;
+    }
+}
+//遍历链表
+void travelLink(Node* head) {
+    Node* p = head->next;
+    while (p != NULL) {
+        printf("%d\t", p->data);
+        p = p->next;
+    }
+    putchar('\n');
+}
+//头插法
+void insertForward(Node* head, int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    newnode->next = NULL;
+    newnode->data = data;
+    newnode->next = head->next;
+    head->next = newnode;
+}
+//尾插法
+void insertBack(Node* head, int data) {
+    Node* newnode = (Node*)malloc(sizeof(Node));
+    newnode->next = NULL;
+    newnode->data = data;
+    Node* p = head;
+    while (p->next != NULL) {
+        p = p->next;
+    }
+    p->next = newnode;
+    p = newnode;
+}
+//删除相同元素
+void deleteSame(Node* head) {
+    Node* curr = head->next;
+    while (curr != NULL) {
+        Node* pre = curr;
+        Node* p = curr->next;
+        while (p != NULL) {
+            //若有相同的元素，则删除；否则两个指针继续向下走
+            if (curr->data == p->data) {
+                pre->next = p->next;
+                free(p);
+                p = pre->next;
+            }
+            else {
+                pre = pre->next;
+                p = p->next;
+            }
+        }
+        curr = curr->next;
+    }
+}
+//翻转链表
+void reverseLink(Node* head) {
+    Node* curr;
+    Node* pre = NULL;
+    while (head->next != NULL) {
+        curr = head->next;
+        head->next = curr->next;
+        curr->next = pre;
+        pre = curr;
+    }
+    head->next = pre;
+}
+//删除链表
+void deleteLink(Node* head) {
+    Node* curr;
+    while (head->next != NULL) {
+        curr = head->next;
+        head->next = curr->next;
+        free(curr);
+    }
+}
+//判断链表是否为空
+void isEmpty(Node* head) {
+    if (head->next == NULL) {
+        printf("链表为空！\n");
+    }
+    else {
+        printf("链表不为空！\n");
+    }
+}
+

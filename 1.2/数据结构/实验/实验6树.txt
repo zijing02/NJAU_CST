@@ -1,0 +1,269 @@
+//1
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+char ch;
+typedef struct BiTNode {
+	int data;
+	struct BiTNode* lc, * rc;
+}BiTNode,*BiTree;
+void Create(BiTree &T) {
+	cin >> ch;
+	if (ch == '*')T = NULL;
+	else {
+		T = (BiTNode*)malloc(sizeof(BiTNode));
+		T->data = ch;
+		Create(T->lc);
+		Create(T->rc);
+	}
+}
+void PreOrder(BiTree T) {
+	if (T) {
+		printf("%c", T->data);
+		PreOrder(T->lc);
+		PreOrder(T->rc);
+	}
+}
+void InOrder(BiTree T) {
+	if (T) {
+		InOrder(T->lc);
+		printf("%c", T->data);
+		InOrder(T->rc);
+	}
+}
+void PostOrder(BiTree T) {
+	if (T) {
+		PostOrder(T->lc);
+		PostOrder(T->rc);
+		printf("%c", T->data);
+	}
+}
+int Leaf1(BiTree T) {
+	static int n = 0;
+	if (T) {
+		if (T->lc == NULL && T->rc == NULL) n= n + 1;
+		Leaf1(T->lc);
+		Leaf1(T->rc);
+	}
+	return n;
+}
+int Leaf2(BiTree T) {
+	if (T == NULL) return 0;
+	if (T->lc == NULL && T->rc == NULL) return 1;
+	return Leaf2(T->lc) + Leaf2(T->rc);		//此处若再+1则是全部结点
+}
+int Depth(BiTree T) {
+	int dl, dr, dep;
+	if (T == NULL) dep = 0;
+	else {
+		dl = Depth(T->lc);
+		dr = Depth(T->rc);
+		dep = 1 + (dl > dr ? dl : dr);
+	}
+	return dep;
+}
+void Swift(BiTree &T) {
+	if (T){
+		BiTNode *t = T->lc;
+		T->lc = T->rc;
+		T->rc = t;
+		Swift(T->lc);
+		Swift(T->rc);
+	}
+}
+int main() {
+	//abd*f***ce***
+	//abdfce dfbaec fdbeca
+	//2 4
+	//acebdf ceabfd ecfdba
+	BiTree T;
+	Create(T);
+	PreOrder(T); cout << " ";
+	InOrder(T); cout << " ";
+	PostOrder(T); cout << endl;
+	cout << Leaf1(T); cout << " ";
+	cout << Leaf2(T); cout << " ";
+	cout << Depth(T); cout << endl;
+	Swift(T);
+	PreOrder(T); cout << " ";
+	InOrder(T); cout << " ";
+	PostOrder(T); cout << endl;
+	return 0;
+}
+//2
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+char ch;
+typedef struct BiTNode {
+	int data;
+	struct BiTNode* lc, * rc;
+}BiTNode, * BiTree;
+typedef struct QNode {
+	BiTree data;
+	struct QNode* next;
+}QNode, * QueuePtr;
+typedef struct {
+	QueuePtr front;
+	QueuePtr rear;
+}LinkQueue;
+void Create(BiTree& T) {
+	cin >> ch;
+	if (ch == '*')T = NULL;
+	else {
+		T = (BiTNode*)malloc(sizeof(BiTNode));
+		T->data = ch;
+		Create(T->lc);
+		Create(T->rc);
+	}
+}
+int Init(LinkQueue& Q) {
+	Q.front = Q.rear = (QueuePtr)malloc(sizeof(QNode));
+	Q.front->next = NULL;
+	return 1;
+}
+void En(LinkQueue& Q, BiTree e) {
+	QueuePtr p = (QueuePtr)malloc(sizeof(QNode));
+	p->data = e;
+	p->next = NULL;
+	Q.rear->next = p;
+	Q.rear = p;
+}
+int De(LinkQueue& Q, BiTree &e) {	
+	if (Q.front == Q.rear)return 0;
+	QueuePtr p = Q.front->next;		
+	e = p->data;
+	Q.front->next = p->next;	
+	if (Q.rear == p)Q.rear = Q.front;		
+	free(p);
+	return 1;
+}
+int JudgeEmpty(LinkQueue Q) {
+	if (Q.front == Q.rear) 
+		return 0;
+	return 1;
+}
+void LevelOrderTraverse(BiTree T){
+	LinkQueue Q; BiTree t = 0;
+	if (T){
+		Init(Q);
+		En(Q, T);
+		while (JudgeEmpty(Q)){
+			De(Q, t); 
+			printf("%c",t->data);
+			if (t->lc != NULL) 
+				En(Q, t->lc);
+			if (t->rc != NULL)
+				En(Q, t->rc); 
+		}
+	}
+}
+int main() {
+	//abd*f***ce***
+	//abcdef
+	BiTree T;
+	Create(T);
+	LevelOrderTraverse(T);
+	return 0;
+}
+//3
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+#include<string.h>
+#include<limits.h> 
+using namespace std;
+#define Order
+typedef struct {
+	int weight;
+	int parent, lc, rc;
+}HTNode,*HuffmanTree;
+typedef char** HuffmanCode;
+int min(HuffmanTree t, int i){
+	int j, m, k = INT_MAX; 
+	for (j = 1; j <= i; j++) 
+		if (t[j].weight < k && t[j].parent == 0)
+			k = t[j].weight,	
+			m = j; 
+	t[m].parent = 1;
+	return m;
+}
+void Select(HuffmanTree t, int i, int& s1, int& s2){
+	s1 = min(t, i); 
+	s2 = min(t, i); 
+	#ifdef Order 
+	if (s1 > s2) {
+		s1 = s1 + s2;
+		s2 = s1 - s2; 
+		s1 = s1 - s2; 
+	}
+	#endif
+}
+void HuffmanTreeCoding(HuffmanTree &HT,HuffmanCode &HC,int *w,int n){
+	HuffmanTree p; char *cd;
+	int m, i, s1, s2, c, start, f;
+	if (n <= 1)return;
+	m = 2 * n - 1;
+	HT = (HuffmanTree)malloc((m + 1) * sizeof(HTNode));
+	for (p = HT + 1, i = 1; i <= n; ++i, ++p, ++w) {
+		p->weight = *w; p->parent = 0; p->lc = 0; p->rc = 0;
+	}
+	for (; i <= m; ++i, ++p) {
+		p->weight = 0; p->parent = 0; p->lc = 0; p->rc = 0;
+	}
+	for (i = n + 1; i <= m; ++i) {
+		Select(HT, i - 1, s1, s2);
+		HT[s1].parent = i; HT[s2].parent = i;
+		HT[i].lc = s1; HT[i].rc = s2;
+		HT[i].weight = HT[s1].weight + HT[s2].weight;
+	}
+	HC = (HuffmanCode)malloc((n + 1) * sizeof(char*));
+	cd = (char*)malloc(n * sizeof(char));
+	cd[n - 1] = '\0';
+	for (i = 1; i <= n; ++i) {
+		start = n - 1;
+		for (c = i, f = HT[i].parent; f != 0; c = f, f = HT[f].parent) 
+			if (HT[f].lc == c)
+				cd[--start] = '0';
+			else 
+				cd[--start] = '1';
+		HC[i] = (char*)malloc((n - start) * sizeof(char));
+		strcpy(HC[i], &cd[start]);
+	}
+	free(cd);
+}
+int main() {
+	/*	8    	5 29 7 8 14 23 3 11*/
+	HuffmanTree HT;
+	HuffmanCode HC;
+	int* w, n, i;
+	cin >> n;
+	w = (int*)malloc(n * sizeof(int)); 
+	for (i = 0; i <= n - 1; i++)
+		scanf("%d", w + i);
+	HuffmanTreeCoding(HT, HC, w, n);
+	for (i = 1; i <= n; i++)
+		puts(HC[i]); 
+	return 0;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

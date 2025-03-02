@@ -1,0 +1,393 @@
+//1邻接矩阵
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+#include<limits.h> 
+#define MaxInt INT_MAX
+using namespace std;
+#define MaxN 20
+typedef struct {
+	char vexs[MaxN];
+	int arcs[MaxN][MaxN];
+	int vexnum, arcnum;
+}MGraph;
+int LocateVex(MGraph& G, char v) {
+	for (int i = 0; i < G.vexnum; i++)
+		if (G.vexs[i] == v)
+			return i;
+	return -1;
+}
+void CreatUDN(MGraph& G) {
+	char v1, v2;
+	int w, i, j, k;
+	cin >> G.vexnum >> G.arcnum;
+	for (i = 0; i < G.vexnum; ++i)
+		cin >> G.vexs[i];
+	for (i = 0; i < G.vexnum; ++i)
+		for (j = 0; j < G.vexnum; ++j)
+			G.arcs[i][j] = MaxInt;
+	for (k = 0; k < G.arcnum; ++k) {
+		cin >> v1 >> v2 >> w;
+		i = LocateVex(G, v1);
+		j = LocateVex(G, v2);
+		if (i != -1 && j != -1) 
+			G.arcs[i][j] = w,
+			G.arcs[j][i] = G.arcs[i][j];
+		else {
+			cout << "ERROR";
+			break;
+		}
+	}
+}
+void Print(MGraph G) {
+	for (int i = 0; i < G.vexnum; i++) {
+		for (int j = 0; j < G.vexnum; j++) {
+			if (G.arcs[i][j] != MaxInt)
+				cout << G.arcs[i][j] << " ";
+			else
+				cout << "∞" << " ";
+		}
+		cout << endl;
+	}
+}
+int main() {
+	/*
+	5 5
+abcde
+a b 4
+a d 5
+b c 6
+b e 8
+c e 7
+	*/
+	MGraph G;
+	CreatUDN(G);
+	Print(G);
+	return 0;
+}
+
+//2邻接表
+include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+#include<limits.h> 
+#define MaxInt INT_MAX
+using namespace std;
+#define MaxN 20
+typedef struct ArcNode { 
+	int adjvex;
+	struct ArcNode* nextarc; 
+	int info; 
+} ArcNode;
+typedef struct VNode { 
+	char data;
+	ArcNode* firstarc; 
+} VNode, AdjList[MaxN];
+typedef struct {
+	AdjList vertices;
+	int vexnum, arcnum; 
+} ALGraph;
+int LocateVex(ALGraph& G, char v) {
+	for (int i = 0; i < G.vexnum; i++)
+		if (G.vertices[i].data == v)
+			return i;
+	return -1;
+}
+void CreatGraph(ALGraph& G)
+{
+	int i, j, k, w; char v1, v2; ArcNode* p1, * p2;
+	cin >> G.vexnum >> G.arcnum; 
+	for (i = 0; i < G.vexnum; i++) 	{
+		cin >>  G.vertices[i].data;
+		G.vertices[i].firstarc = NULL;
+	}
+	for (k = 0; k < G.arcnum; k++) 	{
+		cin >> v1 >> v2 >> w;
+		i = LocateVex(G, v1);
+		j = LocateVex(G, v2); 
+		p1 = (ArcNode*)malloc(sizeof(ArcNode));
+		p1->adjvex = j; p1->info = w;
+		p1->nextarc = G.vertices[i].firstarc;
+		G.vertices[i].firstarc = p1; 
+		p2 = (ArcNode*)malloc(sizeof(ArcNode));
+		p2->adjvex = i; p2->info = w;
+		p2->nextarc = G.vertices[j].firstarc;
+		G.vertices[j].firstarc = p2; 
+	}
+}
+void Print(ALGraph G) {
+	for (int i = 0; i < G.vexnum; i++) {
+		cout << G.vertices[i].data<<"\t";
+		while (G.vertices[i].firstarc != NULL) {
+			cout << G.vertices[i].firstarc->adjvex << " " << G.vertices[i].firstarc->info << "\t";
+			G.vertices[i].firstarc = G.vertices[i].firstarc->nextarc;
+		}
+		cout << endl;
+	}
+}
+int main() {
+	/*
+	5 5
+abcde
+a b 4
+a d 5
+b c 6
+b e 8
+c e 7
+	*/
+	ALGraph G;
+	CreatGraph(G);
+	Print(G);
+	return 0;
+}
+
+//3DFS
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+#include<limits.h> 
+#define MaxInt INT_MAX
+using namespace std;
+#define MaxN 20
+typedef struct {
+	char vexs[MaxN];
+	int arcs[MaxN][MaxN];
+	int vexnum, arcnum;
+}MGraph;
+int LocateVex(MGraph& G, char v) {
+	for (int i = 0; i < G.vexnum; i++)
+		if (G.vexs[i] == v)
+			return i;
+	return -1;
+}
+char FirstAdjvex(MGraph G, char t) {
+	int v = LocateVex(G, t);
+	for (int i = 0; i < G.vexnum; i++)
+		if (G.arcs[v][i] != MaxInt)
+			return G.vexs[i];
+	return -1;
+}
+char NextAdjvex(MGraph G,int t,int s) {
+	int v = LocateVex(G, t);	int w = LocateVex(G, s);
+	if (G.arcs[v][w] != MaxInt) {
+		for (int i = w + 1; i < G.vexnum; i++) 
+			if (G.arcs[v][i] != MaxInt)
+				return G.vexs[i];
+		return -1;
+	}
+	return -1;
+}
+void DFS(MGraph G,char v,int visit[]) {
+	cout << v << " ";
+	visit[LocateVex(G, v)] = 0;
+	for (char w = FirstAdjvex(G, v); w >= 0; w = NextAdjvex(G, v, w))
+		if (visit[LocateVex(G, w)]) 
+			DFS(G, w, visit);
+}
+void CreatUDN(MGraph& G,int visit[]) {
+	char v1, v2;
+	int w, i, j, k;
+	cin >> G.vexnum >> G.arcnum;
+	for (i = 0; i < G.vexnum; ++i) {
+		cin >> G.vexs[i];
+		visit[i] = 1;
+	}
+	for (i = 0; i < G.vexnum; ++i)
+		for (j = 0; j < G.vexnum; ++j)
+			G.arcs[i][j] = MaxInt;
+	for (k = 0; k < G.arcnum; ++k) {
+		cin >> v1 >> v2 >> w;
+		i = LocateVex(G, v1);
+		j = LocateVex(G, v2);
+		if (i != -1 && j != -1) {
+			G.arcs[i][j] = w;
+			G.arcs[j][i] = G.arcs[i][j];
+		}
+		else {
+			cout << "ERROR";
+			break;
+		}
+	}
+	DFS(G, G.vexs[0], visit);
+}
+int main() {
+	/*
+	5 5
+abcde
+a b 4
+a d 5
+b c 6
+b e 8
+c e 7
+	*/
+	MGraph G;
+	int visit[100];
+	CreatUDN(G,visit);
+	return 0;
+}
+
+
+//4BFS
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+#include<limits.h> 
+#define MaxInt INT_MAX
+using namespace std;
+#define MaxN 20
+typedef struct ArcNode {
+	int adjvex;
+	struct ArcNode* nextarc;
+	int info;
+} ArcNode;
+typedef struct VNode {
+	char data;
+	ArcNode* firstarc;
+} VNode, AdjList[MaxN];
+typedef struct {
+	AdjList vertices;
+	int vexnum, arcnum;
+} ALGraph;
+typedef struct QNode {
+	char data;
+	struct QNode* next;
+}QNode, * QueuePtr;
+typedef struct {
+	QueuePtr front;
+	QueuePtr rear;
+}LinkQueue;
+int Init(LinkQueue& Q) {
+	Q.front = Q.rear = (QueuePtr)malloc(sizeof(QNode));
+	Q.front->next = NULL;
+	return 1;
+}
+void En(LinkQueue& Q, char e) {			
+	QueuePtr p = (QueuePtr)malloc(sizeof(QNode));
+	p->data = e;
+	p->next = NULL;
+	Q.rear->next = p;				
+	Q.rear = p;						
+}
+int De(LinkQueue& Q, char& e) {		
+	if (Q.front == Q.rear)return 0;
+	QueuePtr p = Q.front->next;	
+	e = p->data;
+	Q.front->next = p->next;		
+	if (Q.rear == p)Q.rear = Q.front;	
+	free(p);
+	return 1;
+}
+int JudgeEmpty(LinkQueue Q) {
+	if (Q.front == Q.rear) 
+		return 0;
+	return 1;
+}
+int LocateVex(ALGraph& G, char v) {
+	for (int i = 0; i < G.vexnum; i++)
+		if (G.vertices[i].data == v)
+			return i;
+	return -1;
+}
+char FirstAdjVex(ALGraph G, char t) {
+	int v = LocateVex(G, t);
+	ArcNode* p = G.vertices[v].firstarc;
+	if (p)
+		return G.vertices[p->adjvex].data;
+	return -1;
+}
+char NextAdjVex(ALGraph G, char v, char w) {
+	int t = LocateVex(G, v);	int s = LocateVex(G, w);
+	ArcNode* p = G.vertices[t].firstarc;
+	while (p && p->adjvex != s)
+		p = p->nextarc;
+	if (!p || !p->nextarc) 
+		return -1;
+	else
+		return G.vertices[p->nextarc->adjvex].data;
+}
+void CreatGraph(ALGraph& G){
+	int i, j, k, w; char v1, v2; ArcNode* p1, * p2;
+	cin >> G.vexnum >> G.arcnum;
+	for (i = 0; i < G.vexnum; i++) {
+		cin >> G.vertices[i].data;
+		G.vertices[i].firstarc = NULL;
+	}
+	for (k = 0; k < G.arcnum; k++) {
+		cin >> v1 >> v2 >> w;
+		i = LocateVex(G, v1);
+		j = LocateVex(G, v2);
+		p1 = (ArcNode*)malloc(sizeof(ArcNode));
+		p1->adjvex = j; p1->info = w;
+		p1->nextarc = G.vertices[i].firstarc;
+		G.vertices[i].firstarc = p1;
+		p2 = (ArcNode*)malloc(sizeof(ArcNode));
+		p2->adjvex = i; p2->info = w;
+		p2->nextarc = G.vertices[j].firstarc;
+		G.vertices[j].firstarc = p2;
+	}
+}
+void BFS(ALGraph G, char v,int visited[],LinkQueue &Q) {
+	char u; int h, k;
+	for (int i = 0; i < G.vexnum; ++i)
+		visited[i] = 1;
+	for (int i = 0; i < G.vexnum; ++i) {
+		h = LocateVex(G, v);
+		if (visited[h]) {
+			visited[h] = 0;
+			cout << v << " ";
+			En(Q, v);
+			while (JudgeEmpty(Q)) {
+				De(Q, u);
+				for (char w = FirstAdjVex(G, u); w >= 0; w = NextAdjVex(G, u, w)) {
+					k = LocateVex(G, w);
+					if (visited[k]) {
+						++i;
+						visited[k] = 0;
+						cout << w << " ";
+						En(Q, w);
+					}
+				}
+			}
+		}
+	}
+	cout << endl;
+}
+int main() {
+	/*
+5 5
+abcde
+a b 4
+a d 5
+b c 6
+b e 8
+c e 7
+adbec
+	*/
+	ALGraph G; LinkQueue Q;
+	Init(Q);
+	int visit[100];
+	CreatGraph(G);
+	BFS(G, G.vertices[0].data, visit,Q);
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,507 @@
+//1顺序栈
+#include<iostream>	
+#include<stdlib.h>	
+#include<cstdio>		
+using namespace std;
+#define SIZE 100
+#define INCREMENT 10
+typedef struct {
+	int* base;		
+	int* top;
+	int size;
+}SqStack;
+int n;
+void Init(SqStack &S) {								//初始化
+	S.base = (int*)malloc(SIZE * sizeof(int));
+	if (!S.base) exit(0);
+	S.top = S.base;
+	S.size = SIZE;
+}
+void Push(SqStack &S,int e) {							//入栈
+	int* newbase;
+	if (S.top - S.base >= S.size) {
+		newbase = (int*)realloc(S.base, (S.size + INCREMENT) * sizeof(int));
+		if (!newbase) exit(0);
+		S.base = newbase;
+		S.top = S.base + S.size;
+		S.size += INCREMENT;
+	}
+	*S.top++ = e;				//对于栈，此处是对S.top赋值需要加*
+}
+void Pop(SqStack& S, int& e) {	//出栈：从栈顶删除    此处其实没删除，只是指针前移
+	if (S.top == S.base) cout<<"栈为空";
+	e = *--S.top;
+	n--;
+}
+void GetTop(SqStack& S, int& e) {						
+	if (S.top == S.base) cout << "栈为空" << endl;
+	e = *(S.top - 1);
+}
+void Clear(SqStack& S) {									
+	if (!S.base) cout << "栈不存在";
+	S.top = S.base;
+	cout << "栈已经置空";
+	cout << endl;
+}
+void JudgeEmpty(SqStack& S) {							
+	if (!S.base) cout << "栈不存在"; 
+	if (S.top == S.base) cout << "栈为空";
+	else cout << "栈不为空";
+	cout << endl; 
+}
+void Printf(SqStack& S, int n) {
+	SqStack p; p = S;
+	if (S.top == S.base) cout << "栈为空";
+	else {
+		//for (int i = 0; i < n; i++) 	cout << *p.base++ << " ";				//从栈底开始输出
+		for (int i = 0; i < n; i++)		cout << *--p.top << " ";				//从栈顶开始输出
+	}
+	cout << endl;
+}
+int main()
+{
+	int a=2,b,c; SqStack S;
+	cin >> n;
+	Init(S); 
+	for (int i = 0; i < n; i++) {
+		cin >> a;
+		Push(S, a);//一个一个向栈顶输入
+	}
+	Pop(S, b); 
+	cout << b << endl;
+	GetTop(S, c); 
+	cout << c << endl;
+	Printf(S,n); 
+	Clear(S); 
+	JudgeEmpty(S);
+	Printf(S,n); 
+	return 0;
+}
+//2链栈
+#include<iostream>	
+#include<stdlib.h>	
+#include<cstdio>
+using namespace std;
+typedef struct StackNode{
+	int data;
+	struct StackNode* next;
+}SNode,*LinkStack;
+void Init(LinkStack& S) {			
+	S = NULL;
+}
+void Push(LinkStack& S, int e) {					//入栈
+	LinkStack p = (LinkStack)malloc(sizeof(SNode));		//生成新节点
+	p->data = e;
+	p->next = S;					//将新结点插入栈顶
+	S = p;							//修改栈顶指针为p
+}
+void Pop(LinkStack &S,int &e) {						//出栈
+	LinkStack p;
+	if (S == NULL)cout << "栈为空" << endl;
+	e = S->data;
+	p = S;				//用p临时保存栈顶元素空间，以备释放
+	S = S->next;		//修改栈顶指针
+	free(p);			//释放原栈顶元素的空间
+	n--;
+}
+void GetTop(LinkStack& S, int& e) {
+	if (S == NULL)cout << "栈为空" << endl;
+	e = S->data;
+}
+void Clear(LinkStack&S) {
+	if (S == NULL)cout << "栈已经为空";
+	else S = NULL;
+	cout << "栈已经置空";
+	cout << endl;
+}
+void JudgeEmpty(LinkStack& S) {
+	if (S == NULL)cout << "栈为空";
+	else cout << "栈不为空";
+	cout << endl;
+}
+void Printf(LinkStack S) {
+	LinkStack p = S;
+	while(p!=NULL){
+	cout << p->data << " ";
+	p = p->next;
+	}
+	cout << endl;
+}
+int main()
+{
+	int a, b, c; LinkStack S;
+	cin >> n;
+	Init(S);
+	for (int i = 0; i < n; i++) {
+		cin >> a;
+		Push(S, a);
+	}
+	Pop(S, b); 
+	cout << b << endl;
+	GetTop(S, c);
+	cout << c << endl;
+	Printf(S);
+	Clear(S);
+	JudgeEmpty(S);
+	return 0;
+}
+//3进制转换
+#include<iostream>	
+#include<stdlib.h>	
+#include<cstdio>		
+using namespace std;
+#define SIZE 100
+#define INCREMENT 10
+typedef struct {
+	int* base;
+	int* top;
+	int size;
+}SqStack;
+void Init(SqStack& S) {									
+	S.base = (int*)malloc(SIZE * sizeof(int));
+	if (!S.base) exit(0);
+	S.top = S.base;
+	S.size = SIZE;
+}
+void Push(SqStack& S, int e) {							
+	int* newbase;
+	if (S.top - S.base >= S.size) {
+		newbase = (int*)realloc(S.base, (S.size + INCREMENT) * sizeof(int));
+		if (!newbase) exit(0);
+		S.base = newbase;
+		S.top = S.base + S.size;
+		S.size += INCREMENT;
+	}
+	*S.top++ = e;
+}
+void Printf(SqStack& S, int n) {
+	SqStack p; p = S;
+	if (S.top == S.base) cout << "栈为空";
+	else {
+		for (int i = 0; i < n; i++)		cout << *--p.top;
+	}
+	cout << endl;
+}
+int main()
+{
+	int a, n, cnt = 0 , index; SqStack S;
+	cin >> n;
+	Init(S);
+	while (n) {
+		a = n % 8;
+		n /= 8;
+		Push(S, a);
+		cnt++;
+	}
+	Printf(S, cnt);
+	return 0;
+}
+//4算数
+//第一种(能过)
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<iostream>
+#include<cstdio>
+using namespace std;
+#define N 1000+10
+#define STACK_INIT_SIZE 100
+#define STACKINCREMENT 10
+#define OK 1
+#define OVERFLOW 0
+#define ERROR 0
+char str[N];
+unsigned char prior[7][7] = {				
+			//b	  +   -   *   /   (    )  #	  //a
+				{'>','>','<','<','<','>','>'},//+
+				{'>','>','<','<','<','>','>'},//-
+				{'>','>','>','>','<','>','>'},//*
+				{'>','>','>','>','<','>','>'},///
+				{'<','<','<','<','<','=',' '},//(
+				{'>','>','>','>',' ','>','>'},//)
+				{'<','<','<','<','<',' ','='} };//#
+char OPSET[7] = { '+','-','*','/','(',')','#' };
+typedef struct {
+	int* base;
+	int* top;
+	int stacksize;
+}SqStack;
+int InitStack(SqStack* s){
+	s->base = (int*)malloc(STACK_INIT_SIZE * sizeof(int));
+	if (!s->base) exit(OVERFLOW);
+	s->top = s->base; s->stacksize = STACK_INIT_SIZE;
+	return OK;
+}
+int Push(SqStack* s, int c){
+	int* newbase;
+	if ((s->top - s->base) >= s->stacksize)	{
+		newbase = (int*)realloc(s->base, (s->stacksize + STACKINCREMENT) * sizeof(int));
+		if (!newbase) exit(OVERFLOW);
+		s->base = newbase; s->top = s->base + s->stacksize; s->stacksize += STACKINCREMENT;
+	}
+	*s->top++ = c;
+	return OK;
+}
+int GetTop(SqStack* s){
+	int e;
+	if (s->base == s->top) return ERROR;
+	e = *(s->top - 1);
+	return e;
+}
+int Judge(char c, char str[]){				//判断是否为运算符 
+	int i = 0;
+	while (c != str[i])	i++;
+	if (i < 7)	return OK;				//是运算符
+	return ERROR;						//不是运算符
+}
+int Swift(char* c){					//把字符串转为数字 
+	int data = 0, d = 0, i = 0;
+	while (c[i] != '\0') 	data = data * 10 + c[i++] - '0';
+	return data;
+}
+int precede(int a, char b){		//判断优先级函数 
+	int i = 0, j = 0;
+	while (OPSET[i] != a)i++;
+	while (OPSET[j] != b)j++;
+	return prior[i][j];
+}
+int Pop(SqStack* s){				//脱括号函数 
+	int e;
+	if (s->base == s->top)	return ERROR;
+	e = *--(s->top);
+	return e;
+}
+int Opereta(int a, int b, int c){			//运算函数 
+	switch (b)
+	{
+	case '+': return a + c;
+	case '-': return a - c;
+	case '*': return a * c;
+	case '/': return a / c;
+	}
+}
+int EvaluateExpression(char* MyExpression){
+	SqStack OPTR;//运算符栈，字符元素 
+	SqStack OPND;//运算数栈，实数元素 
+	char TempData[20], * c, Dr[2], e; 	int data, a, b, theta;
+	InitStack(&OPTR); Push(&OPTR, '#'); InitStack(&OPND);
+	c = MyExpression; TempData[0] = '\0';
+	while (*c != '#' || GetTop(&OPTR) != '#') {
+		if (!Judge(*c, OPSET)){		//不是运算符则进条件语句
+			Dr[0] = *c;	Dr[1] = '\0'; strcat_s(TempData, Dr);	c++;
+			if (Judge(*c, OPSET)){			//是运算符时暂停条件语句开始进栈 
+				data = Swift(TempData);	Push(&OPND, data);	TempData[0] = '\0';
+			}
+		}
+		else{
+			switch (precede(GetTop(&OPTR), *c)){
+			case '<':Push(&OPTR, *c); c++; break;
+			case '=':Pop(&OPTR); c++; break;
+			case '>':a = Pop(&OPND); b = Pop(&OPND); theta = Pop(&OPTR); Push(&OPND, Opereta(b, theta, a));	break;
+			}
+		}
+	}
+	return GetTop(&OPND);
+}
+int main(){
+	cin >> str;
+	cout << EvaluateExpression(str);
+	return 0;
+}
+//第二种直接抄的（不知道）
+#include<stdio.h>
+#include<stdlib.h>
+#define OK 1
+#define ERROR 0
+#define Stacksize_S 30
+#define Increase_Stack 20
+typedef int Status;
+typedef int SElemType;
+typedef struct SNode {
+    SElemType* base;
+    SElemType* top;
+    int Stacksize;
+}SNode, * LinkSNode;
+void InitStack(SNode& S){
+    S.base = (SElemType*)malloc(Stacksize_S * sizeof(SElemType));
+    S.top = S.base;
+    S.Stacksize = Stacksize_S;
+}
+void Push(SNode& S, SElemType e){
+    if (S.top - S.base >= S.Stacksize) {
+        SElemType* p;
+        p = (SElemType*)realloc(S.base, (Stacksize_S + Increase_Stack) * sizeof(SElemType));
+        S.base = p;
+        if (!S.base) exit(ERROR);
+    }
+    *S.top++ = e;
+}
+bool Pop(SNode& S, SElemType& e){
+    if (S.base == S.top) return false;
+    else
+        e = *--S.top;
+    return true;
+}
+int GetStack(SNode& S, SElemType& e){
+    if (S.base == S.top) return ERROR;
+    e = *(S.top - 1);
+}
+
+char StackCompare(SElemType e, SElemType c){//运算符优先级比较
+    char compare;
+    switch (e) {
+    case ')':
+        if (c == '('){
+            printf("输入语法错误！");
+            exit(ERROR);
+        }
+        else{
+            compare = '>';
+        }
+        break;
+    case '/':
+    case '*':
+        if (c == '('){
+            compare = '<';
+        }
+        else{
+            compare = '>';
+        }
+        break;
+    case '+':
+    case '-':
+        if (c == '(' || c == '/' || c == '*'){
+            compare = '<';
+        }
+        else{
+            compare = '>';
+        }
+        break;
+    case '(':
+        if (c == ')'){
+            compare = '=';
+        }
+        else if (c == '#'){
+            printf("输入语法错误！");
+            exit(ERROR);
+        }
+        else{
+            compare = '<';
+        }
+        break;
+    case '#':
+        if (c == '#'){
+            compare = '=';
+        }
+        else if (c == ')'){
+            printf("输入语法错误！");
+            exit(ERROR);
+        }
+        else{
+            compare = '<';
+        }
+        break;
+    }
+    return compare;
+}
+
+bool In(char c)//判断c是否为运算符
+{
+    switch (c){
+    case'+':
+    case'-':
+    case'*':
+    case'/':
+    case'(':
+    case')':
+    case'#':
+        return true;
+        break;
+    }
+    return false;
+}
+int  J_S(SElemType e, SElemType k1, SElemType k2)//计算k1?k2的值
+{
+    SElemType k;
+    switch (e){
+    case '+':k = k2 + k1; break;
+    case '-':k = k2 - k1; break;
+    case '*':k = k2 * k1; break;
+    case '/':k = k2 / k1; break;
+    default:exit(ERROR);
+    }
+    return k;
+}
+int Opreation(SNode& S1, SNode& S2)//S1为运算符栈，S2为操作数栈
+{
+    char c;   SElemType* kk;   SElemType e, k1, k2, k;   int num = 0, flag = 0;
+    Push(S1, '#');  c = getchar();
+    while (c != '#' || GetStack(S1, e) != '#') {
+        if (!In(c)){
+            num = c - '0';
+            Push(S2, num);
+            c = getchar();
+            if ('0' <= c && c <= '9'){
+                Pop(S2, e);
+                num = num * 10 + (c - '0');
+                Push(S2, num);
+                num = 0;
+                c = getchar();
+            }
+
+        }
+
+        else
+            switch (StackCompare(GetStack(S1, e), c)){//比较优先级
+            case'<'://新输入的算符优先级高，c进栈
+                Push(S1, c); c = getchar(); break;
+            case'='://脱去括号，接受下一个字符
+                Pop(S1, e); c = getchar(); break;
+            case'>'://新输入的算法优先级低，栈顶元素优先权高
+                Pop(S1, e);
+                Pop(S2, k2); Pop(S2, k1);
+                Push(S2, J_S(e, k2, k1));
+                //c=getchar();
+                break;
+            }
+    }
+
+    return (GetStack(S2, e));
+}
+int main()
+{
+    SNode S1, S2;
+    InitStack(S1);//创建栈，S1为运算符栈，S2为操作数栈
+    InitStack(S2);
+    printf("%d \n", Opreation(S1, S2));
+    return OK;
+
+}
+//5
+#include<stdlib.h>
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int cnt = 1;
+void move(char a, int n, char b) {
+	cout << cnt++ << ":" << n << " " << a << " " << b << endl;
+}
+void hanoi(int n, char x, char y, char z){
+	if (n == 1)
+		move(x, 1, z);					//将编号为1的圆盘从x移动z
+	else {
+		hanoi(n - 1, x, z, y);			//将x上编号为1至n-1的圆盘移到y, z作辅助塔
+		move(x, n, z);					//将编号为 n的圆盘从x移到z
+		hanoi(n - 1, y, x, z);			//将y上编号为1至n-1的圆盘移到z，x作辅助塔
+	}
+}
+int main() {
+	int n; cin >> n;
+	char x = 'A', y = 'B', z = 'C';
+	hanoi(n, x, y, z);
+
+	return 0;
+}
+
+
+

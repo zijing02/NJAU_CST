@@ -1,0 +1,311 @@
+//1比较
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+#define SIZE 10
+#define INCREMENT 10
+typedef struct {
+	int *elem;
+	int length;
+	int size;
+}Sqlist;
+void Init(Sqlist &L) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)	exit(0);
+	L.length = 0;	L.size = SIZE;
+}
+void Create(Sqlist& L, int n) {
+	for (int i = 0; i < n; i++) {
+		cin >> *L.elem++;
+		L.length++;
+	}
+}
+void Compare(Sqlist L1,Sqlist L2) {
+	int* p = L1.elem - L1.length, * q = L2.elem - L2.length;
+	int n1 = L1.length, n2 = L2.length, n, i;
+	n = n1 < n2 ? n1 : n2;
+	if (n1 == 0 && n2 != 0)cout << "A<B";
+	else if (n1 == 0 && n2 == 0)cout << "A==B";
+	else if (n1 != 0 && n2 == 0)cout << "A>B";
+	else {
+		for (i = 1; i <= n; i++) {
+			if (*p > *q) {
+				cout << "A>B";
+				break;
+			}
+			else if (*p < *q) {
+				cout << "A<B";
+				break;
+			}
+			p++; q++;
+		}
+		if (i > n && n1 != n2)cout << (L1.length > L2.length ? "A>B" : "A<B");
+		if (i > n && n1 == n2)cout << "A=B";
+	}
+}
+void Printf(Sqlist L,int n) {
+	L.elem = L.elem - L.length;
+	for (int t = L.length; t > 0; t--) {
+		cout << *(L.elem++) << " ";
+	}
+	cout << endl;
+}
+int main() {
+	int a, b; Sqlist A, B;
+	Init(A); Init(B);
+	cin >> a;	Create(A, a);	cin >> b;	Create(B, b);
+	Compare(A, B);
+	return 0;
+}
+//2倒置顺序表
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+#define SIZE 10
+#define INCREMENT 10
+typedef struct {
+	int* elem;
+	int length;
+	int size;
+}Sqlist;
+void Create(Sqlist& L, int n) {
+	L.elem = (int*)malloc(SIZE * sizeof(int));
+	if (!L.elem)	exit(0);
+	L.length = 0;	L.size = SIZE;
+	for (int i = 0; i < n; i++) {
+		cin >> *L.elem++;
+		L.length++;
+	}
+}
+void Converse(Sqlist& L) {
+	int* p = L.elem - L.length, * q = L.elem - 1 , l = L.length;
+	for (int i = 0; i < L.length / 2; i++) {
+		*p = *q + *p;
+		*q = *p - *q;
+		*p = *p - *q;
+		p++; q--;
+	}
+}
+void Printf(Sqlist L, int n) {
+	L.elem = L.elem - L.length;
+	for (int t = L.length; t > 0; t--) {
+		cout << *(L.elem++) << " ";
+	}
+	cout << endl;
+}
+int main() {
+	int n; Sqlist L; cin >> n;
+	Create(L, n); Printf(L, n);
+	Converse(L); Printf(L, n);
+	return 0;
+}
+//3计算链表长
+#include<iostream>
+#include<cstdio>
+using namespace std;
+#define SIZE 10
+#define INCREMENT 10
+typedef struct Node{
+	int data;
+	struct Node* next;
+}LNode,*LinkList;
+void Create(LinkList& L, int n) {
+	L = (LinkList)malloc(sizeof(LNode));
+	LinkList rear = L; L->next = NULL;
+	for (int i = 0; i < n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(LNode));
+		p->next = NULL;
+		cin >> p->data;
+		rear->next = p; rear = p;
+	}
+}
+void Length(LinkList L) {
+	int cnt = 0; LinkList p = L->next;
+	while (p) {
+		cnt++; 
+		p = p->next;
+	}
+	cout << cnt << endl;
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p != NULL) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << endl;
+}
+int main() {
+	int n; LinkList L; cin >> n;
+	Create(L, n); Printf(L); Length(L);
+	return 0;
+}
+//4连接链表
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+typedef struct Node {
+	int data;
+	struct Node* next;
+}LNode,*LinkList;
+void Create(LinkList &L,int n) {
+	L = (LinkList)malloc(sizeof(LNode));
+	LinkList rear = L; L->next = NULL;
+	for (int i = 0; i < n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(LNode));
+		p->next = NULL; cin >> p->data;
+		rear->next = p; rear = p;
+	}
+}
+void Merge(LinkList& La, LinkList& Lb) {
+	LinkList ha = La->next, hb = Lb->next;
+	while (ha->next)ha = ha->next;
+	ha->next = hb;
+	free(Lb);
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << endl;
+}
+int main() {
+	int n, m;	LinkList La, Lb;
+	cin >> n; Create(La, n); cin >> m; Create(Lb, m);
+	Merge(La, Lb);
+	Printf(La);
+	return 0;
+}
+//5删除
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+typedef struct Node {
+	int data;
+	struct Node* next;
+}LNode, * LinkList;
+void Create(LinkList& L, int n) {
+	L = (LinkList)malloc(sizeof(LNode));
+	LinkList rear = L; L->next = NULL;
+	for (int i = 0; i < n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(LNode));
+		p->next = NULL; cin >> p->data;
+		rear->next = p; rear = p;
+	}
+}
+void Delete(LinkList& L,int mink,int maxk) {
+	LinkList p = L;
+	while (p->next) {
+		LinkList q = p->next;
+		if (q->data > mink && q->data < maxk) {
+			p->next = q->next;
+			free(q);
+		}
+		p = p->next;
+	}
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << endl;
+}
+int main() {
+	int n, mink, maxk;;	LinkList L;
+	cin >> n; Create(L, n);	Printf(L);
+	cin >> mink >> maxk; Delete(L, mink, maxk); Printf(L);
+	return 0;
+}
+//6反转链表
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+typedef struct Node {
+	int data;
+	struct Node* next;
+}LNode, * LinkList;
+void Create(LinkList& L, int n) {
+	L = (LinkList)malloc(sizeof(LNode));
+	LinkList rear = L; L->next = NULL;
+	for (int i = 0; i < n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(LNode));
+		p->next = NULL; cin >> p->data;
+		rear->next = p; rear = p;
+	}
+}
+void Converse(LinkList&L){
+	LinkList curr;
+	LinkList pre = NULL;
+	LinkList head = L;
+	while (head->next != NULL) {
+		curr = head->next;
+		head->next = curr->next;
+		curr->next = pre;
+		pre = curr;
+	}
+	head->next = pre;
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << endl;
+}
+int main() {
+	int n, mink, maxk;;	LinkList L;
+	cin >> n; Create(L, n);	Printf(L);
+	Converse(L);
+	Printf(L);
+	return 0;
+}
+//7循环链表删除节点
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+typedef struct Node {
+	int data;
+	struct Node* next;
+}LNode, * LinkList;
+void Create(LinkList& L, int n) {
+	L = (LinkList)malloc(sizeof(LNode));
+	LinkList rear = L; L->next = NULL;
+	for (int i = 0; i < n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(LNode));
+		p->next = NULL; cin >> p->data;
+		rear->next = p; rear = p;
+	}
+	rear->next = L->next;
+}
+void Delete(LinkList& L, int n, LinkList s) {
+	LinkList p = L;
+	for (int i = 0; i < n; i++) {
+		if (p->next->next == s) {
+			p->next = s;
+		}
+	}
+}
+void Printf(LinkList L,int n) {
+	LinkList p = L->next;
+	for (int i = 0; i < n; i++) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << endl;
+}
+int main() {
+	int n, mink, maxk;;	LinkList L;
+	cin >> n; Create(L, n);	Printf(L, n);
+	return 0;
+}

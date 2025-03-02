@@ -1,0 +1,241 @@
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+typedef struct {
+	int key;
+	int other;
+}SElemType;
+typedef struct {
+	SElemType* elem;
+	int length;
+}SStable;
+void Creat(SStable& ST, int n) {
+	ST.elem = (SElemType*)malloc((n + 1) * sizeof(SElemType));
+	for (int i = 1; i <= n; i++)
+		cin >> ST.elem[i].key >> ST.elem[i].other;
+	ST.length = n;
+}
+void SqSearch(SStable ST, int key) {
+	int cnt = 0;	ST.elem[0].key = key;
+	int i = ST.length;
+	while (ST.elem[i].key != key) {
+		cnt++;
+		i--;
+	}
+	if (i) cout << "Find " << cnt + 1;
+	else cout << "Not Find " << cnt + 1;
+	cout << endl;
+}
+void BinSearch(SStable ST, int key) {
+	int low = 1, high = ST.length, mid, cnt = 0, flag = 0;
+	while (low <= high) {
+		mid = (low + high) / 2;
+		cnt++;
+		if (key == ST.elem[mid].key) {
+			flag = 1;
+			break;
+		}
+		else if (key < ST.elem[mid].key) high = mid - 1;
+		else low = mid + 1;
+	}
+	if (flag)cout << "Find " << cnt;
+	else cout << "Not Find " << cnt;
+	cout << endl;
+}
+/*void BinSearch(SStable ST, int key, int low, int high) {
+	int mid;
+	if (low <= high) {
+		mid = (low + high) / 2;
+		if (key == ST.elem[mid].key) cout << mid;
+		else if (key < ST.elem[mid].key) BinSearch(ST, key, low, mid - 1);
+		else BinSearch(ST, key, mid + 1, high);
+	}
+	else cout << "Not Find";
+}*/
+int main() {
+	/*6
+3 2
+5 10
+8 4
+9 20
+10 3
+12 16
+4
+	*/
+	SStable ST; int n, key;
+	cin >> n;
+	Creat(ST, n);
+	cin >> key;
+	SqSearch(ST, key);
+	BinSearch(ST, key);
+	return 0;
+}
+
+//3
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+#include<limits.h>
+using namespace std;
+struct {
+	int data;
+	int oinfo;
+}a[100];
+/*
+13 13 7
+2 11
+18 22
+29 33
+60 44
+38 55
+73 66
+86 77
+73
+
+13 13 7
+2 11
+18 22
+29 33
+60 44
+38 55
+73 66
+86 77
+25
+*/
+int main() {
+	int m, p, n;
+	cin >> m >> p >> n;
+	//create
+	int n1, n2;
+	for (int i = 1; i <= p + 1; i++)
+		a[i].data = INT_MAX;
+	for (int i = 1; i <= n; i++) {
+		cin >> n1 >> n2; 
+		//insert
+		int t = n1 % p;
+		if (a[t].data == INT_MAX) {
+			a[t].data = n1;
+			a[t].oinfo = n2;
+		}
+		else {
+			for (t = t + 1; ; t++) {//线性探测
+				if (t > p)	t -= p;
+				if (a[t].data == INT_MAX) {
+					a[t].data = n1;
+					a[t].oinfo = n2;
+					break;
+				}
+			}
+		}
+	}
+	//search
+	int x; cin >> x; int cnt = 0;
+	int t = x % p;
+	for (t; cnt < p; t++,cnt++) {
+		if (t > p)t -= p;
+		if (a[t].data == x) {
+			cout << "FOUND" << t << endl;
+			cout << a[t].data << " " << a[t].oinfo;
+			break;
+		}
+	}
+	if (cnt >= p) {
+		cout << "NOT FOUND" << endl;
+	}	
+	return 0;
+}
+//3
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+#include<limits.h>
+using namespace std;
+typedef struct {
+	int key;
+	int other;
+}SElemType;
+typedef struct {
+	SElemType* elem;
+	int length;
+}Hashtable;
+/*
+13 13 7
+2 11
+18 22
+29 33
+60 44
+38 55
+73 66
+86 77
+73
+
+13 13 7
+2 11
+18 22
+29 33
+60 44
+38 55
+73 66
+86 77
+25
+*/
+void Insert(int n1, int n2, int p, Hashtable& a) {
+	int t = n1 % p;
+	//a.elem = (SElemType*)malloc((a.length + 1) * sizeof(SElemType));
+	if (a.elem[t].key == INT_MAX) {
+		a.elem[t].key = n1;
+		a.elem[t].other = n2;
+	}
+	else {
+		for (t = t + 1; ; t++) {//线性探测
+			if (t > p)	t -= p;
+			if (a.elem[t].key == INT_MAX) {
+				a.elem[t].key = n1;
+				a.elem[t].other = n2;
+				break;
+			}
+		}
+	}
+}
+void Create(Hashtable& a, int m, int p, int n) {
+	int n1, n2; a.length = m;
+	a.elem = (SElemType*)malloc((m + 1) * sizeof(SElemType));
+	for (int i = 0; i <= p + 2; i++)
+		a.elem[i].key = INT_MAX;
+	for (int i = 1; i <= n; i++) {
+		cin >> n1 >> n2;
+		Insert(n1, n2, p, a);
+	}
+}
+void Search(Hashtable a,int p) {
+	int x; cin >> x; int cnt = 0;
+	int t = x % p;
+	for (t; cnt < p; t++, cnt++) {
+		if (t > p)t -= p;
+		if (a.elem[t].key == x) {
+			cout << "FOUND" << t << endl;
+			cout << a.elem[t].key << " " << a.elem[t].other;
+			break;
+		}
+	}
+	if (cnt >= p) {
+		cout << "NOT FOUND" << endl;
+	}
+}
+int main() {
+	Hashtable a; int m, p, n;
+	cin >> m >> p >> n;
+	Create(a, m, p, n);
+	Search(a, p);
+	return 0;
+}
+
+
+
+
+
+
+
+
+

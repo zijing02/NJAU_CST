@@ -1,0 +1,135 @@
+//1
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
+using namespace std;
+typedef struct node{
+	int num;
+	struct node* next;
+}Lnode, * pNode;
+void push(pNode &S,int e) {
+	pNode p = (pNode)malloc(sizeof(Lnode));
+	p->num = e;
+	p->next = S;
+	S = p;
+}
+void Print(pNode S) {
+	while (S) {
+		cout << S->num;
+		S = S->next;
+	}
+}
+int main() {
+	pNode S;
+	S = NULL;
+	int n, m, t;
+	cout << "数:";	cin >> n;
+	cout << "进制:"; cin >> m;
+	while (n) {
+		t = n % m;
+		push(S, t);
+		n /= m;
+	}
+	Print(S);
+	return 0;
+}
+
+//2
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
+using namespace std;
+typedef struct {
+	int* elem; //存储空间基址 
+	int length; //当前长度 
+	int listsize; //当前分配的存储容量
+}SqList;
+void Init(SqList& L) {
+	L.elem = (int*)malloc(1000 * sizeof(int));
+	L.length = 0;
+	L.listsize = 1000;
+}
+void Create(SqList& L,int n) {
+	for (int i = 0; i < n; i++) {
+		L.elem[i] = 1;
+		L.length++;
+	}
+}
+void fun(SqList& L, int n, int m) {
+	int cnt = 0;
+	for (int i = 0; cnt <= m; i++) {
+		L.elem[i] = 0;
+		i += ++cnt;
+		if (i >= n)
+			while (i > n)i -= n;
+	}
+	for (int i = 0; i < L.length; i++)
+		if (L.elem[i])
+			cout << i + 1 << " ";
+
+}
+int main() {
+	SqList L;	int n, m;
+	cout << "山洞数:"; cin >> n;
+	cout << "狐狸进洞数:"; cin >> m;
+	Init(L);	Create(L, n);	fun(L, n, m);
+	return 0;
+}
+
+
+
+
+//3
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+#include<string.h>
+#include<stdio.h>
+using namespace std;
+typedef char ElemType;
+typedef struct bitnode { 
+	ElemType data; 
+	struct bitnode* lchild, * rchild; 
+}BiTNode, * BiTree;
+void Create(BiTree &T){
+	char ch;	cin >> ch;
+	if (ch == '*')T = NULL;
+	else {
+		T = (BiTNode*)malloc(sizeof(BiTNode));
+		T->data = ch;
+		Create(T->lchild);
+		Create(T->rchild);
+	}
+}
+//ABD*F***CE***
+//ABD*F***CEG****
+//MNA*B***FD***
+
+int i = 1;
+void fun(BiTree T1, BiTree T2) {
+	if ((!T1 && T2) || (!T1 && T2)) 
+		i = 0;
+	else if (T1 && T2) {
+		fun(T1->lchild, T2->lchild);
+		fun(T1->rchild, T2->rchild);
+	}
+}
+int main() {
+	BiTree T1, T2;
+	Create(T1); Create(T2);
+	if (i)	cout << "相同";
+	else cout << "不同";
+	return 0;
+}
+
+
+
+
+
+
+
+

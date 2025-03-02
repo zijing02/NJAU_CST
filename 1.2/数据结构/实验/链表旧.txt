@@ -1,0 +1,372 @@
+//1
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+typedef int ElemType;
+typedef struct Node {
+	ElemType data; // 数据域
+	struct Node* next; // 指针域
+}LNode, * LinkList;						
+void CreatList(LinkList& L, int n) {
+	LinkList rear = L;
+	L->next = NULL;						//建立一个带头节点的链表
+	for (int i = 0; i < n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(Node));
+		p->next = NULL;
+		cin >> p->data;
+		rear->next = p;
+		rear = p;
+	}
+}
+bool Insert(LinkList& L, int i, int e) {
+	LinkList s = (LinkList)malloc(sizeof(Node));
+	LinkList p = L; int j = 0;
+	while (p != NULL && j < i-1)  {
+		j++;							//向后遍历到要删除的地方
+		p = p->next;
+	}
+	if (!p || j > i - 1) {
+		cout << "Insert Location Error" << "\n";
+		return false;
+	}
+	s->data = e;						//建立一个新的节点储存新数据的值
+	s->next = p->next;					//将新数据加入到链表之中，s的next是插入节点后的节点
+	p->next = s;						//将s与插入之前的节点相连接
+	return true;
+}
+bool Delete(LinkList& L, int i,int &e) {
+	LinkList p = L; LinkList q;int j = 0;
+	while (p != NULL && j < i - 1) {
+		j++;
+		p = p->next;
+	}
+	if (!(p->next) || j > i - 1) {
+		cout << "Delete Location Error" << "\n";
+		return false;
+	}
+	q = p->next; 
+	p->next = q->next;				//可以是p=p->next->next;
+	e = q->data; 
+	free(q);						//结束后q不存在了要释放     free(p->next)
+	return true;
+}
+void Length(LinkList L) {
+	int cnt = 0;
+	LinkList p = L->next;
+	while (p != NULL) {
+		cnt++;
+		p = p->next;
+	}
+	cout << cnt << "\n";
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p!=NULL) {
+		cout << p->data << " ";
+		p=p->next;
+	}
+	cout << "\n";
+}
+int main()
+{
+	//int a, i, e, c, d;
+	//LinkList L=(LinkList)malloc(sizeof(LNode));       //L是单链表的头指针
+	//cin >> a;
+	//CreatList(L, a);
+	//cout << "创建的链表是：";
+	//Printf(L);
+
+	//cin >> i >> e;
+	//Insert(L, i, e);
+	//cout << "插入后的链表是：";
+	//Printf(L);
+
+	//cin >> c;
+	//Delete(L, c, d);
+	//cout << "删除的元素是：" << d << "\n";
+	//Printf(L);
+
+	//Length(L);
+	
+	//按题给条件调用
+	int a, i, e, c, d;
+	LinkList L=(LinkList)malloc(sizeof(LNode));
+	cin >> a;
+	CreatList(L, a);
+	cin >> i >> e;
+	cin >> c;
+	Insert(L, i, e);
+	if(Delete(L, c, d)) cout << d << "\n";
+	Length(L);
+	Printf(L);
+
+	return 0;
+}
+//2
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+typedef int ElemType;
+typedef struct Node {
+	ElemType data;
+	struct Node* next;
+}LNode, * LinkList;
+void CreatList(LinkList& L) {
+	LinkList rear = L; int t;
+	L->next = NULL;
+	do {
+		LinkList p = (LinkList)malloc(sizeof(Node));
+		p->next = NULL;
+		cin >> t;
+		if (t != -1) {
+			p->data = t;
+			rear->next = p;
+			rear = p;
+		}
+	} while (t != -1);
+}
+
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p != NULL) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << "\n";
+}
+int main() {
+	LinkList La = (LinkList)malloc(sizeof(LNode));
+	CreatList(La);	/*cout << "创建的链表是：";	Printf(La);*/
+
+	LinkList Lb = (LinkList)malloc(sizeof(LNode));
+	CreatList(Lb); /* cout << "创建的链表是：";	Printf(Lb);*/
+
+	LinkList Lc = (LinkList)malloc(sizeof(LNode));
+	Merge(La, Lb, Lc);
+	Printf(Lc);
+
+	return 0;
+}
+
+//3
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+typedef int ElemType;
+typedef struct Node {
+	ElemType data;
+	struct Node* next;
+}LNode, * LinkList;
+void CreatList(LinkList& L) {
+	LinkList rear = L; int t;
+	L->next = NULL;
+	do {
+		LinkList p = (LinkList)malloc(sizeof(Node));
+		p->next = NULL;
+		cin >> t;
+		if (t != -1) {
+			p->data = t;
+			rear->next = p;
+			rear = p;
+		}
+	} while (t != -1);
+}
+void Merge(LinkList& La, LinkList& Lb, LinkList& Lc) {
+	LinkList pa = La->next;
+	LinkList pb = Lb->next;
+	LinkList pc = Lc;
+	while (pa) {
+		pb = Lb->next;
+		while (pb) {
+			if (pa->data == pb->data) {
+				pc->next = pa; pc = pa;;
+			}
+			pb = pb->next;
+		}
+		pa = pa->next;
+	}
+	pc->next = pa ? pa : pb;
+	free(Lb);						//Lb的空间没有用处了，La的空间被Lc所用
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p != NULL) {
+		cout << p->data << " ";
+		p = p->next;
+	}
+	cout << "\n";
+}
+int main() {
+	LinkList La = (LinkList)malloc(sizeof(LNode));
+	CreatList(La);	/*cout << "创建的链表是：";	Printf(La);*/
+
+	LinkList Lb = (LinkList)malloc(sizeof(LNode));
+	CreatList(Lb); /* cout << "创建的链表是：";	Printf(Lb);*/
+
+	LinkList Lc = (LinkList)malloc(sizeof(LNode));
+	Merge(La, Lb, Lc);
+	Printf(Lc);
+
+	return 0;
+}
+
+//4
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+typedef int ElemType;
+typedef struct Node {
+	ElemType data; int num; int sta;	//每个节点的三个数据：密码，位置，状态
+	struct Node* next; // 指针域
+}LNode, * LinkList;
+void CreatList(LinkList& L, int n) {
+	LinkList rear = L;
+	L->next = NULL;						//建立一个带头节点的链表
+	for (int i = 1; i <= n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(Node));
+		p->next = NULL;	
+		p->sta = 0;				//每个人的报数状态，没有报指定数的为0，报过指定数后为1
+		p->num = i;            //每个节点的编号
+		cin >> p->data;			//每个节点的密码
+		rear->next = p;
+		rear = p;
+	}
+}
+void Fun(LinkList L, int n, int m) {
+	int cnt = 0, k = 0;			//cnt为出局的人数，k为要报的数字，从1开始到m
+	LinkList p = L;
+	while (cnt != n) {
+		if (p == NULL)p = L;    //到尾巴的时候重新开始
+		if (p->sta == 0) {		//p->sta为0时表示当前的人没有出局
+			k++;
+				if (k == m) {
+					p->sta = 1;			//改变状态
+					cnt++;				//报数出局的人数+1
+					m = p->data;		//将m的值更改为密码
+					cout << p->num << " ";		//输出出局人的序号
+					k = 0;				//报的数字归零，重新开始报数
+				}
+		}
+		p = p->next;
+	}
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p != NULL) {
+		cout << p->num << " ";
+		p = p->next;
+	}
+	cout << "\n";
+}
+int main()
+{
+	int n, m;
+	LinkList L = (LinkList)malloc(sizeof(LNode));
+	cin >> m >> n;
+	CreatList(L, n);	
+	Fun(L, n, m);
+
+	return 0;
+}
+//5
+#include<iostream>	
+#include<stdio.h>	
+#include<stdlib.h>	
+#include<cstdio>		
+#include<string.h>	
+#include<math.h>	
+#include<algorithm>	
+using namespace std;
+typedef int ElemType;
+typedef struct Node {
+	ElemType xi; int ci;
+	struct Node* next; 
+}LNode, * LinkList;
+void CreatList(LinkList& L, int n) {
+	LinkList rear = L;
+	L->next = NULL;						
+	for (int i = 0; i < n; i++) {
+		LinkList p = (LinkList)malloc(sizeof(Node));
+		p->next = NULL;
+		cin >> p->xi >>  p->ci;
+		rear->next = p;
+		rear = p;
+	}
+}
+void Merge(LinkList& La, LinkList& Lb, LinkList& Lc) {
+	LinkList pa = (LinkList)malloc(sizeof(Node));
+	LinkList pb = (LinkList)malloc(sizeof(Node));
+	LinkList pc = (LinkList)malloc(sizeof(Node));
+	pa = La->next; pb = Lb->next; Lc = pc = La;
+	while (pa && pb) {
+		if (pa->ci > pb->ci) {
+			pc->next = pa; pc = pa; pa = pa->next;
+		}
+		else if (pa->ci == pb->ci) {
+			pc->next = pa; pc = pa; pc->xi = pa->xi + pb->xi; pa = pa->next; pb = pb->next;
+		}
+		else {
+			pc->next = pb; pc = pb; pb = pb->next;
+		}
+	}
+	pc->next = pa ? pa : pb;
+	free(Lb);
+}
+void Printf(LinkList L) {
+	LinkList p = L->next;
+	while (p != NULL) {
+		cout << p->xi << " "<<p->ci<<" ";
+		p = p->next;
+	}
+	cout << "\n";
+}
+int main()
+{
+	//4 3 4 - 5 2 6 1 - 2 0
+	//3 5 20 - 7 4 3 1
+	//5 20 - 4 4 - 5 2 9 1 - 2 0
+	int a, b;
+	LinkList La = (LinkList)malloc(sizeof(LNode));	cin >> a; CreatList(La, a); cout << "a："; Printf(La);
+	LinkList Lb = (LinkList)malloc(sizeof(LNode));	cin >> b; CreatList(Lb, b); cout << "b："; Printf(Lb);
+	LinkList Lc = (LinkList)malloc(sizeof(LNode));	Merge(La, Lb, Lc); cout << "c："; Printf(La);
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
