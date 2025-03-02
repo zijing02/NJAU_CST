@@ -1,0 +1,1679 @@
+选择结构
+(1)编程判断输入整数x的正负性和奇偶性。
+#include<stdio.h>
+int main()
+{
+	int x;
+	scanf_s("%d", &x);
+	if (x > 0) printf("x是正数\n");
+	else if(x < 0) printf("x是负数\n");
+	else printf("x是0");
+	if (x % 2 == 0) printf("x是偶数\n");
+	else printf("x是奇数\n");
+	return 0;
+}
+(2)已知银行整存整取存款不同期限的月息利率分别为：
+   	0．63%  期限一年
+    	0．66%  期限=年
+    月息利率=   0．69%  期限三年
+    	0．75%  期限五年
+    	0．84%  期限八年
+    要求输入存钱的本金和期限,求到期时能从银行得到的利息与本金的合计。
+#include<stdio.h>
+int main()
+{
+	double n;
+	int i;
+	scanf_s("%lf %d", &n, &i);
+	switch (i) {
+	case 1:printf("%lf", n * (1 + 0.0063)); break;
+	case 2:printf("%lf", n * (1 + 0.0066)* (1 + 0.0066)); break;
+	case 3:printf("%lf", n * (1 + 0.0069)* (1 + 0.0069)* (1 + 0.0069)); break;
+	case 5:printf("%lf", n * (1 + 0.0075)* (1 + 0.0075)*(1 + 0.0075) * (1 + 0.0075) * (1 + 0.0075)); break;
+	case 8:printf("%lf", n * (1 + 0.0084)* (1 + 0.0084) * (1 + 0.0084) * (1 + 0.0084) * (1 + 0.0084) * (1 + 0.0084) * (1 + 0.0084) * (1 + 0.0084)); break;
+	}
+	return 0;
+}
+(3)通过键盘输入字符，将输入的字符分为控制、数字、大写字母、小写字母和其他字符等五类。
+#include<stdio.h>
+int main()
+{
+	char a;
+	a = getchar();
+	if (a >= 65 && a <= 90)  printf("%c是大写字母",a);
+	else if (a >= 97 && a <= 122)  printf("%c是小写字母", a);
+	else if (a >= 48 && a <= 57)  printf("%c是数字", a);
+	else printf("%c是其他字符", a);
+
+	return 0;
+}
+(4)简单计算器。请编写一个程序计算表达式：datal  op  data2的值。其中op为运算符+、—、*、／。
+#include<stdio.h>
+int main()
+{
+	double data1, data2, result;
+	char op;
+	scanf_s("%lf", &data1);
+	scanf_s("%c", &op);
+	scanf_s("%lf",&data2);
+	switch (op) 
+	{
+	case '+':result = data1 + data2; printf("%lf\n", result); break;
+	case '-':result = data1 - data2; printf("%lf\n", result); break;
+	case '*':result = data1 * data2; printf("%lf\n", result); break;
+	case '/':result = data1 / data2; printf("%lf\n", result); break;
+	default:printf("enter data error!\n");
+	}
+	return 0;
+}
+#include<stdio.h>
+int main()
+{
+
+	double x, y, s;
+	char op;
+	scanf_s("%lf", &x);
+	op = getchar();
+	scanf_s("%lf", &y);
+	if (op == '+')
+		s = x + y;
+	else if (op == '-')
+		s = x - y;
+	else if (op == '*')
+		s = x * y;
+	else if (op == '/')
+		s = x / y;
+	else
+	printf("enter data error!\n");
+	printf("%lf", s);
+
+	return 0;
+}
+
+(5)输入年份year和月month，求该月有多少天。判断是否为闰年，可用如下C语言表达式：year%4==0 && year%100!=0  || year%400==0。若表达式成立(即表达式值为1),则year为闰年;否则,表达式不成立(即值为0)，year为平年。
+#include<stdio.h>
+int main()
+{
+	int y, m,c;
+	scanf_s("%d %d", &y, &m);
+	if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) {
+		c = 1;
+		printf("闰年\n");
+	}
+	else {
+		c = 0;
+		printf("不是闰年\n");
+	}
+	switch (m)
+	{
+	case 1:case 3:case 5:case 7:case 8:case 10:case 12: printf("31天\n");	break;
+	case 4:case 6:case 9:case 11:printf("30天\n"); break;
+	}
+	if (c == 1 && m == 2) printf("29天\n");
+	else if (c == 0 && m == 2) printf("28天\n");
+	return 0;
+}
+(6)对输入的行、单词和字符进行计数。我们将单词的定义进行化简,认为单词是不包含空格、制表符(\t)及换行符的字符序列。例如：“a+b+c”,认为是1个单词，它由5个字符组成。又如：“xy abc”，为2个单词,6个字符。
+#include<stdio.h>
+int main() {
+	char string[100], c;
+	int i, count = 0, flag = 0;
+	scanf_s("%s", string);
+	for (i = 0; (c = string[i]) != '\0'; i++) {
+		if (c == ' ')
+			flag = 0;
+		else if (flag == 0){
+			flag = 1; 
+			count++;
+		}
+	}
+	printf("count=%d\n", count);
+	return 0;
+}
+
+#include <stdio.h>  
+#define IN 1  
+#define OUT 0  
+void wc(){  
+    char c;  
+    int char_num,word_num,line_num,state;  
+    char_num=word_num=line_num=0;  
+    state=OUT;  
+    while((c=getchar())!=EOF){   
+        char_num++;  
+        if(c=='\n'){         
+            line_num++;  
+        }  
+        if(c=='\n' || c=='\t' || c==' '){  
+		 
+                state=OUT;  
+        }else if(state==OUT){  
+       
+            state=IN;  
+            word_num++;  
+        }  
+        }  
+   
+   
+    printf("line_num=%d\nword_num=%d\nchar_num=%d\n",line_num,word_num,char_num);  
+}  
+int main(){  
+    wc();  
+    return 0;  
+}  
+(7)从键盘输入任意的字符,按下列规则进行分类计数。
+第－类  ＇0＇,＇1＇,＇2＇,＇3＇,＇4＇,＇5＇,＇6＇,＇7＇,＇8＇,＇9＇
+第=类  ＇+＇,＇－＇,＇*＇,＇／＇,＇%＇,＇=＇
+第三类  其它字符
+当输入字符＇\＇时先计数,然后停止接收输入,打印计数的结果。
+#include <stdio.h>
+int main() 
+{
+	char c;
+	int x = 0, y = 0, z = 0,g=0;		//x数字y运算符z其他字符g反斜杠
+	while ((c = getchar())) {
+		if (c == '\n')
+			break;
+		else if (c >= 48 && c <= 57) {
+			x++;
+		}
+		else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '=' || c == '%') {
+			y++;
+		}
+		else if (c == 92) {
+			g++;
+		}
+		else{
+			z++;
+		}
+		
+	}
+	printf("%d %d %d %d", x,y,z,g);
+	return 0;
+}
+(8)输入10个整数，求其中正数的个数及平均值,精确到小数点后两位。
+#include<stdio.h>
+int main()
+{
+	int cnt = 0,sum = 0;
+	double ave;
+	int a[10];
+	for (int i = 0; i <10; i++)
+		scanf_s("%d", &a[i]);
+	for (int j = 0; j <10 ; j++) {
+		if (a[j] > 0) {
+			cnt++;
+		}
+		sum = sum + a[j];
+	}
+	ave = (double)(sum / 10);
+	printf("%d %d %.2lf", cnt,sum, ave);
+	return 0;
+}
+(9)已知一个首项大于0的等差数列的前四项和为26，前四项的积为880，求此数列。
+#include<stdio.h>
+int main()
+{
+	int a, d, sum, mul, i;
+	sum = 0;
+	mul = 1;
+	for (d = 1; d <= 5; d++)
+	{
+		for (a = 1; a <= 5; a++)
+		{
+			sum = a + (a + d) + (a + 2 * d) + (a + 3 * d);
+			mul = a * (a + d) * (a + 2 * d) * (a + 3 * d);
+			if (sum == 26 && mul == 880)	{
+				for (i = 0; i <= 20; ++i)
+					printf("%d,", a + i * d);
+				printf("......\n");
+			}
+		}
+	}
+	return 0;
+} 
+(10)输入a、b、c、d四个整数，求最小值min和最大值max。 
+#include<stdio.h>
+int main()
+{
+	int min, max;
+	int a[4];
+	for (int i = 0; i < 4; i++)
+		scanf_s("%d", &a[i]);
+		min = a[0];
+		max = a[0];
+	for (int j = 0; j < 4; j++) {
+		if (a[j] > max) {
+			max = a[j];
+		}
+		else if (a[j] < min) {
+			min = a[j];
+		}
+	}
+		printf("%d\t%d\t", min,max);
+
+	return 0;
+}
+(11)编写程序,输入三角型的三条边长，求其面积。注意：对于不合理的边长输入要输出数据错误的提示信息。
+ #include<stdio.h>
+#include<math.h>
+int main()
+{
+	double a, b, c, p,s;
+	scanf_s("%lf%lf%lf", &a, &b, &c);
+	if (a + b > c && a + c > b && b + c > a)
+	{
+		p = (a + b + c) / 2;
+		s = sqrt(p * (p - a) * (p - b) * (p - c));
+		printf("三角形的面积是%.2lf", s);
+	}
+	else
+		printf("三边输入不合理\n");
+	return 0;
+}
+
+循环结构
+(1)从键盘输入十个整数，求这十个整数之和。
+#include<stdio.h>
+int main()
+{
+	int sum = 0;
+	int n;
+	for (int i = 0; i < 10; i++){
+		scanf_s("%d", &n);
+		sum += n;
+	}
+	printf("%d",sum);
+	return 0;
+}
+(2)从键盘中读入一系列字符，直到输入字母“a”时才停止。
+#include<stdio.h>
+int main()
+{
+	char c;
+	while (c = getchar()) {
+		if (c == 'a') break;
+		else continue;
+	}
+	return 0;
+}
+(3)对输入的行和字符进行计数
+一行是以一个回车符(’\n’)作为行结束标记的,这样在程序中可以通过搜索’\n’对行进行计数。当输入[CTRL+D]时表示文件输入结束，停止计数。
+#include<stdio.h>
+int main()
+{
+	int zifu = 0, huiche = 0;
+	char c,b;
+	while ((c = getchar()) != EOF) {
+		b = c;
+		if (b == '\n') huiche++;
+		else zifu++;
+	}
+	printf("%d\t%d", zifu, huiche);
+	return 0;
+}
+(4)输出如下图所示的下三角形乘法九九表。
+    1    2     3     4     5     6     7     8    9
+    - - - - - - - - - - - - - - - - - - - - - -
+    1
+    2    4
+    3    6     9
+    4    8    12    16
+    5   10    15    20    25
+    6   12    18    24    30    36
+    7   14    21    28    35    42    49
+    8   16    24    32    40    48    56     64
+    9   18    27    36    45    54    63     72    81 
+#include <stdio.h>
+int main()
+{
+	printf("1 2 3 4 5 6 7 8 9\n");
+	printf("-----------------\n");
+	for (int i = 1; i <= 9; i++) {
+		for (int j = 1; j <= i; j++) {
+			printf("%d\t", i * j);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+(5)求1到10的阶乘的和。
+#include<stdio.h>
+int main() 
+{
+	int sum = 0,x =1;
+	for (int i = 1; i <= 10; i++) {
+		for (int j = 1; j <= i; j++) {
+			x *= j;
+		}
+		sum = sum + x;
+	}
+	printf("%d", sum);
+	return 0;
+}
+(6)输入一个正整数，要求以相反的顺序输出该数。例如输入12345，输出为54321。 
+#include <stdio.h>
+int main() 
+{
+	int x,sum=0;
+	scanf_s("%d", &x);
+	while (x) {
+		sum = sum * 10 + x % 10;
+		x /= 10;
+	}
+	printf("%d", sum);
+	return 0;
+}
+(7)求555555的约数中最大的三位数是多少?
+#include <stdio.h>
+int main(){
+	int a;
+	for (int i = 100; i < 1000; i++) 
+		if (555555 % i == 0)
+			a = i;
+	printf("%d", a);
+	return 0;
+}
+(8)输入10个整数，求其中正数的个数及平均值，精确到小数点后两位。
+#include<stdio.h>
+int main()
+{
+	int cnt = 0,sum = 0;
+	double ave;
+	int a[10];
+	for (int i = 0; i <10; i++)
+		scanf_s("%d", &a[i]);
+	for (int j = 0; j <10 ; j++) {
+		if (a[j] > 0) {
+			cnt++;
+		}
+		sum = sum + a[j];
+	}
+	ave = (double)(sum / 10);
+	printf("%d %d %.2lf", cnt,sum, ave);
+	return 0;
+}
+
+(9)输入n值，打印下列高为n的等腰三角形。  
+     	 *
+    　　***
+    　 *****
+      *******
+     *********
+    ***********   　　　　　 当n=6时
+#include<stdio.h>
+int main()
+{
+	int x;
+	scanf_s("%d", &x);
+	for (int i = 1; i <= x; i++) {
+		for (int j = 0; j < x-i; j++) {
+			printf(" ");
+		}
+		for (int s = 1; s<=2*i-1; s+=1) {
+			printf("*");
+		}
+		printf("\n");	
+	}
+	return 0;
+}
+(10)输入n值，请编程输出如下图形(例n=3时)。
+    *     *
+     *   *
+       *
+     *   *
+    *     *
+#include<stdio.h>
+int main()
+{
+	int n;
+	scanf_s("%d",&n);
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j < i; j++) {
+			printf(" ");
+		}
+		printf("*");
+		if (i != n) {
+			for (int k = 2 * n - 1 - 2 * i; k > 0; k--) {
+				printf(" ");
+			}
+			printf("*\n");
+		}
+	}
+	printf("\n");
+	for (int i = 1; i <= n - 1; i++) {
+		for (int j = n - 1 - i; j > 0; j--) {
+			printf(" ");
+		}
+		printf("*");
+		for (int k = 2 * i - 1; k > 0; k--) {
+			printf(" ");
+		}
+		printf("*\n");
+	}
+	return 0;
+}
+
+(11)编程打印数字金字塔。
+                      l
+                    1 2 1
+                  1 2 3 2 1
+                1 2 3 4 3 2 1
+              1 2 3 4 5 4 3 2 1
+            1 2 3 4 5 6 5 4 3 2 1
+          1 2 3 4 5 6 7 6 5 4 3 2 1
+        1 2 3 4 5 6 7 8 7 6 5 4 3 2 1
+      1 2 3 4 5 6 7 8 9 8 7 6 5 4 3 2 1 
+#include<stdio.h>
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	for (int i = 1; i <= n; i++) {
+		for (int j = n - i; j > 0; j--) {
+			printf(" ");
+		}
+		for (int k = 1; k <= i; k++) {
+			printf("%d", k);
+		}
+		for (int l = i - 1; l > 0; l--) {
+			printf("%d", l);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+
+(12)编程输出下列高度为n的图形。
+当n=6时
+    1   3   6  10  15  21
+    2   5   9  14  20
+    4   8  13  19
+    7  12  18
+   11  17
+   16
+#include<stdio.h>
+int main()
+{
+	int n, j = 1, t;
+	scanf_s("%d", &n);
+	for (int i = 1; i <= n; i++) {
+		t = j;
+		for (int k = i + 1; k <= n + 1; k++) {
+			printf("%d\t", t);
+			t += k;
+		}
+		j += i;
+		printf("\n");
+	}
+	return 0;
+}
+
+
+(13)请输入n值，编写程序输出下列图形(例如n=5)。
+    1    2    3    4    5
+    1    1    2    3    4
+    1    1    1    2    3
+    1    1    1    1    2
+    1    1    1    1    1 
+#include<stdio.h>
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	for (int i = 0; i < n; i++) {
+		for (int k = 0; k <= i; k++) {
+			printf("1\t");
+		}
+		for (int j = 2; j <= n - i; j++) {
+			printf("%d\t", j);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+(14)求下列算式的值：SUM=1+ 1／2+ 1／3+ 1／4+．．．+ 1／999+ 1／1000
+#include<stdio.h>
+int main()
+{
+	double sum=0;
+	for (double i = 1; i <= 1000; i++) {
+		sum += 1.0 / i;
+	}
+	printf("%lf", sum);
+	return 0;
+}
+(15)求下式的值：
+#include<stdio.h>
+int main()
+{
+	int sum = 0;
+	for (int k = 1; k <= 100; k++) {
+		if (k <= 10) sum = sum + k + k * k + k;
+		else if (k <= 50)sum = sum + k + k * k;
+		else sum += k;
+	}
+	printf("%d", sum);
+	return 0;
+}
+
+(16)编写-个程序，读入一个整数N;若N为非负数，则计算N到2*N之间的整数和;若N为一个负数，则求2*N到N之间的整数和。利用for和while写出两个程序。
+#include<stdio.h>
+int main()
+{
+	int n,sum=0;
+	scanf_s("%d", &n);
+	//for_loop
+	if (n >= 0) {
+		for (int i = n; i <= 2 * n; i++) {
+			sum += i;
+		}
+	}
+	else {
+		for (int i = 2 * n; i <= n; i++) {
+			sum += i;
+		}
+	}
+	printf("%d\n", sum);
+	//while_loop
+	sum = 0;
+	int i=n, j=2*n;
+	if (n >= 0) {
+		while (i <= 2 * n) {
+			sum += i;
+			++i;
+		}
+	}
+	else {
+		while (j <= n) {
+			sum += j;
+			++j;
+		}
+	}
+	printf("%d\n", sum);
+	return 0;
+}
+(17)100匹马驮100担货,大马一匹驮 3担,中马一匹驮 2担,小马两匹驮 1担。试编写程序计算大、中、小马的数目。
+#include<stdio.h>
+int main()
+{
+	int x, y, z;//x大马y中马z小马
+	for (x = 0; x <= 33; x++) {
+		for (y = 0; y <= 50; y++) {
+			z = 100 - x - y;
+			if (z % 2 == 0 && 3 * x + 2 * y + z / 2 == 100) {
+				printf("%d\t%d\t%d\n", x, y, z);
+			}
+		}
+	}
+	return 0;
+}
+(18)求解爱因斯坦数学题。有一条长阶梯，若每步跨2阶，则最后剩余1阶，若每步跨3阶，则最后剩2阶，若每步跨5阶，则最后剩4阶，若每步跨6阶则最后剩5阶，若每步跨7阶，最后才正好一阶不剩。请问，这条阶梯共有多少阶?
+#include<stdio.h>
+int main()
+{
+	int x=1,cnt=0;
+	for (;; x++) {
+		if (x % 2 == 1 && x % 3 == 2 && x % 5 == 4 && x % 6 == 5 && x % 7 == 0) 
+			printf("%d\t", x),
+			cnt++;
+		if(cnt == 5) break;
+	}
+	return 0;
+}
+
+数组
+(1)反向输出有5个元素的int数组中各元素的值。
+#include<stdio.h>
+int main()
+{
+	int a[5];
+	for (int i = 0; i < 5; i++) {
+		scanf_s("%d", &a[i]);
+	}
+	for (int i = 4; i >= 0; i--) {
+		printf("%d", a[i]);
+	}
+	return 0;
+}
+
+(2)在一个二维数组中形成并输出如下矩阵： 
+          1    1    1    1    1
+          2    1    1    l    1
+A=        3    2    1    l    l
+          4    3    2    1    1
+          5    4    3    2    1
+#include<stdio.h>
+int main()
+{
+	int a[5][5]={0};
+	int n = 5;
+	for (int i = 0; i < n; i++) {
+		for (int j = i; j < n; j++) {
+			a[i][j] = 1;
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = i - 1, k = 2; j >= 0&& k <= i + 1; j--, k++) {
+				a[i][j] = k;
+		}
+	}
+	//或者
+	//for(int j=0;j<i;j++){
+	//	a[i][j]=i+1-j
+	//}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			printf("%d\t", a[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+(3)求矩阵A(2 × 3)的转置矩阵B(3× 2)。
+        1    2    3  	1    4
+A= 	B=   2    5
+ 4    5    6  	3    6
+#include<stdio.h>
+int main()
+{
+	int a[2][3] = { {1,2,3},{4,5,6} }, b[3][2] = {0};
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 3; j++) {
+			b[j][i]= a[i][j];
+		}
+	}
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			printf("%d  ", b[i][j]);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+(4)某班期终考试科目为高等数学(MT)、英语(EN)和物理(PH)，有30人参加考试。为评定奖学金，要求统计并输出一个表格，表格内容包括学号、各科分数、总分和平均分，并标出三1]课均在90分以上者(该栏标志输出为“Y”，否则为“N”)，表格形式如下：
+        N0    HT    EN    PH    SUM    V  >90
+------------------------------------
+1     97    87    92    276    92   N
+         2     92    91    90    273    91   Y
+         3     90    81    82    253    84   N
+
+ 可以将学生的学号和各科成绩放在数组a[30][4]中，然后进行统计处理。
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+	int a[30][5] = { 0 };
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 3; j++) {
+			a[i][j] = rand()%100+60;
+		}
+	}
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 4; j++) {
+			a[i][3] += a[i][j];
+		}
+		a[i][4] = a[i][3] / 3;
+	}
+	printf("MT\tEN\tPH\tSUM\tV\t>90\n");
+	printf("-----------------------\n");
+	for (int i = 0; i < 30; i++) {
+		for(int j=0;j<5;j++){
+			printf("%d\t", a[i][j]);
+		}
+		if(a[i][0]>90&& a[i][1] > 90 && a[i][2] > 90 ){
+			printf("Y");
+		}
+		else {
+			printf("N");
+		}
+		printf("\n");
+	}
+	
+	return 0;
+}
+(5)有一个3 × 4的矩阵，求其中的最大元素的值。
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+	int a[3][4] = { 0 };
+	for (int i = 0; i < 3; i ++ ) {
+		for (int j = 0; j < 4; j++) {
+			a[i][j] = rand();
+		}
+	}
+	int max = a[0][0];
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (max < a[i][j]) {
+				max = a[i][j];
+			}
+			printf("%d\t", a[i][j]);
+		}
+		printf("\n");
+	}
+	printf("%d", max);
+	return 0;
+}
+(6)编写程序实现将字符串str2拷贝到字符串strl。
+#include<stdio.h>
+#include<string.h>
+void copy(char s1[], char s2[])
+{
+	for (int i = 0; i < strlen(s2); i++) {
+		s1[i] = s2[i];
+	}
+	puts(s1);
+}
+int main()
+{
+	char str1[101]={0}, str2[101] = {0};
+	gets_s(str2);
+	copy(str1, str2);
+	return 0;
+}
+(7)输入英文的星期几，查找星期表后输出对应的数字。具体的算法是：若发现与表中  某项相同，则输出该字符串在表中的位置(序号)：若查到表尾仍不相同，则输出错误信息。设星期表的内容如下图所示。
+0	sunday
+1	monday
+2	tuesday
+3	wednesday
+4	thursday
+5	friday
+6	saturday
+#include<iostream>
+#include<string.h>
+using namespace std;
+int main()
+{
+	char s[7][10] = { "sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
+	char ch[10] = { 0 }; int t;
+	cin >> ch;
+	for (int i = 0; i < 7; i++) {
+		if (!strcmp(s[i], ch)) {
+			t = i;
+		}
+		if (i>=7) {
+			printf("no result");
+		}
+	}
+	cout << t;
+	return 0;
+}
+(8)给定某年某月某日，将其转换成这一年的第几天并输出。
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int run(int);
+int main()
+{
+	int a=0, b=0, c=0,sum=0;//年月日
+	cin >> a >> b >> c;
+	int s[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	if (run(a)) {
+		s[2] = 29;
+	}
+	for (int i = 1; i < b; i++) {
+		sum += s[i];
+	}
+	sum += c;
+	cout << sum;
+	return 0;
+}
+int run(int y)
+{
+	if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+(9)如果一个正整数等于其各个数字的立方和，则该数称为阿姆斯特朗数(亦称为自恋性数)。如407=43+03+73就是一个阿姆斯特朗数。试编程求1000以内的所有阿姆斯特朗数。
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int judge(int);
+int main()
+{
+	int b[1005] = { 0 },cnt=0;
+	for (int i = 0; i <= 1000; i++) {
+		if (judge(i) == 1) {
+			b[i] = 1;
+		}
+	}
+	for (int i = 0; i <= 1000; i++) {
+		if (b[i]==1) {
+			cout << i<<"\t";
+			cnt++;
+			if (cnt % 5 == 0) {
+				cout << endl;
+			}
+		}
+	}
+	return 0;
+}
+int judge(int n)
+{
+	int a[4] = { 0 }, sum = 0;
+	for (int i = 0, t = n; i < 4 && t>0; i++, t /= 10) {
+		a[i] = t % 10;
+	}
+	for (int i = 0; i < 4; i++) {
+		sum += a[i] * a[i] * a[i];
+	}
+	if (sum == n) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+(10)写出下面给出的数组说明中所定义的数组的数组名、类型、维数、数组体积，并给出各数组元素在计算机中占用存储单元的情况。
+  	int  x[4]={1，2，3，4};
+  	float y[3][4]={1.1，1.2，1.3，1.4，1.5，1.6，1.7，1.8};
+  		int  z[2][2][3]={1，2，3，4，5，6，7，8，9，10，11，12};
+  		int  i[2][3]={{ }，{4，5，6}}，  j[2][2][2]={{ }，{3，4}，{ }，{7，8}};
+  		char  c1[10]={”Happy．”}，c2[ ][3]={{”*”}，{”**”}，{”*”}};
+(11)设某班50人，写一程序统计某一单科成绩各分数段的分布人数，每人的成绩随机输入，并要求按下面格式输出统计结果(”*”表示实际分布人数)。
+    	  0  一一  39    *
+   		 40  一一  49    **
+   		 50  一一  59    *****
+   		 ．．．．．．．．．．．．
+90  一一  100    ****
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+	int s[55] = { 0 }, a[7] = {0};
+	for (int i = 0; i < 50; i++) {
+		s[i] = rand() % 100;
+		if (s[i] < 40) {
+			a[0]++;
+		}
+		else if (s[i]<50) {
+			a[1]++;
+		}
+		else if (s[i] < 60){
+			a[2]++;
+		}
+		else if (s[i] < 70) {
+			a[3]++;
+		}
+		else if (s[i] < 80) {
+			a[4]++;
+		}
+		else if (s[i] < 90) {
+			a[5]++;
+		}
+		else {
+			a[6]++;
+		}
+	}
+	for (int i = 0; i < 7; i++) {
+		if (i == 0)cout << "0->39";
+		else if (i == 1)cout << "40->49";
+		else if (i == 2)cout << "50->59";
+		else if (i == 3)cout << "60->69";
+		else if (i == 4)cout << "70->79";
+		else if (i == 5)cout << "80->89";
+		else if (i == 6)cout << "90->100";
+		cout << "\t";
+		for (int j = 0; j < a[i]; j++) {
+			cout << "*";
+		}
+		cout << endl;
+	}
+	return 0;
+}
+
+(12)输入=维数组a[3][5]，打印其中最小值和最大值及其对应的行列位置。
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+	int a[3][5] = {0},max=0,min=0,r1 =0,c1=0,r2=0,c2=0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 5; j++) {
+			a[i][j] = rand();
+			cout  << a[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	max = a[0][0]; min = a[0][0];
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 5; j++) {
+			if (max < a[i][j]) {
+				max = a[i][j]; r1 = i; c1 = j;
+			}
+			if (min > a[i][j]) {
+				min = a[i][j]; r2 = i; c2 = j;
+			}
+		}
+	}
+	cout << max << "  " << r1 <<"  " << c1<<"\n";
+	cout << min << "  " << r2 << "  " << c2;
+	return 0;
+}
+(13)输入5×5的数组，编写程序实现：
+  (a)求出对角线上各元素的和；
+    (b)求出对角线上行、列下标均为偶数的各元素的积；
+(c)找出对角线上其值最大的元素和它在数组中的位置。 
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+	int a[5][5] = {0},sum=0,ji=1,max=0,r=0,c=0;
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			a[i][j] = rand();
+			cout << a[i][j]<<"\t";
+			if (i == j||i+j==4) {
+				sum += a[i][j];
+			}
+		}			
+		cout << endl;
+	}
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			if ((j==i&&i % 2 == 0)||(j+i==4&&j%2==0&&i%2==0&&j!=i)) {
+				ji *= a[i][j];
+			}
+			if ((i==j&&max < a[i][j])||(i+j==4&&max<a[i][j])) {
+				max = a[i][j];
+				r = i; c = j;
+			}
+		}
+	}
+	cout<<sum<<endl<<ji<<endl<<max<<"\t"<<r<<"\t"<<c;
+
+	return 0;
+}
+(14)简单的密码加密程序。其加密过程是先定义一张字母加密对照表。
+输入    输出    输入    输出
+     	a       d       i       a
+     	b       w       k       b
+c       k       ;      c
+d       ：     w        e
+e       I
+将需要加密的一行文字输入加密程序，程序根据加密表中的对应关系，可以很简单地将输入的文字加密输出，对于表中未出现的字符则不加密。 
+#include<iostream>
+#include<cstdio>
+#include<string.h>
+using namespace std;
+int main()
+{
+	char t[9][2] = { {'a','d'},{'b','w'} ,{'c','k'}, {'d',':'}, {'e','l'}, {'i','a'}, {'k','b'}, {';','c'}, {'w','e'}};
+	char c[100] = { 0 };
+	cin >> c;
+	for (int i = 0; i < strlen(c); i++) {
+		for (int j = 0; j < 9; j++) {
+			if (c[i] == t[j][0]) {
+				cout << t[j][1];
+			}
+			if (j == 10) {
+				cout << c[i];
+			}
+		}
+	}
+	return 0;
+}
+
+(15)使用二维数组输入”BASIC”，”ADA”，”Pascal”，”C”，”Fortran”，将它们按从小到大的顺序排列后输出。 
+#include<iostream>
+#include<string.h>
+using namespace std;
+int main() 
+{
+	char s[5][10] = { "BASIC","ADA","Pascal","C","Fortran" }, a[10] = {0};
+	for (int i = 0; i < 4; i++) {
+		if (strcmp(s[i], s[i + 1])>0)
+		{
+			strcpy_s(a, s[i]);
+			strcpy_s(s[i], s[i + 1]);
+			strcpy_s(s[i+1], a);
+		}
+	}
+	for (int i = 0; i < 5; i++) {
+		cout << s[i]<<"\t";
+	}
+
+	return 0;
+}
+(16)已知某运动会上女子百米运动员决赛成绩。要求编写程序，按成绩排序并按名次输出排序结果，包括名次、运动员号、成绩三项内容。 
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+	int a[100][2] = { 0 }, m = 0, n = 0, x = 100;
+	for (int i = 0; i <x ; i++) {
+		cout << i + 1;
+		for (int j = 0; j < 2; j++) {
+			a[i][j] = rand()%100;
+			cout << "\t" << a[i][j];
+		}
+		cout << endl;
+	}
+	for (int j = 0; j < x; j++) {
+		for (int i = 0; i < x - 1; i++) {
+			if (a[i][1] < a[i + 1][1]) {
+				m = a[i][0];a[i][0] = a[i + 1][0];a[i + 1][0] = m;
+				n = a[i][1];a[i][1] = a[i + 1][1];a[i + 1][1] = n;
+			}
+		}
+	}
+	cout << endl;
+	for (int i = 0; i < x; i++) {
+		cout << i + 1;
+		for (int j = 0; j < 2; j++) {
+			cout  << "\t" << a[i][j];
+		}
+		cout << endl;
+	}
+	return 0;
+}
+(17)将矩阵A[2][3]的六个元素送入矩阵A[3][2]中，使其顺时针旋转90度。例： 
+     		1   2   3               4   1    
+a=                      b=  5   2
+4   5   6               6   3
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int main()
+{
+	int a[2][3] = { {1,2,3} ,{4,5,6} }, b[3][2] = { 0 };
+	for (int j = 0,n=0; j < 3&&n<3; j++,n++) {
+		for (int i = 1,m=0; i >= 0&&m<2; i--,m++) {
+			b[n][m] = a[i][j];
+		}
+	}
+	for (int i=0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			cout << b[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	return 0;
+}
+(18)输入10个人的序号和成绩，对成绩从小到大进行排序，输出排序后的序号和成绩
+#include<iostream>
+#include<cstdio>
+#include<stdlib.h>
+using namespace std;
+int main()
+{
+	int a[100][2] = { 0 }, m = 0, n = 0, x = 10;
+	for (int i = 0; i < x; i++) {
+		cout << i + 1;
+		for (int j = 0; j < 2; j++) {
+			a[i][j] = rand() % 100;
+			cout << "\t" << a[i][j];
+		}
+		cout << endl;
+	}
+	for (int j = 0; j < x; j++) {
+		for (int i = 0; i < x - 1; i++) {
+			if (a[i][1] < a[i + 1][1]) {
+				m = a[i][0];a[i][0] = a[i + 1][0];a[i + 1][0] = m;
+				n = a[i][1];a[i][1] = a[i + 1][1];a[i + 1][1] = n;
+			}
+		}
+	}
+	cout << endl;
+	for (int i = 0; i < x; i++) {
+		cout << i + 1;
+		for (int j = 0; j < 2; j++) {
+			cout << "\t" << a[i][j];
+		}
+		cout << endl;
+	}
+	return 0;
+}
+(19)对数组A中的N(0<N<100)个整数从小到大进行连续编号，要求不能改变数组A中元素的顺序，且相同的整数要具有相同的编号。例如：    
+A=(5，3，4，7，3，5，6)  则输出为：    (3，1，2，5，1，3，4)   
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+int c[100000000] = { 0 };
+int main()
+{
+	int a[105] = { 0 }, b[105] = { 0 }, n, t,cnt=1;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		a[i] = rand() % 10;
+		//cin >> a[i];
+		b[i] = a[i];
+		cout  << a[i] << "\t";
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n - 1; j++) {
+			if (b[j] > b[j + 1]) {
+				t = b[j]; b[j] = b[j + 1]; b[j + 1] = t;
+			}
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		cout << b[i] << "\t";
+	}
+	cout << endl;
+	
+	for (int i = 0,j=1; i < n&&j<=n; i++) {
+		if (c[b[i]] == 0) {
+			c[b[i]] = j;
+			j++;
+		}
+		else if (c[b[i]] != 0) {
+			c[b[i]] += 0;
+		}
+	}
+	for (int i = 0; i < 100&&cnt<=n; i++) {
+		cout  << c[a[i]] << "\t";
+		cnt++;
+	}
+	return 0;
+}
+
+(20)现将不超过2000的所有素数从小到大排成第一行，第二行上的每个数都等于它    “右肩”上的素数与“左肩”上的素数之差。请编程求出：第二行数中是否存在这样的若干个连续的整数，它们的和恰好是1898？假如存在的话，又有几种这样的情况?
+第一行：2  3  5  7  11  13  17  ．．．．．  1979  1987  1993
+第二行：1  2  2  4  2   4    ．．．．．    8    6 
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int main()
+{
+	int a[2][2000] = {0},k=0,n,cnt=0,sum;
+	cin >> n;
+	for (int i = 1; i < n; i++) {
+		int flag = 0;
+		for (int j = 2; j <= i/2; j++) {
+			if (i % j == 0) {
+				flag += 1;
+			}
+		}
+		if (flag == 0) {
+			a[0][k++] = i;
+		}
+	}
+	for (int i = 0; i < k ; i++) {							//必须是k
+		a[1][i] = a[0][i + 1] - a[0][i];
+	}
+	//for (int i = 0; i < 2; i++) {
+	//	for (int j = 0; j < k; j++) {
+	//		if(a[i][j])
+	//		cout << a[i][j] << "\t";
+	//	}
+	//	cout << endl;
+	//}
+	for (int i = 0; i < k; i++) {
+		sum = 0;
+		for (int j = i; j < k; j++) {
+			sum += a[1][j];
+			if (sum == 1898) {
+				cnt += 1;
+				continue;
+			}
+		}
+	}
+	cout << endl << cnt;
+	return 0;
+}
+(21)下面是5×5的螺旋方阵。请编程生成n×n(n<10)阶方阵。
+     	 1     2     3     4    5
+    	16    17    18    19    6
+    	15    24    25    20    7
+    	14    23    22    21    8
+	13    12    11    10    9
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int a[15][15];
+int main()
+{
+	int n, k = 1, x = 1, y = 0;;
+	cin >> n;
+	while (k <= n * n){
+		while (y < n && a[x][y + 1]==0) a[x][++y] = k++;
+		while (x < n && a[x + 1][y]==0) a[++x][y] = k++;
+		while (y > 1 && a[x][y - 1]==0) a[x][--y] = k++;
+		while (x > 1 && a[x - 1][y]==0) a[--x][y] = k++;
+	}
+	for (int i = 1; i <= n; i++){
+		for (int j = 1; j <= n; j++) 
+			cout <<"\t"<< a[i][j];
+		cout << endl;
+	}
+	return 0;
+}
+
+#include<stdio.h>
+int main(){
+    int a[10][10];
+    int n, k, a1 = 1, i = 0, j = 0, l, flag = 9;
+    printf("请输入一个整数:");
+    scanf_s("%d", &n);
+    k = n ;
+    for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) a[i][j] = i;
+    while (a1 <= n * n) {
+        for (l = 0; l < k; l++, a1++){
+            a[i][j] = a1;
+            if (flag % 2) j++;
+            else j--;
+        }
+        k--;
+        if (flag%2) j--;
+        else j++;
+        for (l = 0; l < k; l++, a1++) {
+            if (flag % 2) i++;
+            else i--;
+            a[i][j] = a1;
+        }
+        if (flag%2) j--;
+        else j++;
+        flag--;
+    }
+    for (i = 0; i < n; i++){
+        for (j = 0; j < n; j++) 
+		printf("%-4d", a[i][j]);
+        printf("\n");
+    }
+    return 0;
+}
+
+
+函数
+(1)将一个数的数码倒过来所得到的新数叫原数的反序数。如果一个数等于它的反序数，则称它为对称数。求不超过1993的最大的二进制的对称数。
+#include<iostream>
+using namespace std;
+int a[100000000] = { 0 };
+void change(int);
+int main() 
+{
+	int n; cin >> n;
+	change(n);
+	return 0;
+}
+void change(int n)
+{
+	int t, flag = 1, cnt = 0; t = n;
+	for (int i = 0; t > 0; i++) {
+		a[i] = t % 2; t /= 2; cnt++;
+	}
+	for (int i = 0, j = cnt-1;j>=i; i++, j--) {
+		if (a[i] != a[j]) { change(n - 1); flag = 0;  }
+	}
+	if (flag == 1) { cout << n; }
+}
+(2)将1、2、3、4、5、6、7、8、9九个数字分成三组，每个数字只能用一次，即每组三个数不许有重复数字，也不许同其它组的三个数字重复，要求将每组中的三位数组成一个完全平方数。 
+
+(3)对数组A中的N(0<N<100)个整数从小到大进行连续编号，要求不能改变数组A中元素的顺序，且相同的整数要具有相同的编号。
+例如：A=(5，3，4，7，3，5，6)  则输出为：    (3，1，2，5，1，3，4)
+#include<iostream>
+#include<stdlib.h>
+#include<cstdio>
+using namespace std;
+int c[100000000] = { 0 };
+int a[105] = { 0 }, b[105] = { 0 };
+void f(int a[],int b[],int c[],int n)
+{
+	int t;
+	for (int i = 0; i < n; i++) {
+		b[i] = a[i];
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n - 1; j++) {
+			if (b[j] > b[j + 1]) {
+				t = b[j]; b[j] = b[j + 1]; b[j + 1] = t;
+			}
+		}
+	}
+	for (int i = 0, j = 1; i < n && j <= n; i++) {
+		if (c[b[i]] == 0) {
+			c[b[i]] = j;
+			j++;
+		}
+		else if (c[b[i]] != 0) {
+			c[b[i]] += 0;
+		}
+	}
+}
+int main()
+{
+	int n, cnt = 1; cin >> n;
+	for (int i = 0; i < n; i++) {
+		//a[i] = rand();
+		cin >> a[i];
+	}
+	f(a, b, c, n);
+	for (int i = 0; i < 100 && cnt <= n; i++) {
+		cout << c[a[i]] << "\t";
+		cnt++;
+	}
+	return 0;
+}
+(4)编写函数insert(s1，s2，f)，实现在字符串s1中的指定位置f处插入字符串s2。
+#include<iostream>
+#include<cstring>
+using namespace std;
+char s1f[1000] = { 0 }, s1b[1000] = { 0 };
+void insert(char s1[], char s2[], int n)
+{
+	for (int i = 0; i < n - 1; i++)
+		s1f[i] = s1[i];
+	for (int i = n - 1; i < strlen(s1); i++) 
+		s1b[i - n + 1] = s1[i];
+	strcat_s(s1f, s2);
+	strcat_s(s1f, s1b);
+	strcpy_s(s1, strlen(s1f) + 1,s1f);
+}int main()
+{
+	int n; cin >> n;
+	char s1[10000], s2[100];
+	cin >> s1 >> s2;
+	cout << endl;
+	insert(s1,s2,n+1);      //n还是n+1看输入习惯
+	for (int i = 0; s1[i] != '\0'; i++) {
+		cout << s1[i];
+	}
+	return 0;
+} 
+(5)输入五个单词，请将它们按从小到大的顺序排列后输出。 
+#include<iostream>
+#include<cstring>
+using namespace std;
+void paixu(char s[][10]) 
+{
+	char a[10] = { 0 };
+	for (int j = 1; j <= 4; j++) {
+		for (int i = 0; i < 4; i++) {
+			if (strcmp(s[i], s[i + 1]) < 0) {
+				strcpy_s(a, s[i]);
+				strcpy_s(s[i], s[i + 1]);
+				strcpy_s(s[i + 1], a);
+			}
+		}
+	}
+}
+int main()
+{
+	char s[5][10];
+	for (int i = 0; i < 5; i++) {
+		scanf_s("%s", s[i],10);
+	}
+	paixu(s);
+	for (int i = 0; i < 5; i++) {
+		cout << s[i]<<"\t";
+	}
+}
+(6)输入字符串，请分别统计字符串中所包含的各个不同的字符及其各自字符的数量，
+如：输入字符串：  abcedabcdcd
+则输出：a=2  b=2  c=3  d=3  e=l 
+#include<iostream>
+#include<cstring>
+using namespace std;
+char ch[100000000];
+void count(char s[]);
+int main() 
+{
+	char s[1000];
+	cin >> s;
+	count(s);
+	return 0;
+}
+void count(char s[])
+{
+	char c, d; int cnt = 0;
+	for (int i = 1; s[i] != '\0'; i++) {
+		for (int j = 0; s[j + 1] != '\0'; j++) {
+			if (s[j] > s[j + 1]) {
+				c = s[j];
+				s[j] = s[j + 1];
+				s[j + 1] = c;
+			}
+		}
+	}
+	for (int i = 0; s[i] != '\0';i++) {
+		if (c == s[i]) continue;
+		cnt = 0; c = s[i]; cnt++;
+		for (int j = i + 1; s[j] != '\0'; j++) {
+			if (c == s[j]) cnt++;
+			else break;
+		}
+		cout << c << "=" << cnt<<"\t";
+	}
+	
+}
+
+(7)写一程序，其中包括一个函数，此函数的功能是：对一个长度为N的字符串从其第K个字符起，删去M个字符，组成长度为N-M的新字符串(其中N、M<=80，K<=N)。要求输入字符串 ”We are poor students．”，利用此函数进行删除”poor”的处理，并输出处理后的字符串。 
+#include<iostream>
+#include<cstring>
+using namespace std;
+void del(char s[],int, int);
+int main()
+{
+	char s[1000]; int n, m;
+	gets_s(s);
+	cin >> n >> m;
+	del(s, n, m);
+
+	return 0;
+}
+void del(char s[], int n, int m)
+{
+
+	for (int i = n-1; i < n + m; i++) {
+		s[i] = s[i + m];
+	}
+	for (int i = 0; s[i] != '\0'; i++) {
+		cout << s[i];
+	}
+}
+(8)设一以符号“．”结束的英文句子长度小于20字节。请编程读入该句子，并检查其是否为回文(即正读和反读都是一样的，不考虑空格和标点符号)。
+例如：读入：MADAM I M ADAM．  	输出：YES
+读入：ABCDBA)   		 	输出：N0
+#include<iostream>
+#include<cstring>
+using namespace std;
+void judge(char s[]);
+int main()
+{
+	char s[100];
+	cin >> s;
+	judge(s);
+	return 0;
+}
+void judge(char s[])
+{
+	int flag=1;
+	for (int i = 0, j = strlen(s)-1; j >= i;) {
+		if ((s[i] < 65 && s[i]>90) || (s[i] < 97 && s[i]>122)) 
+			i++;
+		if ((s[j] < 65 && s[j]>90) || (s[j] < 97 && s[j]>122)) 
+			j--;
+		if (s[i] == s[j]) { 
+			i++; j--; 
+		}
+		else if(s[i]!=s[j]) {
+			flag = 0;
+			break;
+		}
+	}
+	if (flag == 1) { cout << "Yes"; }
+	else { cout << "No"; }
+}
+
+
+指针
+(1)编写一个使用指针的C函数，交换数组a和数组b中的对应元素。
+(2)用指针作为函数的形式参数，编写字符串复制函数。
+(3)编写函数，通过指针连接两个字符串。
+(4)编写函数，通过指针将一个字符串反向。
+(5)编写函数，通过指针求字符串的长度。
+(6)编程按指针方式引用命令行的参数。
+(7)产生动态数组。编写程序，输入数组大小后，通过动态分配内存函数malloc产生数组。
+(8)用指针编写比较两个字符串s和t的函数strcmp(s，t)。要求s<t时返回-1，s=t时返回0，s>t时返回1。 
+
+综合1
+ 
+1输入任意一个十进制整数,转化为二进制数串显示出来
+2设想一下,32位整数int能表示最大多大数的阶乘。假设 y=x!,在32位整数范围内,x最大为多少,y能达到最大值,而能保证乘法不溢出
+3、编程输入一个信用卡号码,输出合法性校验结果.Lunn算法可校验号码合法性，使用信用卡号码只能由0-9数字组成，通常16-19位
+	1)从卡号最后一位开始,逆向将奇数位相加
+	2)从卡号最后一位开始,逆向将偶数位数字,先乘以2(如果乘积为2位数,则将其减去9),再求和
+	3)将奇数位总和加上偶数位总和,结果应能被10整除
+4、A、B、C、D、E五个人在某天夜里合伙去捕鱼,到第二天凌晨时都疲倦了,于是各自找地方睡觉。日上三竿,A第一个醒来,他将鱼分为五分,把多余的一条鱼扔掉,自己拿走一份。B、C、D、E依次醒来,也按同样方法都能拿到鱼。求他们合伙至少捕了多少鱼
+5、一个N位的十进制正整数,如果每一位数字的N次方之和等于这个数本身,则称其为花朵数
+要求:
+	1）用一个宏定义N ,例如:#define N 3
+	2）函数int getP(int x,int y)计算x的y次方.
+	3）函数int getWel(int n,int *s)将n的每位数字按次序存放到数字s中,例如n=567,那么s[0]=5,s[1]=6,s[2]=7,返回3,表示567是一个3位数.
+4）确保当N的值为4.5.6或7时,能输出正确结果,每行输出一个.
+6、从键盘读入一个由字母构成的串(不大于30个字符)，从该串中取出任意3个不重复的字符，求所有的不同取法,如果没有取到3个不同字符,则提示没有结果。要求按字母升序排列成一个串,对于不同的取法,输出次序无所谓,但数目应该确保正确
+综合2
+1、打印所有不超过n(n<256)的,其平方具有对称性质的数.如:11*11=121
+2、请写一个程序,对于一个m行m列(1<m<10)的矩阵,求其每一行,每一列及对角线元素之和，最后按照从大到小的顺序输出，输入说明:共一组数据,输入的第一行为一个正整数,表示m,接下来的m行,每行m个整数表示方阵的元素
+3、 编写一个函数:void replace(char rs[],char a[],char s1[],const char s2[]),在字符串a中查找是否有s1子串,如果有,就将s1子串替换为s2串,最后将结果串写入到形参rs串中,写一个主函数测试结果
+4、设a,b,c均是0~9之间的数,abc,bcc是两个三位数,且有:abc+bcc=532.求满足条件的所有a,b,c的值
+5、对一组输入数字进行下面三种操作:12,34,2,15,26,8,40
+	操作1:  a  m,将m加到数列最后,5 3 4 7 3 5 6
+			例如输入: a 8
+			输出结果: 12,34,2,15,26,8,40,8
+	操作2:  c m n,将序列中m全都换成n
+			例如输入:c 8 7
+			输出结果:12,34,2,15,26,7,40,7
+	操作3:	d m,将序列中的m全部删除
+			例如输入:d  7
+			输出结果:12,34,2,15,26,40
+6、编写一个程序计算100以内的smith数。
+  概念:一个非素数,其各位数之和等于其所有质因数的各位数之和
+  例如:
+  4=2*2,4=2+2 是
+  22=2*11,2+2=2+1+1 是
+  27=3*3*3 ,2+7=3+3+3 是
+7、输入一个字符串,串内有数字和非数字字符,如:abc2345  345efa afae3452
+	将其中连续的数字作为一个整数,依次存放到另一个整形数组b中.如对于以上的输入统计出字符串中数字的个数,并输出这些整数.要求在主函数中完成输入和输出,设计一个函数,把指向字符串的指针和指向整数的指针作为函数的形参。
+综合3
+1、输入字符串统计单词个数。
+2、输入两个字符串s和t,打印出t在s中出现的位置,并输出出现的次数
+  如输入:s=qwqwertqweqqqq ,t=qw
+    输出:0 2 7
+	     3
+3、观察一个数的序列规律, 1 2 3 4 5 6 8 9 10 12 15 16 18......
+  现在输入一个数8(即上述数列中第八个数),输出: 9
+  注:上述序列皆为1 2 3 5的倍数(即至少是1 2 3 5 其中一个数的倍数)
+4、二进制逆序，如输入10对应的二进制为1010其逆序为0101,对应十进制为5
+5、求满足条件:n*n-m*m-n*m=1,且使m*m+n*n的值最大的 m 和 n,其中m 和 n 的值都要小于k,k由用户输入
+6、已知一个数组 如a[10]={1,2,3,4,5,6,7,8,9,0};输入p,则右移p位。 如输入3后,输出a[10]={8,9,0,1,2,3,4,5,6,7}。 要求时间复杂度和空间复杂度尽量小
+7、已知一个斜三角：
+  22 32 14 77 45
+       12 34 37 23
+	  44 23 15
+	       34 54
+		  88
+    从最左上角元素开始往右或往右下走,请问顺着哪条路所经过的值得总和最大, 如可以有路线:22 32 34 23 54; 22 12 44 34 88等请求出满足值总和最大的那条路线
+
+
+
+
+
+
+
+
+
+//选择
+//辗转相除法求公约数
+#include<stdio.h>
+int main()
+{
+	int num1, num2, t = 1;
+	scanf_s("%d %d", &num1, &num2);
+	while (t)         
+	{
+		t = num1 % num2;
+		num1 = num2;
+		num2 = t;
+	}
+	printf("%d", num1);
+	return 0;
+}
+
+//三位素数
+#include<stdio.h>
+int main()
+{
+	int k;
+	int x = 0;
+	for (k=100;k<1000;k++){
+		int cnt = 0;
+		for (int i = 1; i < k; i++) {
+			if (k % i == 0) cnt++; 
+		}
+		if (cnt == 1) {
+			printf("%d\t", k);
+			x++;
+		}
+		if (x % 10 == 0) {
+			printf("\n");
+		}
+	
+	}
+	return 0;
+}
+
+//最大数，不用数组
+#include<stdio.h>
+int main()
+{
+	int max, temp;
+	scanf_s("%d", &temp);
+	max = temp;
+
+	for (int i = 0; i < 9; i++)
+	{
+		scanf_s("%d", &temp);
+		if (temp >= max)
+		{
+			max = temp;
+		}
+	}
+	printf("%d", max);
+
+	return 0;
+}
+
+//百位数换字符
+#include<stdio.h>
+int main()
+{
+	int n;
+	char c;
+	scanf_s("%d", &n);
+	n /= 100;
+	n %= 10;
+	c = n;
+	printf("%d %c",n, c);
+	return 0;
+}
+//统计合格与不合格
+#include<stdio.h>
+int main()
+{
+	int i,x=0,y=0;
+	for (int j = 1; j <= 10; j++) {
+		scanf_s("%d", &i);
+		if (i >= 60) x++;
+		else y++;
+	}
+	printf("%d\n%d\n", x, y);
+	return 0;
+}

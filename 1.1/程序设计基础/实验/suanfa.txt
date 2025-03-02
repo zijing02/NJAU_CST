@@ -1,0 +1,572 @@
+/*
+//#include<stdio.h>
+//#include<iostream>
+//#include<cstdio>
+//#include<math.h>
+//#include<string.h>
+//#include<stdlib.h>
+//#include<algorithm>
+//using namespace std;
+//int main()
+//{
+//
+//	return 0;
+//}
+
+
+
+
+
+//排序 符合条件的排序至少是两层循环
+//冒泡排序
+//将每一个数字与下一个数字比较若符合条件交换
+//每次循环最后一个数字是最大(小的)
+//以{3，2，1}为例
+//第一趟						第二趟
+//3>2 交换得  2 3 1			2>1	 交换得  1 2 3
+//3>1 交换得  2 1 3			2<3  不交唤
+//得2 1 3						得1 2 3
+#include<stdio.h>
+int main()
+{
+	int a[10] ={0},t;
+	for (int h = 0; h < 10; h++) {
+		scanf_s("%d", &a[h]);
+	}
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9 - i; j++) {
+			if (a[j] > a[j + 1]) {
+				t = a[j];
+				a[j] = a[j + 1];
+				a[j + 1] = t;
+			}
+		}
+	}
+	for (int h = 0; h < 10; h++) {
+		printf("%d ", a[h]);
+	}
+	return 0;
+}
+
+//选择排序
+//将每一个数字与之后面所有的数字比较，符合条件交换
+//以{3，2，1}为例
+//第一轮								第二轮
+//a[0]=3 3>2 交换得 2 3 1				a[1]=3  3>2  交换得 1 2 3
+//a[0]=2 2>1 交换得 1 3 2				a[1]=2  2<3  不交换
+//得 1 3 2							得1 2 3
+#include<stdio.h>
+int main()
+{
+	int a[10] = { 0 }, t;
+	for (int h = 0; h < 10; h++) {
+		scanf_s("%d", &a[h]);
+	}
+	for (int i = 0; i < 9; i++) {
+		for (int j = i+1; j < 10; j++) {
+			if (a[i] > a[j]) {
+				t = a[i];
+				a[i] = a[j];
+				a[j] = t;
+			}
+		}
+	}
+	for (int h = 0; h < 10; h++) {
+		printf("%d ", a[h]);
+	}
+	return 0;
+}
+
+//直接排序
+//在选择排序基础上，找出后面最小的一位的序号并只交换一次
+//每次比较完第一个数字最大(小)
+#include<stdio.h>
+int main()
+{
+	int a[10] = { 0 }, t,pmin;
+	for (int h = 0; h < 10; h++) {
+		scanf_s("%d", &a[h]);
+	}
+	for (int i = 0; i < 9; i++) {
+		pmin = i;
+		for (int j = i + 1; j < 10; j++) {
+			if (a[pmin] > a[j]) {
+				pmin = j;
+			}
+		}
+		if (pmin != i) {
+			t = a[i];
+			a[i] = a[pmin];
+			a[pmin] = t;
+		}
+	}
+	for (int h = 0; h < 10; h++) {
+		printf("%d ", a[h]);
+	}
+	return 0;
+}
+
+//桶排序
+//将数字比作旗子，数组比作桶，没输入一个数字，相应的桶+1
+//要求桶足够多
+#include<stdio.h>
+int a[1000] = { 0 };
+int main() 
+{
+	int t,n;
+	scanf_s("%d\n", &n);
+	for (int i = 0; i < n; i++) {
+		scanf_s("%d", &t);
+		a[t]++;
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 1; j <= a[i]; j++) {   //判断桶是不是空桶以及桶中还有几个旗子
+			printf("%d ", i);
+		}
+	}
+	return 0;
+}
+
+//插入排序
+//直接插入法
+#include <stdio.h>
+int main()
+{
+	int a[] = { 4, 7, 1, 2, 5, 8, 9, 10, 3, 6 };
+	int i, j, m;
+	for (i = 1; i < 10; i++)
+	{
+		m = a[i];
+		j = i - 1;
+		while (j >= 0 && m > a[j])    //将某一个数字标记，将其插入到它前面适合的位置，之后后面的元素后移
+		{
+			a[j + 1] = a[j];
+			a[j] = m;
+			j--;
+		}
+
+	}
+	for (i = 0; i < 10; i++)
+		printf("%3d", a[i]);
+	printf("\n");
+}
+//或者
+#include <stdio.h>
+int main()
+{
+	int a[] = { 4, 7, 1, 2, 5, 8, 9, 10, 3, 6 };
+	int i, j, m;
+	for (i = 1; i < 10; i++)
+	{
+		m = a[i];
+		j = i - 1;
+		while (j >= 0 && m > a[j])    //将某一个数字标记，将其插入到它前面适合的位置，之后后面的元素后移
+		{
+			a[j + 1] = a[j];
+			j--;
+		}
+		a[j + 1] = m;				//此处有减1相当于在找前面小数字的位置
+
+	}
+	for (i = 0; i < 10; i++)
+		printf("%3d", a[i]);
+	printf("\n");
+}
+
+//快速排序
+//常常将最左面的数字作为基准数，后分别从最后一个向前以及基准数后一个向后遍历，先在后面找到一个符合条件的数字
+//再在前面找到符合条件的数字，交换，如此运行至左右相遇，基准数归位并进行递归
+//以{3，4，1，2，5}为例																									(基准数)3   4(i)   1    2    5(j)
+//3为基准数，j=5，i=4。j往前走到2，小于三停止																					3   4(i)   1    2(j) 5
+//i往后走，为4，大于三停止																										3   4(i)   1    2(j) 5
+//交换i与j的值。																												3   2(i)   1    4(j) 5
+//j往前走，到1小于三停止，i往后走到1，与j相遇，基准数3归位与1交换																3   2   (i)1(j) 4    5
+//往后递归																														1   2      3    4    5							
+#include<stdio.h>
+int a[101] = { 0 },n;
+void quicksort(int left, int right) 
+{
+	int i, j, t, temp;
+	if (left > right) return;
+	temp = a[left];i = left;j = right;					//temp为基准数
+	while (i != j) {
+		while (a[j] >= temp && i < j) j--;				//必须右边先走
+		while (a[i] <= temp && i < j) i++;				
+		if (i < j) {
+			t = a[i];								
+			a[i] = a[j];
+			a[j] = t;
+		}
+	}
+	a[left] = a[i];										//基准数归位
+	a[i] = temp;
+	quicksort(left,i-1);								//递归
+	quicksort(i+1,right);
+
+}
+int main()
+{
+	int i;
+	scanf_s("%d", &n);
+	for (i = 1; i <= n; i++) {
+		scanf_s("%d", &a[i]);
+	}
+	quicksort(1, n);
+	for (int h = 0; h < 10; h++) {
+		printf("%d ", a[h]);
+	}
+	return 0;
+}
+
+//素数
+//普通筛法
+#include<stdio.h>
+int main()
+{
+	for (int n = 100; n <= 1000; n++) {
+		int flag=0;
+		for (int i = 2; i <= n / 2; i++) {
+			if (n % i == 0) {
+				flag = 1;
+				break;
+			}
+		}
+		if (flag == 0) {
+			printf("%d\t", n);
+		}
+	}
+	return 0;
+}
+
+//埃氏筛
+//筛掉所有质数的倍数，但是会重复筛
+#include<stdio.h>
+int a[100000000];
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	for (int i = 1; i <= n; i++) {
+		a[i] = 1;
+	}
+	for (int i = 2; i < n / i; i++) {
+		if (a[i])
+		{
+			for (int j = i*i; j <= n; j+=i) {
+				a[j] = 0;
+			}
+		}
+	}
+	for (int i = 1; i < n; i++) {
+		if (a[i])
+			printf("%d\t", i);
+	}
+	return 0;
+}
+
+//欧拉筛(线性筛)
+//在艾氏筛的基础上改进，用每个数字的最小质因数筛掉他
+#include<stdio.h>
+int a[100000000];
+int primes[100000000];
+int pp = 0;
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	for (int i = 1; i <= n; i++) {
+		a[i] = 1;
+	}
+	for (int i = 2; i < n; i++) {
+		if (a[i]) primes[++pp] = i;							//将素数存入数组					
+		for (int j = 1; primes[j] * i <= n; ++j) {						
+			a[primes[j] * i] = 0;
+			if (i % primes[j] == 0) break;					//如果i是素数的倍数，停止
+		}
+	}
+	for (int i = 1; i < n; i++) {
+		if (a[i])
+			printf("%d\t", i);
+	}
+	return 0;
+}
+
+//高精度加法
+//一般数字较大，超出int long int范围，所以建立数组(一般二维)模拟竖式运算
+// 洛谷P1601
+//但用python没有问题
+//a=int(input())
+//b=int(input())
+//print(a+b)
+#include<iostream>
+using namespace std;
+int a[1000001], b[1000001], c[1000001], j;
+bool x = false;
+char s[1000001], ss[1000001];
+int main() {
+
+	memset(a, 0, sizeof(a));
+	memset(b, 0, sizeof(b));
+	memset(c, 0, sizeof(c));											//初始化
+	scanf("%s%s", s, ss);
+	a[0] = strlen(s);
+	b[0] = strlen(ss);													//获取长度
+	for (int i = 1; i <= a[0]; i++) a[i] = s[a[0] - i] - '0';
+	for (int i = 1; i <= b[0]; i++) b[i] = ss[b[0] - i] - '0';			//反转并转化为数字使之后的遍历从前往后
+	for (j = 1; j <= max(a[0], b[0]) + 1; j++) {
+		c[j] = a[j] + b[j];												//模拟加法
+		if (c[j] >= 10) {
+			c[j] %= 10;
+			a[j + 1]++;
+		}
+	}
+	c[0] = j;
+	if (c[j + 1] > 0) c[0]++;											//特判进位
+	for (int i = c[0]; i >= 1; i--) {									//输出（删除前导零）//从后往前打印才是结果
+		if (x == false && c[i] == 0) continue;
+		x = true;
+		cout << c[i];
+	}
+	if (x == false) cout << 0;//一重保险
+	printf("\n");//二重保险
+	return 0;//三重保险
+}
+
+//DFS
+//DFS是遍历所有的解
+//回溯的解是DFS解的子集，用回溯解的题用DFS都能解
+//代码框架
+//void def(int step)						//用的void
+//{
+//	if (到达目的地) {
+//		输出解；
+//		返回；
+//	}
+//	适当的剪枝操作(非必须)
+//	for (int i = 1; i <= 枚举数; i++) {
+//		if (满足条件) {
+//			更新状态位；
+//			def(step+1)；					//深层def在if内部
+//			恢复状态位；
+//		}
+//	}
+//}
+//洛谷P1706全排列问题
+#include<iostream>
+using namespace std;
+int n, a[10], book[10] = {0};
+void dfs(int step)
+{
+	if (step == n) {
+		for (int i = 0; i < n; i++) {
+			cout << "    "<<a[i];
+		}
+		printf("\n");
+		return;
+	}
+	for (int i = 1; i <= n; i++) {
+		if (book[i]!=1) {
+			book[i] = 1;		//标记i如果被用过就不用
+			a[step] = i;
+			dfs(step+1);
+			book[i] = 0;		//在下一次用之前解除i的标记
+		}
+	}
+}
+int main()
+{
+	cin >> n;
+	dfs(0);
+	return 0;
+}
+//洛谷P1157组合的输出
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int n, k, a[25];
+void dfs(int step,int flag) {
+	if (step == k) {
+		for (int i = 0; i < k; i++) {
+			printf("%3d", a[i]);
+		}
+		cout << endl;
+		return;
+	}
+	if (n - flag < k - step) return;   //剪枝操作：只有当n-flag(所有的枚举数数目)大于k-flag(现在的枚举数的数目)才有进行下的意义(但此题可有可无)
+	for (int i = flag + 1; i <= n; i++) {
+		a[step] = i;
+		dfs(step + 1, i);
+	}
+}
+int main()
+{
+	cin >> n >> k;
+	dfs(0, 0);
+	return 0;
+}
+
+
+
+//回溯
+//回溯与递归相辅相成，回溯一般是递归后面的逻辑，相当于一层层for搜索
+//用于排列，组合，切割字符串，找子集，棋盘(N皇后，数独)等，常抽象成树
+//一般回溯的函数用void
+//洛谷P2089烤鸡
+//模板
+//
+//void hanshu(){
+//	if (终止条件) {
+//		存放结果;
+//		return;
+//	}
+//	for (选择：本层集合中的元素，树的子节点的数量就是集合大小) {
+//		处理节点;
+//		hanshu(路径，选择列表);    //递归
+//		回溯，撤销处理结果;
+//	}
+//}
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int n, ans1, ans2[10001][11], sum, a[11];
+void trys(int t, int m)//t代表当前的尝试的调料。m代表当前美味程度
+{
+	if (t > 10)
+	{
+		if (m == n) //如果美味程度与猪猪的要求相等 
+		{
+			ans1++;//统计方案总数(收集结果)
+			for (int i = 1; i <= 10; i++)
+				ans2[ans1][i] = a[i];//存入答案的数组 
+		}
+		return;			//必须return
+	}
+	for (int i = 1; i <= 3; i++)
+	{
+		if (m + i > n) break;//如果超过了要求，那么后面的就可以直接忽略 
+		a[t] = i;//储存答案 
+		trys(t + 1, m + i);//查看下一种调料 
+		a[t] = 0;//状态恢复 
+	}
+}
+int main()
+{
+	cin >> n;
+	trys(1, 0);//从第一种调料开始尝试，美味程度为0 
+	cout << ans1 << endl;
+	for (int i = 1; i <= ans1; i++)
+	{
+		for (int j = 1; j <= 10; j++)
+			cout << ans2[i][j] << " ";
+		cout << endl;
+	}//输出结果 
+	return 0;
+}
+
+//贪心
+//局部最优解->全局最优
+//用结构解题
+//洛谷P2240背包
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+struct coin {
+	int m, v; double ave;
+}coins[105];
+bool cmp(coin coins1, coin coins2) {
+	return coins1.ave > coins2.ave;
+}
+int main()
+{
+	int n, t, pp = 0;//n堆数,t能装的重量,mark哪一堆
+	double ans = 0;
+	cin >> n >> t;
+	for (int i = 0; i < n; i++) {
+		cin >> coins[i].m >> coins[i].v;
+		coins[i].ave = 1.0 * coins[i].v / coins[i].m;
+	}
+	sort(coins, coins + n, cmp);
+	while (t >= coins[pp].m && pp < n) {    //pp<n不加得80分：存在情况t比所有重量加起来都大，会一直循环
+		t -= coins[pp].m;
+		ans += coins[pp].v;
+		pp++;
+	}
+	ans += t * coins[pp].ave;
+	printf("%.2lf", ans);
+
+
+	return 0;
+}
+//洛谷P1223接水
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+struct people {
+	int time; int num;
+}ps[1005];
+bool cmp(people p1, people p2) {
+	return p1.time < p2.time;
+}
+int main()
+{
+	int n; double sum = 0, ave = 0;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> ps[i].time; ps[i].num = i;
+	}
+	sort(ps, ps + n, cmp);                        //根据time将ps升序排序
+	for (int i = 1; i <= n; i++) {
+		cout << ps[i].num << " ";
+		sum += (n - 1) * ps[i].time;
+	}
+	ave = 1.0 * sum / n;
+	cout << endl; printf("%.2lf", ave);
+	return 0;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
