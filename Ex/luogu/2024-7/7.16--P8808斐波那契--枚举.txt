@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int f[10001] = {0}, a[100010] = {0}, n, tempans, ans;
+    cin >> n;
+    ans = n;
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
+    for (int j = 1; j < 1e6; j++)
+    {
+        f[1] = f[2] = j;
+        //偷鸡，当初始为1 1，第31位就已经大于1e6
+        tempans = max(n - 31, 0);
+        for (int i = 3; i <= min(n, 31); i++)
+        {
+            f[i] = f[i - 1] + f[i - 2];
+            if (f[i] > 1e6)
+                break;
+        }
+        for (int i = 1; i <= min(n, 31); i++)
+            if (f[i] != a[i])
+                tempans += 1;
+        ans = min(tempans, ans);
+    }
+    cout << ans;
+    return 0;
+}

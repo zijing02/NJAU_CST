@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	//num单词代号，cnt查字典次数，ind当前内存已占用容量
+	int m, n, num, cnt = 0, ind = 0, a[1005] = { 0 }, maxi = 0;
+	cin >> m >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> num;
+		maxi = max(maxi, num);
+		//内存中有这个数字
+		if (a[num] != 0)
+			continue;
+		//内存中没有这个数字
+		//内存没满，直接存入,查字典次数+1,同时内存+1
+		if (ind != m)
+			a[num] = ++ind,
+			cnt++;
+		//内存满了，清除第一个，再存入，内存还是满的
+		else if (ind == m) {
+			for (int j = 0; j <= maxi; j++) 
+				if(a[j])
+					a[j]--;
+			a[num] = ind;
+			cnt++;
+		}
+		//cout << i << "\t" << num << "\t" << cnt << endl;
+	}
+	cout << cnt;
+	return 0;
+}
+
+
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+using namespace std;
+int n, m, x, ans, l, r, a[1005], b[1005];
+int main()
+{
+    cin >> m >> n;
+    l = 0; r = 0;//初始化两个指针
+    for (int i = 1; i <= n; i++)
+    {
+        scanf("%d", &x);//边读入边做
+        if (a[x] == 0)
+        {
+            ans++;
+            r++; b[r] = x; a[x] = 1;//因为每次遇到新单词都要做这些操作，不如搬到判断语句外做，这样程序更简洁
+            if (r > m) { l++; a[b[l]] = 0; }
+        }
+        cout << i << "\t" << x << "\t" << ans << endl;
+
+    }
+    cout << ans;
+    return 0;//千万不能忘记打这句，不然在比赛中会出错
+}

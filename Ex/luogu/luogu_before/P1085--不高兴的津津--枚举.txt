@@ -1,0 +1,14 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+	int t1, t2, ans = 0, max = 0;
+	for (int i = 1; i <= 7; i++) {
+		cin >> t1 >> t2;
+		if (t1 + t2 > 8 && t1 + t2 > max) {
+			ans = i;
+			max = t1 + t2;
+		}
+	}
+	cout << ans;
+	return 0;
+}

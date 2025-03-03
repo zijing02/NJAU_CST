@@ -1,0 +1,20 @@
+//两个字符串前缀一样，但是后续不一样的，会返回长的一个，需要进行调整比较方法，将两个字符串进行两次拼接比较结果
+#include <bits/stdc++.h>
+using namespace std;
+bool cmp(string a, string b)
+{
+    return a+b > b+a;
+}
+int main()
+{
+    string s[25], ans;
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+        cin >> s[i];
+    sort(s, s + n, cmp);
+    for (int i = 0; i < n; i++)
+        ans += s[i];
+    cout << ans;
+    return 0;
+}

@@ -1,0 +1,52 @@
+//从右下角开始
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, c, max_num = INT_MIN, x, y;
+int a[1005][1005],dp[1005][1005];
+int main() {
+	cin >> n >> m >> c;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> a[i][j];
+			dp[i][j] = dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - 1] + a[i][j];
+		}
+	}
+	for (int i = c; i <= n; i++) {
+		for (int j = c; j <= m; j++) {
+			int t = dp[i][j] - dp[i - c][j] - dp[i][j - c] + dp[i - c][j - c];
+			if (t > max_num) {
+				max_num = t;
+				x = i - c + 1; y = j - c + 1;
+			}
+		}
+	}
+	cout << x << " " << y;
+	return 0;
+}
+
+
+//从左上角开始
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, c, max_num = INT_MIN, x, y;
+int a[1005][1005], dp[1005][1005];
+int main() {
+	cin >> n >> m >> c;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> a[i][j];
+			dp[i][j] = dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - 1] + a[i][j];
+		}
+	}
+	for (int i = 1; i <= n - c + 1; i++) {
+		for (int j = 1; j <= m - c + 1; j++) {
+			int t = dp[i + c - 1][j + c - 1] - dp[i - 1][j + c - 1] - dp[i + c - 1][j - 1] + dp[i - 1][j - 1];
+			if (t > max_num) {
+				max_num = t;
+				x = i; y = j;
+			}
+		}
+	}
+	cout << x << " " << y;
+	return 0;
+}

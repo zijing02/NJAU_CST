@@ -1,0 +1,97 @@
+//暴力求解
+#include<stdio.h>
+int main()
+{
+	int n; scanf_s("%d", &n);
+	for (int a = 1; a <= n; a++) {
+		if (n == 1) {
+			printf("    %d\n", a);
+			continue;
+		}
+		for (int b = 1; b <= n; b++) {
+			if (a == b)continue;
+			if (n == 2) {
+				printf("    %d    %d\n", a, b);
+				continue;
+			}
+			for (int c = 1; c <= n; c++) {
+				if (c == b||c==a)continue;
+				if (n == 3) {
+					printf("    %d    %d    %d\n", a, b,c);
+					continue;
+				}
+				for (int d = 1; d <= n; d++) {
+					if (d == a||d==b||d==c)continue;
+					if (n == 4) {
+						printf("    %d    %d    %d    %d\n", a, b,c,d);
+						continue;
+					}
+					for (int e = 1; e<= n; e++) {
+						if (e ==a||e==b||e==c||e==d)continue;
+						if (n == 5) {
+							printf("    %d    %d    %d    %d    %d\n", a, b,c,d,e);
+							continue;
+						}
+						for (int f = 1; f <= n; f++) {
+							if (f == a||f==b||f==c||f==d||f==e)continue;
+							if (n == 6) {
+								printf("    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f);
+								continue;
+							}
+							for (int g = 1; g <= n; g++) {
+								if ( g== a || g == b || g == c || g == d ||g == e||g==f)continue;
+								if (n == 7) {
+									printf("    %d    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f,g);
+									continue;
+								}
+								for (int h = 1; h <= n; h++) {
+									if (h == a || h == b || h == c || h == d || h == e||h==f||h==g)continue;
+									if (n == 8) {
+										printf("    %d    %d    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f,g,h);
+										continue;
+									}
+									for (int i = 1; i <= n; i++) {
+										if ( i == a || i == b || i == c || i == d || i == e||i==f||i==g||i==h)continue;
+										if (n == 9) {
+											printf("    %d    %d    %d    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f,g,h,i);
+											continue;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+//DFS
+#include<iostream>
+using namespace std;
+int n, a[10], book[10] = {0};
+void dfs(int step) 
+{
+	if (step == n) {
+		for (int i = 0; i < n; i++) {
+			cout << "    "<<a[i];
+		}
+		printf("\n");
+		return;
+	}
+	for (int i = 1; i <= n; i++) {    //枚举有几层
+		if (book[i]!= 1) {
+			a[step] = i;
+			book[i] = 1;				//将用过的数字打上标签
+			dfs(step+1);      		  //递归后面的
+			book[i] = 0;				//恢复初始状态
+		}
+	}
+}
+int main()
+{
+	cin >> n;
+	dfs(0);
+	return 0;
+}

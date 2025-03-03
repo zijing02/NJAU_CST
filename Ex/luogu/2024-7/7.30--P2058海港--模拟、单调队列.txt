@@ -1,0 +1,86 @@
+//超时
+#include<bits/stdc++.h>
+using namespace std;
+//时间，人编号，人国籍
+map<int, map<int, int>>mymap;
+int main() {
+	int n, ti, ki, timax = 0;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> ti >> ki;
+		mymap[ti][0] = ki;
+		timax = max(timax, ti);
+		for (int j = 1; j <= ki; j++) 
+			//ti时间到的人的国籍
+			cin >> mymap[ti][j];	
+	}
+	for (int i = 1; i <= timax; i++) {
+		int a[100005] = { 0 }, cnt = 0;
+		if (mymap[i][0]) {
+			if (i <= 86400) {
+				for (int j = 1; j <= i; j++) {
+					if (mymap[j][0]) {
+						for (int m = 1; m <= mymap[j][0]; m++) {
+							if (a[mymap[j][m]] == 0)
+								cnt++,
+								a[mymap[j][m]] = 1;
+							else if (a[mymap[j][m]] == 1)
+								continue;
+						}
+					}
+				}
+			}
+			else if (i > 86400) {
+				for (int j = i - 86400 + 1; j <= i; j++) {
+					if (mymap[j][0]) {
+						for (int m = 1; m <= mymap[j][0]; m++) {
+							if (a[mymap[j][m]] == 0)
+								cnt++,
+								a[mymap[j][m]] = 1;
+							else if (a[mymap[j][m]] == 1)
+								continue;
+						}
+					}
+				}
+			}
+			if (cnt)
+				cout << cnt << endl;
+		}
+	}	
+	return 0;
+}
+
+//单调队列
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int v[100005];
+int ans;
+struct Node{
+    int t;
+    int x;
+    Node(int a,int b){
+        t=a,x=b;
+    }
+};
+deque<Node>q;//双端队列
+int main(){
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++){
+        int t,k,x;
+        scanf("%d%d",&t,&k);
+        for(int j=1;j<=k;j++){
+            scanf("%d",&x);
+            if(!v[x]) ans++;//新增国籍
+            v[x]++;//该国籍人数增加
+            q.push_back(Node(t,x));//入队
+        }
+        while(t-q.front().t>=86400){//离开区间
+            v[q.front().x]--;//该国籍人数减少
+            if(!v[q.front().x]) ans--;//这个国籍没人了，总数减少
+            q.pop_front();//出队
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}

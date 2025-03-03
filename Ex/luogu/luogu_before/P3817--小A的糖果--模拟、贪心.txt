@@ -1,0 +1,17 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+long long n, a[100010], x, ans, t;//我知道可以不定义数组，但为了用空间换时间（怕超时）
+int main()
+{
+	register int i;//register定义循环变量据说能加速
+	scanf("%lld%lld", &n, &x);//注意是%lld
+	for (i = 1; i <= n; i++)//从1~n很好地保证了第一个是a[0]和a[1],相当于单独考虑a[1]
+	{
+		scanf("%lld", &a[i]);//输入
+		if (a[i] + a[i - 1] > x)t = a[i] + a[i - 1] - x, a[i] -= t, ans += t;//两数之和超过，优先吃后面的，贪心（为了使后面加起来更小），if如果不加{}逗号表示一直在if中
+	}
+	printf("%lld", ans);//lld哦
+	return 0;//记得返回0
+}

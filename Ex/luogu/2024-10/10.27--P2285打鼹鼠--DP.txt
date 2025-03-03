@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,dp[10010],ans;
+struct node
+{
+   int t,x,y;
+}s[10010];
+int mhd(int sx,int sy,int ex,int ey)
+{
+   return abs(sx-ex)+abs(sy-ey);
+}
+int main()
+{
+   scanf("%d%d",&n,&m);
+   for(int i=1;i<=m;i++)
+   	scanf("%d%d%d",&s[i].t,&s[i].x,&s[i].y);
+   dp[0]=1;
+   for(int i=1;i<=m;i++)
+   {
+   	dp[i]=1;
+   	for(int j=1;j<i;j++)
+   	{
+   		if(mhd(s[i].x,s[i].y,s[j].x,s[j].y)<=s[i].t-s[j].t)
+   		{
+   			dp[i]=max(dp[i],dp[j]+1);
+   		}
+   	}
+   	ans=max(ans,dp[i]); 
+   }
+   printf("%d",ans);
+   return 0;
+}

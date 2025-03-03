@@ -1,0 +1,14 @@
+# include<stdio.h>
+int main() {
+	int n, sum = 0, count = 0;
+	scanf_s("%d", &n);
+	for (int x = 1; x <= n; ++x) {
+		for (int i = 1; i <= x; ++i) {
+			sum = sum + x; 
+				count++; 
+			if(count == n)
+			printf("%d\n", sum);
+		}
+	}
+	return 0;
+}

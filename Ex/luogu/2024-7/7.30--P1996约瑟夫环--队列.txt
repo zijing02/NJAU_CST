@@ -1,0 +1,21 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	int n, m, cnt = 0;
+	cin >> n >> m;
+	queue<int>q;
+	//人进队列
+	for (int i = 1; i <= n; i++)
+		q.push(i);
+	while (!q.empty()) {
+		cnt++;
+		if (cnt == m)
+			cout << q.front() << " " ,
+			cnt = 0;
+		else if (cnt != m)
+			q.push(q.front());
+		q.pop();
+	}
+	return 0;
+}

@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, v[110] = { 0 }, dp[110][10010] = { 0 };//n个菜，m元
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) cin >> v[i];
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (j == v[i])dp[i][j] = dp[i - 1][j] + 1;
+			if (j > v[i])dp[i][j] = dp[i - 1][j] + dp[i - 1][j - v[i]];
+			if (j < v[i])dp[i][j] = dp[i - 1][j];
+		}
+	}
+	cout << dp[n][m];
+	return 0;
+}
+
+//90' tle
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, cnt = 0, v[110] = {0};
+void fun(int pos,int total){
+	if (total > m)return;
+	if (total == m) {
+		cnt++; 
+		return;
+	}
+	for (int i = pos; i <= n; i++) {
+		if (total + v[i] <= m)
+			fun(i + 1, total + v[i]);
+		if (total + v[i] > m)
+			continue;
+	}
+}
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) cin >> v[i];
+	fun(1, 0);
+	cout << cnt;
+	return 0;
+}

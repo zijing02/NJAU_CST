@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>  
+using namespace std;
+int n, m;
+struct node{
+    int num;
+    int score;
+}a[5005];
+bool cmp(node p,node q) {
+    return p.score == q.score ? p.num<q.num : p.score>q.score;
+}
+int main() {
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) 
+        cin >> a[i].num >> a[i].score;
+    sort(a + 1, a + 1 + n, cmp);
+    m *= 1.5;
+    int j = m;
+    while (a[j].score == a[m].score) j++;
+    cout << a[m].score << " " << j - 1 << endl;
+    for (int i = 1; a[i].score >= a[m].score; i++) 
+        cout << a[i].num << " " << a[i].score << endl;
+    return 0;
+}
+
+
+
+
+def main():
+    n, m = map(int, input().split())
+    a = []
+    for i in range(1, n + 1):
+        num, score = map(int, input().split())
+        a.append({'num': num, 'score': score})
+    a_sorted = sorted(a, key=lambda x: (-x['score'], x['num']))
+    m = int(m * 1.5)
+    j = m
+    # print(m,a_sorted[m-1]['num'],a_sorted[m - 1]['score'],len(a_sorted),j)
+    # for people in a_sorted[:]:
+    #     print(people['num'], people['score'])
+    while j <= len(a_sorted) and a_sorted[j]['score'] == a_sorted[m-1]['score']:
+        j += 1
+    print(a_sorted[m - 1]['score'], j)
+    for people in a_sorted[:j]:
+        print(people['num'], people['score'])
+
+
+if __name__ == "__main__":
+    main()

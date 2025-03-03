@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+int a[100005];
+int n, k;
+void dfs(int t)
+{
+    if (t == n + 1)
+    {
+        for (int i = 1; i <= n; i++)
+            cout << a[i] << " ";
+        cout << endl;
+    }
+    else if (t < n + 1)
+    {
+        for (int i = 1; i <= k; i++)
+        {
+            a[t] = i;
+            dfs(t + 1);
+        }
+    }
+}
+int main()
+{
+    cin >> n >> k;
+    dfs(1);
+
+    return 0;
+}

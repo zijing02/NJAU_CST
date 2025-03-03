@@ -1,0 +1,45 @@
+//差分
+//将数组元素的差值保留，修改一连串时只需要修改一第一个即可
+//因为修改的原因，末尾区间的值要做相反运算
+#include<bits/stdc++.h>
+using namespace std;
+int n, p, x, y, z, min_num = INT_MAX;
+int d[5000005], a[5000005];
+int main() {
+    cin >> n >> p;
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+        d[i] = a[i] - a[i - 1];
+    }
+    for (int i = 1; i <= p; i++) {
+        cin >> x >> y >> z;
+        d[x] += z;
+        d[y + 1] -= z;
+    }
+    for (int i = 1; i <= n; i++) {
+        a[i] = a[i - 1] + d[i]; 
+        min_num = min(a[i], min_num);
+    }
+    cout << min_num;
+    return 0;
+}
+
+//tle
+#include<bits/stdc++.h>
+using namespace std;
+int n, p, x, y, z;
+int a[5000005];
+int main() {
+	cin >> n >> p;
+	for (int i = 1; i <= n; i++) 
+		cin >> a[i];
+	for (int i = 1; i <= p; i++) {
+		cin >> x >> y >> z;
+		for (int j = x; j <= y; j++) {
+			a[j] += z;
+		}
+	}
+	sort(a + 1, a + 1 + n);
+	cout << a[1];
+	return 0;
+}

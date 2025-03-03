@@ -1,0 +1,52 @@
+//具体讲解见  https://blog.csdn.net/m0_63492087/article/details/122580997
+//卡特兰数
+#include<iostream>
+using namespace std;
+int main() {
+	int n; cin >> n;
+	int a[500] = { 1,1 };
+	for (int i = 2; i <= n; i++) 
+		for (int j = 0; j < i; j++) 
+			a[i] += a[i - j - 1] * a[j];
+	cout << a[n];
+	return 0;
+}
+
+
+//DP
+#include<iostream>
+using namespace std;
+int main() {
+	//i表示进栈数目，j表示出栈数目
+	int n; cin >> n;
+	int a[20][20] = {0};
+	for (int i = 0; i <= n; i++)
+		a[i][0] = 1;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			if (i == j)a[i][j] = a[i][j - 1];		//进栈等于出栈，则上一步只能是出栈
+			else a[i][j] = a[i - 1][j] + a[i][j - 1];
+		}
+	}
+	cout << a[n][n];
+	return 0;
+}
+
+
+//递归搜索
+#include<iostream>
+using namespace std;
+int n, a[20][20] = { 0 };
+//i表示队列中剩余数字数量，j表示栈中的数字数量
+int dfs(int i, int j) {
+	if (a[i][j]) return a[i][j];
+	if (i == 0)return 1;
+	if (j > 0)a[i][j] += dfs(i, j - 1);	//栈中有数字，可以出栈
+	a[i][j] += dfs(i - 1, j + 1);		//无论栈中情况，均可以进栈
+	return a[i][j];
+}
+int main() {
+	cin >> n;
+	cout << dfs(n, 0);
+	return 0;
+}

@@ -1,0 +1,14 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long v[10010], t[10010], dp[10000010];
+int main() {
+	int ti, m;
+	cin >> ti >> m;
+	for (int i = 1; i <= m; i++) 
+		cin >> t[i] >> v[i];
+	for (int i = 1; i <= m; i++) 
+		for (int j = t[i]; j <= ti; j++) 
+			dp[j] = max(dp[j], dp[j - t[i]] + v[i]);
+	cout << dp[ti];
+	return 0;
+}

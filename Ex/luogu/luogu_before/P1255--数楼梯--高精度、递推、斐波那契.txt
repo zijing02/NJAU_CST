@@ -1,0 +1,115 @@
+//超时
+#include<stdio.h>
+int f(int);
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	printf("%d", f(n));
+	return 0;
+}
+int f(int n)
+{
+	if (n <= 2) {
+		return n;
+	}
+	else {
+		return (f(n - 1) + f(n - 2));
+	}
+}
+
+
+#include<iostream>
+using namespace std;
+int a[5000], b[5000], c[5000];//分别作为走一阶和走两阶楼梯的方法数，用字符数组防止溢出 
+int main()
+{
+	int n;
+	int x = 1;					//表示有几位数字，即数字的位数 
+	cin >> n;					//表示阶梯数 
+	if (n < 3)						//当只有一阶或者两阶的时候，一阶只有一种方式，两阶有两种走法，所以可以直接输出 
+	{
+		cout << n;
+		return 0;
+	}
+	a[1] = 1; b[1] = 2;				//当只有一阶或者两阶的时候，一阶只有一种方式，两阶有两种走法
+
+	//1.既然太大的数字没有办法直接相加减，那么我们来模拟竖式的算法，逐位相加，满十进一。
+	//2.好了，那我们用 a，b 两个数组 来存两个加数，用 c 来存答案。
+	//3.那么就有以下等式 c[i]=a[i]+b[i]，同时我们再判断，如果c[i]>9，那就向高一位进一即可。
+	//4.用x来就答案的长度，最后输出即可。
+
+	for (int i = 3; i <= n; i++)//当有三个及以上的台阶 ，每多一个台阶都要进行方法数的更新 
+	{
+		for (int j = 1; j <= x; j++)
+			c[j] = a[j] + b[j];
+		for (int j = 1; j <= x; j++)
+		{
+			if (c[j] > 9)			//进位 
+			{
+				c[j + 1] += c[j] / 10;
+				c[j] %= 10;
+				if (j + 1 > x)
+					x++;			//更新进位数 
+			}
+		}
+		for (int j = 1; j <= x; j++)//注意原理是斐波那契数列，所以 
+			a[j] = b[j];
+		for (int j = 1; j <= x; j++)
+			b[j] = c[j];
+	}
+	for (int i = x; i > 0; i--)//因为前面逆序相加，所以后面要逆序输出 
+		cout << b[i];
+	return 0;
+}
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+int a[5005][6005];
+int n;
+void add(int i, int j);
+int main()
+{
+	memset(a, 0, sizeof(a));
+	cin >> n;
+	a[0][1] = 0;
+	a[1][1] = 1;
+	a[2][1] = 2;
+	for (int i = 3; i <= n; i++)
+		add(i - 1, i - 2);
+	if (n == 0)
+		cout << 0;
+	else
+	{
+		for (int k = n; k <= n; k++)
+		{
+			int i = 6000;
+			//cout<<k<<": ";
+			while (a[k][i] == 0)
+				i--;
+			for (; i >= 1; i--)
+				cout << a[k][i];
+			cout << endl;
+		}
+	}
+	return 0;
+}
+void add(int i, int j)
+{
+	int t = 1;
+	int cf = 0;
+	while (t < 6000)
+	{
+		int temp = a[i][t] + a[j][t] + cf;
+		cf = temp / 10;
+		temp = temp % 10;
+
+		a[i + 1][t] = temp;
+		t++;
+	}
+
+	if (cf > 0)
+		a[i + 1][t] = cf;
+	//cout<<"a is "<<a[i+1][3]<<a[i+1][2]<<a[i+1][1]<<endl;
+}

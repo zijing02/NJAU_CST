@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+	string s;
+	cin >> s;
+	int num = 0;
+	stack<int>sp;
+	for (int i = 0; i < s.length(); i++) {
+		if (s[i] >= '0' && s[i] <= '9')
+			num = num * 10 + s[i] - '0';
+		else if (s[i] == '+') {
+			int t1 = sp.top(); sp.pop();
+			int t2 = sp.top() + t1; sp.pop();
+			sp.push(t2);
+		}
+		else if (s[i] == '-') {
+			int t1 = sp.top(); sp.pop();
+			int t2 = sp.top() - t1; sp.pop();
+			sp.push(t2);
+		}
+		else if (s[i] == '*') {
+			int t1 = sp.top(); sp.pop();
+			int t2 = sp.top() * t1; sp.pop();
+			sp.push(t2);
+		}
+		else if (s[i] == '/') {
+			int t1 = sp.top(); sp.pop();
+			int t2 = sp.top() / t1; sp.pop();
+			sp.push(t2);
+		}
+		else if (s[i] == '.') {
+			sp.push(num);
+			num = 0;
+			continue;
+		}
+	}
+	cout << sp.top();
+	return 0;
+}

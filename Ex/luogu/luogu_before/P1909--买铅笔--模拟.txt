@@ -1,0 +1,37 @@
+#include<stdio.h>
+int main()
+{
+	int n;
+	int a, b;
+	int c, d;
+	int e, f;
+	int pri1, pri2, pri3, min;
+	scanf_s("%d", &n);
+	scanf_s("%d %d", &a, &b);
+	scanf_s("%d %d", &c, &d);
+	scanf_s("%d %d", &e, &f);
+	if (n % a == 0)
+		pri1 = (n / a) * b;
+	else
+		pri1 = ((n / a) + 1) * b;
+	if (n % c == 0)
+		pri2 = (n / c) * d;
+	else
+		pri2 = ((n / c) + 1) *d;	
+	if (n % e == 0)
+		pri3 = (n / e) *f;
+	else
+		pri3 = ((n / e) + 1) *f;
+	if (pri1 > pri2)
+		if (pri2 > pri3)
+			min = pri3;
+		else
+			min = pri2;
+	else
+		if (pri1 > pri3)
+			min = pri3;
+		else
+			min = pri1;
+	printf("%d", min);
+	return 0;
+}

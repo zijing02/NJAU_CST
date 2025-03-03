@@ -1,0 +1,21 @@
+//map不能是int对int否则会超时，即不能对输入的数字进行个数统计
+#include<bits/stdc++.h>
+using namespace std;
+unordered_map <int, bool> mymap;
+int T, n, ind;
+int main(){
+	scanf("%d",&T);
+	for (int i = 1; i <= T; i++) {
+		scanf("%d", &n);
+		mymap.clear();
+		for (int j = 1; j <= n; j++) {
+			scanf("%d",&ind);
+			if (mymap[ind] != true)
+				printf("%d ", ind),
+				mymap[ind] = true;
+		}
+		printf("\n");
+	}
+
+	return 0;
+}

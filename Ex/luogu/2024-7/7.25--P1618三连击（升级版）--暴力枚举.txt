@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main(){
+    int x, y, z, i = 0, flag = 0;
+    cin >> x >> y >> z;
+p1:
+    i++;
+    for (i; i <= 333; i++){
+        if (i % 10 == 0)continue;
+        int a[10] = { 0 }, l = i * x,  j = i * y, k = i * z;
+        a[0] = 1;
+        if (l > 100 && j > 100 && k > 100 && l < 1000 && j < 1000 && k < 1000) {
+            while (l) {
+                if (!a[l % 10])
+                    a[l % 10] = 1,
+                    l /= 10;
+                else
+                    goto p1;
+            }
+            while (j) {
+                if (!a[j % 10])
+                    a[j % 10] = 1,
+                    j /= 10;
+                else
+                    goto p1;
+            }
+            while (k) {
+                if (!a[k % 10])
+                    a[k % 10] = 1,
+                    k /= 10;
+                else
+                    goto p1;
+            }
+            flag = 1;
+            cout << i * x << " " << i * y << " " << i * z << endl;
+        }
+    }
+    if (!flag) cout << "No!!!";
+    return 0;
+}

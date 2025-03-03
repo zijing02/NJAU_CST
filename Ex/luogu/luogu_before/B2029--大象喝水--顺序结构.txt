@@ -1,0 +1,8 @@
+#include<stdio.h>
+int main() {
+	double h, r, pi = 3.1415926535;
+	scanf_s("%lf %lf", &h, &r);
+	int c = 20000 / (pi * r * r * h) + 1;
+	printf("%d", c);
+	return 0;
+}

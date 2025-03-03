@@ -1,0 +1,76 @@
+//a序列先进栈，如果b中序列等于栈顶就开始pop，直至不同，如果s空了就符合
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    stack<int> s;
+    int n, t, a[100000], b[100000];
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        int tag = 0;
+        cin >> t;
+        for (int j = 0; j < t; j++)
+            cin >> a[j];
+        for (int j = 0; j < t; j++)
+            cin >> b[j];
+        for (int j = 0; j < t; j++)
+        {
+            s.push(a[j]);
+            while (s.top() == b[tag])
+            {
+                s.pop();
+                tag++;
+                if (s.empty())
+                    break;
+            }
+        }
+        if (s.empty())
+            cout << "Yes"<<endl;
+        else
+            cout << "No"<<endl;
+        while (!s.empty())
+            s.pop();
+    }
+    return 0;
+}
+
+/*
+#include<cstdio>
+#include<stack>
+using namespace std;
+stack<int>s;
+int t,n,psh[100005],pp[100005];
+int k;
+bool f()
+{
+    for(int i=1;i<=n;i++)
+    {
+        if(!s.empty()&&s.top()==pp[i])
+        {
+            s.pop();
+            continue;
+        }
+        while(k<=n&&psh[k]!=pp[i])
+            s.push(psh[k]),k++;
+        if(k>n) return false;
+        k++;
+    }
+    return true;
+}
+int main()
+{
+    scanf("%d",&t);
+    while(t--)
+    {
+        k=1;
+        scanf("%d",&n);
+        for(int i=1;i<=n;i++) scanf("%d",&psh[i]);
+        for(int i=1;i<=n;i++) scanf("%d",&pp[i]);
+        while(!s.empty()) s.pop();
+        if(f()) printf("Yes\n");
+        else printf("No\n");
+    }
+    return 0;
+}
+*/

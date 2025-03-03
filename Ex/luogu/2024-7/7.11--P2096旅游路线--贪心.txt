@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int m, n, v, sum = 0, t = 0, a[20001];
+    cin >> m >> n;
+    for (int i = 0; i < n; i++)
+        a[i] = -200;
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> v;
+            if (v > a[j])
+                a[j] = v;
+        }
+        for (int i = 0; i < n; i++)
+        {
+            if (a[i] >= 0)
+            {
+                t += a[i];
+                if (t > sum)
+                    sum = t;
+            }
+            else
+            {
+                if (t + a[i] <= 0)
+                    t = 0;
+                else
+                    t += a[i];
+            }
+        }
+    }
+    cout << sum;
+}

@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+double maxw, len, dp[1010] = { 0 }; 
+long long n, w[1010][2] = { 0 },v[1010][1010] = { 0 };
+int main()
+{
+    cin >> maxw >> len >> n;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> w[i][0] >> v[i][i];
+        w[i][1] = w[i - 1][1] + w[i][0];
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = i + 1; j <= n; j++)
+        {
+            v[i][j] = min(v[i][j - 1], v[j][j]);
+        }
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        dp[i] = (double)(len * 1.0 / v[i][i] + dp[i - 1]);
+        for (int j = i - 1; j >= 1; j--)
+        {
+            if (w[i][1] - w[j - 1][1] <= maxw)
+                dp[i] = min(dp[i], dp[j - 1] + (double)(len * 1.0 / v[j][i]));
+            else
+                break;
+        }
+    }
+    cout.setf(ios::fixed);
+    cout.precision(1);
+    cout << dp[n] * 60;
+    return 0;
+}
+
+python
+
+import numpy as np
+
+dp = [0]*1010
+# w = [[0 for _ in range(2)] for _ in range(1010)]
+# v = [[0 for _ in range(2)] for _ in range(1010)]
+w = np.zeros((1010, 2))
+v = np.zeros((1010, 1010))
+
+maxw, len, n = map(int, input().split())
+
+for i in range(1, n + 1):
+    w[i][0], v[i][i] = map(int, input().split())
+    w[i][1] = w[i - 1][1] + w[i][0]
+
+for i in range(1, n + 1):
+    for j in range(i + 1, n + 1):
+        v[i][j] = min(v[i][j - 1], v[j][j])
+
+for i in range(1, n + 1):
+    dp[i] = len * 1.0 / v[i][i] + dp[i - 1]
+    for j in range(i - 1, 0, -1):
+        if w[i][1] - w[j - 1][1] <= maxw:
+            dp[i] = min(dp[i], dp[j - 1] + len * 1.0 / v[j][i])
+        else:
+            break
+
+print(round(dp[n] * 60, 1))
+
+# x= 3.1415926
+# print(round(x，3))#3表示保留3位小数
+# 使用%.nf n表示小数位数
+# print('%.3f'%x)
+# 使用{:.nf} n表示取小数点后3位
+# print('{:.3f}'.format(x))

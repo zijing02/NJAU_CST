@@ -1,0 +1,100 @@
+//拓扑排序必须使用bfs，使用dfs很难找出答案
+//bfs
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, prey, predator, ans;
+int prey_num[5005], predator_num[5005], tmp[5005];
+vector<int>s[5005];
+queue<int>q;
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> prey >> predator;
+		s[prey].push_back(predator);
+		//建立捕食关系
+		predator_num[prey]++;
+		prey_num[predator]++;		
+	}
+	//将猎物数量为0生物加入到队列中，第一次加入的为生产者
+	for (int i = 1; i <= n; i++) {
+		if (prey_num[i] == 0) {
+			tmp[i] = 1;
+			q.push(i);
+		}
+	}
+	while (!q.empty()) {
+		int a = q.front();
+		q.pop();
+		for (auto it = s[a].begin(); it != s[a].end(); it++) {
+			tmp[*it] += tmp[a];
+			tmp[*it] %= 80112002;
+			//猎物数量减一
+			prey_num[*it]--;
+			//猎物数量为0，两种情况
+			//到了顶级消费者，猎物均已计数，没有天敌，加入到ans中
+			//不是顶级消费者，入队
+			if (prey_num[*it] == 0) {
+				if (predator_num[*it] == 0) {
+					ans += tmp[*it];
+					ans %= 80112002;
+					continue;
+				}
+				q.push(*it);
+			}
+		}
+	}
+	cout << ans;
+	return 0;
+}
+
+
+//dfs
+#include <bits/stdc++.h>  
+using namespace std;  
+
+int n, m, prey, predator, total = 0;  
+int ans[5005] = {0};  
+vector<int> s[5005];  
+int prey_num[5005] = {0}, predator_num[5005] = {0};  
+
+void dfs(int i) {  
+    // 遍历当前生物的捕食者  
+    for (int prey : s[i]) {  
+        ans[prey] += ans[i];  
+        predator_num[prey]--;  
+        // 如果没有捕食者了，递归处理这个捕食者  
+        if (predator_num[prey] == 0) {  
+            dfs(prey);  
+        }  
+    }  
+}  
+
+int main() {  
+    cin >> n >> m;  
+    
+    // 反向建图  
+    for (int i = 1; i <= m; i++) {  
+        cin >> prey >> predator;  
+        prey_num[predator]++;  
+        predator_num[prey]++;  
+        s[predator].push_back(prey);  
+    }  
+
+    // 初始化没有捕食者的生物  
+    for (int i = 1; i <= n; i++) {  
+        if (predator_num[i] == 0) {  
+            ans[i] = 1; // 初始化能被捕食的基础数量  
+            dfs(i); // 从这生物出发，更新相关捕食者数量  
+        }  
+    }  
+
+    // 总计食物链中没有捕食者的生物数量  
+    for (int i = 1; i <= n; i++) {  
+        if (prey_num[i] == 0) {  
+            total += ans[i];  
+        }  
+    }  
+
+    cout << (total % 80112002);  
+    return 0;  
+}

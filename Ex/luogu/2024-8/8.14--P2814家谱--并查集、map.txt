@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>  
+using namespace std;
+#define rank rank_
+#define union union_
+map<string, int>name_num;
+map<int, string>num_name;
+int n, m;
+int parent[50005];
+string sf, ss, sq, s;
+void init() {
+    for (int i = 1; i <= 50005; i++) 
+        parent[i] = i;
+}
+int find(int p) {
+   if (p != parent[p])
+	   parent[p] = find(parent[p]);
+    return parent[p];
+
+}
+//father son
+void union(int fa, int son) {
+	int fa_root = find(fa);
+	int son_root = find(son);
+	parent[son_root] = fa_root;
+}
+int main() {
+	int cnt = 0, query_begin = 0;
+	init();
+	while (true) {
+		cin >> s;
+		if (s[0] == '#') {
+			sf = s.substr(1, s.size() - 1);
+			if (name_num[sf] == 0) {
+				name_num[sf] = ++cnt;
+				num_name[cnt] = sf;
+			}
+		}
+		else if (s[0] == '+') {
+			ss = s.substr(1, s.size() - 1);
+			if (name_num[ss] == 0) {
+				name_num[ss] = ++cnt;
+				num_name[cnt] = ss;
+			}
+			union(name_num[sf], name_num[ss]);
+		}
+		else if (s[0] == '?')
+			break;
+	}
+	while (true) {
+		sq = s.substr(1, s.size() - 1);
+		cout << sq << " ";
+		sq = num_name[find(name_num[sq])];
+		cout << sq << endl;
+		cin >> s;
+		if (s[0] == '$')
+			break;
+	}
+    return 0;
+}

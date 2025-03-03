@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n, cnt = 0;
+map<int, map<int,int>>mymap;
+//对每个城市的前两位和代码进行hash编码，形成一堆数字(t1,t2)，如果(t2,t1)存在，则加上数字，
+//特判：如果t1==t2则加上之后需要减去，直接不加
+string s, t;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> s >> t;
+		int t1 = s[0] * 100 + s[1], t2 = t[0] * 100 + t[1];
+		if (t1 != t2) {
+			cnt += mymap[t2][t1];
+			mymap[t1][t2]++;
+		}
+
+	}
+	cout << cnt;
+	return 0;
+}
+
+
+
+

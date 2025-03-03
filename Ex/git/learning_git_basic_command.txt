@@ -1,0 +1,25 @@
+the 50 of used instructions in cmd
+https://zhuanlan.zhihu.com/p/17031736418
+
+cd ---- enter the file
+cd.. ----exit the file
+rm ---- delete
+echo .... >(>>)   ---- add things to a file or txt/make a new file and add things 
+echo 文件 ---- 在默认编辑器中打开文件 
+
+git clone url  ----  clone online repo onto my local machine
+
+git status ---- check status
+git add ---- add new operations to online datebase
+git commit ----commit the add operation
+git push ---- finish the work
+
+git log ---- check logs
+git show ----show the respority info
+git commit -m “message” ----提交暂存区文件至本地 message为备注信息
+
+git revert <commit number> ----revert the specific commit
+git revert -i HEAD~<num> ----merge <num> commits as one
+
+git cherry-pick <commit number> ----pick a commit from remote or other branch
+

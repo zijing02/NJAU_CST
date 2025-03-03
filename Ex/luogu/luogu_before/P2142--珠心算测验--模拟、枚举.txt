@@ -1,0 +1,25 @@
+#include<stdio.h>
+int main()
+{
+	int n, cnt = 0, a[101],flag[101];
+	scanf_s("%d", &n);
+	for (int i = 0; i < 101; i++){
+		a[i] = 0;
+		flag[i] = 0;
+	}
+	for (int i = 0; i < n; i++){
+		scanf_s("%d", &a[i]);
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = i+1; j < n; j++){
+			for (int k = 0; k < n; k++){
+				if (k != i && j != k && a[k] == a[i] + a[j]&&flag[k]==0){
+					cnt += 1;
+					flag[k]=1;
+				}
+			}
+		}
+	}
+	printf("%d", cnt);
+	return 0;
+}

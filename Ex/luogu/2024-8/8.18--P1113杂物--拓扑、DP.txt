@@ -1,0 +1,86 @@
+//DP
+#include<bits/stdc++.h>
+using namespace std;
+int n, now_event, pre_event, t[10005], tmp, ans = 0;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> now_event >> tmp >> pre_event;
+		if (now_event == 1)
+			t[now_event] = tmp;
+		while (pre_event) {
+			t[now_event] = max(t[pre_event] + tmp, t[now_event]);
+			cin >> pre_event;
+		}
+		//并不是最后一个过程就一定是结束点，有的过程也是
+		//比如建房子，安窗户和安门都是结束点
+		ans = max(ans, t[now_event]);
+	}
+	cout << ans;
+	return 0;
+}
+
+
+//拓扑
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <cctype>
+#include <vector>
+#include <queue>
+
+#define ll long long
+
+using namespace std;
+
+inline int read() {
+	int x=0,f=1;
+	char ch=getchar();
+	while (!isdigit(ch)) {if (ch=='-') f=-1;ch=getchar();}
+	while (isdigit(ch)) x=x*10+ch-'0',ch=getchar();
+	return x*f;
+}
+
+const int N=500005;
+
+int ind[N],f[N],a[N];  //ind--入度   f--答案   a--时间
+vector <int> edge[N];
+queue <int> q;
+
+int main() {
+	int n=read();
+	for (int i=1;i<=n;i++) {
+		int x=read();
+		a[i]=read();
+		while (int y=read()) {
+			if (!y) break;
+			edge[y].push_back(x);
+            ind[x]++;
+		}
+	}
+    //步骤一
+	for (int i=1;i<=n;i++) {
+		if (ind[i]==0) {
+			q.push(i);
+			f[i]=a[i];
+		}
+	};
+	while (!q.empty()) {
+		int rhs=q.front();
+		q.pop();
+        //步骤二
+		for (int i=0;i<edge[rhs].size();i++) {
+			int u=edge[rhs][i];
+			ind[u]--;
+			if (ind[u]==0) q.push(u);  //步骤三
+			f[u]=max(f[u],f[rhs]+a[u]);
+		}
+	}
+	int ans=0;
+	for (int i=1;i<=n;i++) {
+		ans=max(ans,f[i]);   //统计答案
+	}
+	printf("%d\n",ans);
+	return 0;
+}

@@ -1,0 +1,142 @@
+#分清左右
+#include <bits/stdc++.h>
+using namespace std;
+struct qu
+{
+    int l, r;
+} a[100000];
+int n, m;
+void in_right(int i, int tag)
+{
+    a[tag].r = a[i].r;
+    a[a[i].r].l = tag;
+    a[i].r = tag;
+    a[tag].l = i;
+}
+void in_left(int i, int tag)
+{
+    a[tag].l = a[i].l;
+    a[a[i].l].r = tag;
+    a[tag].r = i;
+    a[i].l = tag;
+}
+void del(int i)
+{
+    if (a[i].l == -1 && a[i].r == -1)
+    {
+    }
+    else if (a[i].l == -1 && a[i].r != -1)
+    {
+        a[a[i].r].l = a[i].l;
+    }
+    else if (a[i].l != -1 && a[i].r == -1)
+    {
+        a[a[i].l].r = a[i].r;
+    }
+    else if (a[i].l != -1 && a[i].r != -1)
+    {
+        a[a[i].l].r = a[i].r;
+        a[a[i].r].l = a[i].l;
+    }
+
+    a[i].l = a[i].r = -1;
+}
+void init()
+{
+    for (int i = 1; i <= n; ++i)
+        a[i].l = a[i].r = -1;
+    a[1].r = -1;
+    a[1].l = 0;
+    a[0].r = 1;
+}
+int main()
+{
+    int tag, flag;
+    cin >> n;
+    init();
+    for (int i = 2; i <= n; i++)
+    {
+        cin >> tag >> flag;
+        if (flag == 1)
+            in_right(tag, i);
+        else if (flag == 0)
+            in_left(tag, i);
+    }
+    cin>>m;
+    for (int i = 0; i < m; i++)
+    {
+        cin >> tag;
+        del(tag);
+    }
+    int n = a[0].r;
+    while (1) {
+        cout << n << " ";
+        if (a[n].r == -1) break;
+        n = a[n].r;
+    }
+    return 0;
+}
+
+
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+struct node {
+    int L, R;
+}a[100003];
+int n, m;
+void addRight(int n, int pos) { 
+    a[n].L = pos;
+    a[a[pos].R].L = n;
+    a[n].R = a[pos].R;
+    a[pos].R = n;
+}
+void addLeft(int n, int pos) { 
+    a[n].R = pos;
+    a[a[pos].L].R = n;
+    a[n].L = a[pos].L;
+    a[pos].L = n;
+}
+void del(int n) {
+    if (a[n].L == -1) return;
+    a[a[n].L].R = a[n].R;
+    a[a[n].R].L = a[n].L;
+    a[n].L = -1;
+    a[n].R = -1;
+}
+void fun() {
+    int n = a[0].R;
+    while (1) {
+        cout << n << " ";
+        if (a[n].R == -1) break;
+        n = a[n].R;
+    }
+}
+void init() {
+    for (int i = 1; i <= n; ++i) a[i].L = a[i].R = -1;
+    a[1].R = -1; a[1].L = 0; a[0].R = 1;
+}
+int main() {
+    scanf("%d", &n);
+    int cmd1, cmd2;
+    init();
+    for (int i = 2; i <= n; ++i) {
+        scanf("%d %d", &cmd1, &cmd2);
+        if (!cmd2) addLeft(i, cmd1);
+        else addRight(i, cmd1);
+    }
+    scanf("%d", &m);
+    for (int i = 1; i <= m; ++i) {
+        scanf("%d", &cmd1);
+        del(cmd1);
+    }
+    fun();
+    return 0;
+}
+
+
+

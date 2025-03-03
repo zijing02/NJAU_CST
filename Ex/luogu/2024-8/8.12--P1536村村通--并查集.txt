@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define rank rank_
+#define union union_
+int n, m, r1, r2;
+int parent[1005], rank[1005];
+void init() {
+	for (int i = 1; i <= n; i++)
+		parent[i] = i,
+		rank[i] = 1;
+}
+int find(int p) {
+	if (p >= 1 && p <= n) 
+		if (p != parent[p])
+			parent[p] = find(parent[p]);
+	return parent[p];
+}
+void union(int p, int q) {
+	int proot = find(p);
+	int qroot = find(q);
+	if (proot == qroot)
+		return;
+	if (rank[proot] > rank[qroot])
+		parent[qroot] = proot;
+	else if (rank[proot] < rank[qroot])
+		parent[proot] = qroot;
+	else if (rank[proot] == rank[qroot])
+		parent[proot] = qroot,
+		rank[qroot] += 1;
+}
+//check只需要对parent进行计数
+void check() {
+	int cnt = 0;
+	map<int, int>mymap;
+	for (int i = 1; i <= n; i++) 
+		if (mymap[parent[i]] == 0)
+			cnt++,
+			mymap[parent[i]]++;
+	cout << cnt - 1 << endl;
+}
+int main() {
+	while (true) {
+		cin >> n;
+		if (n == 0)
+			break;
+		cin >> m;
+		init();
+		for (int i = 1; i <= m; i++)
+			cin >> r1 >> r2,
+			union(r1, r2);
+//需要先对路径进行压缩才能去计数
+		for (int i = 1; i <= n; i++)
+			find(i);
+		check();
+	}
+	return 0;
+}

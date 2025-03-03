@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n, l, r, cnt = 0;
+int w[45], total = 0;
+void dfs(int pos) {
+	if (total > r)return;
+	else if (total >= l && total <= r) 	cnt++;	//当前状态满足并不表示以后都不会满足，所以下面的for循环不能用else套起来
+	for (int i = pos; i <= n; i++) {
+		total += w[i];
+		dfs(i + 1);
+		total -= w[i];
+	}
+}
+int main() {
+	cin >> n >> l >> r;
+	for (int i = 1; i <= n; i++)
+		cin >> w[i];
+
+	dfs(1);
+	cout << cnt;
+	return 0;
+}

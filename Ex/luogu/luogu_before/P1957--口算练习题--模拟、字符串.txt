@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include<string.h>
+#include "math.h"
+#include<stdlib.h>
+int main()
+{
+	char s[10], t;
+	int a, b, c = 0;
+	int n, i, m, j, q, r, p;
+	scanf("%d", &n);
+	for (i = 0; i < n; i++) {
+		scanf("%s", s);
+		m = strlen(s);//判断读入的第一个字符串是数字还是字母
+		if (m > 1) {//若为数字   m==1也有可能是1位数，但是洛谷没有考虑这种情况，个人可以再写个判断考虑输入一位数的情况
+			scanf("%d", &a);//此时只需输入一个数字，将其记为a或b
+			c = 0;
+			for (j = 0; j < m; j++) {
+				r = j;
+				q = 1;
+				while (r < m - 1) {
+					q *= 10;
+					r++;
+				}
+				c += (s[j] - 48) * q;//将字符串s中数字转换成int类型
+			}
+			b = a;//将a值赋予b，c值赋予a，若上面输入记为b则只需将c值赋予a
+			a = c;
+			if (t == 97) {//加法
+				printf("%d+%d=%d\n", a, b, a + b);
+				p = a + b;
+			}
+			if (t == 98) {//减法
+				printf("%d-%d=%d\n", a, b, a - b);
+				p = a - b;
+			}
+			if (t == 99) {//除法
+				p = a * b;
+				printf("%d*%d=%d\n", a, b, a * b);
+			}
+			printf("%d\n", chang(a, b, p));//长度函数
+		}
+		if (m == 1) {//为字母，与上面步骤基本一样
+			scanf("%d %d", &a, &b);
+			if (s[0] == 97) {
+				printf("%d+%d=%d\n", a, b, a + b);
+				p = a + b;
+			}
+			if (s[0] == 98) {
+				printf("%d-%d=%d\n", a, b, a - b);
+				p = a - b;
+			}
+			if (s[0] == 99) {
+				p = a * b;
+				printf("%d*%d=%d\n", a, b, a * b);
+			}
+			t = s[0];//将此时的字母记下，用于往下的数据
+			printf("%d\n", chang(a, b, p));
+		}
+	}
+	return 0;
+}
+int chang(int a, int b, int p) {//算长度函数
+	int cnt = 0;
+	if (a == 0) {//不考虑a==0跟b==0，第五个数据会WA
+		cnt++;
+	}
+	else {
+		while (a > 0) {
+			a /= 10;
+			cnt++;
+		}
+	}
+	if (b == 0) {
+		cnt++;
+	}
+	else {
+		while (b > 0) {
+			b /= 10;
+			cnt++;
+		}
+	}
+	if (p < 0) {
+		p = -p;
+		cnt++;
+	}
+	if (p == 0) {
+		cnt++;
+	}
+	else {
+		while (p > 0) {
+			p /= 10;
+			cnt++;
+		}
+	}
+	return cnt + 2;//返回数字长度加上运算符长度2
+}

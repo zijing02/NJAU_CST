@@ -1,0 +1,12 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+	double h, s, v, l, k, n;
+	cin >> h >> s >> v >> l >> k >> n;
+	double hmax = h, hmin = h - k;
+	double t_boll_max = sqrt(hmax / 5), t_boll_min = sqrt(hmin / 5);
+	int first = s + l - t_boll_min * v, last = s - t_boll_max * v;
+	first = min(first, (int)n); last = max(last, 0);
+	cout << first - last;
+	return 0;
+}

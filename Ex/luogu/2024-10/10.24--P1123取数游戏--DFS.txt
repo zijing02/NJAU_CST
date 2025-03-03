@@ -1,0 +1,34 @@
+#include<bits/stdc++.h>
+using namespace std;
+int a[10][10], flag[10][10], t, row, col, ans;
+//并不是一味的使用循环去进行搜索
+//此题下一步就是推导出的
+void fun(int posx, int posy, int tmp) {
+	if (posx > row) {
+		ans = max(ans, tmp);
+		return;
+	}
+	int nextx = posx, nexty = posy + 1;
+	if (nexty > col) {
+		nexty = 1;
+		nextx = posx + 1;
+	}
+	if (!flag[posx - 1][posy - 1] && !flag[posx - 1][posy] && !flag[posx - 1][posy + 1] && !flag[posx][posy - 1] && !flag[posx][posy + 1] && !flag[posx + 1][posy - 1] && !flag[posx + 1][posy] && !flag[posx + 1][posy + 1]) {
+		flag[posx][posy] = 1;
+		fun(nextx, nexty, tmp + a[posx][posy]);
+		flag[posx][posy] = 0;
+	}
+	fun(nextx, nexty, tmp);
+}
+int main() {
+	cin >> t;
+	for (int i = 1; i <= t; i++) {
+		cin >> row >> col; ans = 0;
+		for (int i = 1; i <= row; ++i)
+			for (int j = 1; j <= col; ++j)
+				cin >> a[i][j];
+		fun(1, 0, 0);
+		cout << ans << endl;
+	}
+}
+

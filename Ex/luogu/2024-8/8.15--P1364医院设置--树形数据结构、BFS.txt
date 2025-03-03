@@ -1,0 +1,128 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node{
+	int par, lc, rc, num;
+}a[105];
+int n;
+long long ans = LONG_MAX;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i].num >> a[i].lc >> a[i].rc;
+		a[a[i].lc].par = i; a[a[i].rc].par = i;
+	}
+	for (int i = 1; i <= n; i++) {
+		int flag[105] = { 0 }, dis[105] = { 0 }; 
+		long long temp = 0;		flag[i] = 1;
+		queue<int>q;		q.push(i);
+		temp += a[i].num * dis[i];
+		//cout << "i:   " << i << endl;
+		while (!q.empty()) {
+			int j = q.front();
+			int	par = a[j].par, lc = a[j].lc, rc = a[j].rc;
+			if (par && flag[par] == 0) {
+				flag[par] = 1;	q.push(par);
+				dis[par] = dis[j] + 1;
+				temp += a[par].num * dis[par];
+				//cout << "temp_par:   " << temp <<"   " << a[par].num << "   "<< dis[par] << endl;
+
+			}
+			if (lc && flag[lc] == 0) {
+				flag[lc] = 1;	q.push(lc);
+				dis[lc] = dis[j] + 1;
+				temp += a[lc].num * dis[lc];
+				//cout << "temp_lc:   " << temp <<"   " << a[lc].num <<"   "<<dis[lc] << endl;
+
+			}
+			if (rc && flag[rc] == 0) {
+				flag[rc] = 1;	q.push(rc);
+				dis[rc] = dis[j] + 1;
+				temp += a[rc].num * dis[rc];
+				//cout << "temp_rc:   " << temp <<"   " << a[rc].num <<"   "<< dis[rc] << endl;
+
+			}
+			if (temp >= ans) 
+				break;
+			q.pop();
+		}
+		ans = min(ans,temp);
+	}
+	cout << ans;
+	return 0;
+}
+
+
+
+
+from typing import Optional
+import queue
+import sys
+
+
+class Node:
+    def __init__(self, num, lc: Optional[int] = None, rc: Optional[int] = None, par: Optional[int] = None):
+        self.num = num
+        self.lc = lc
+        self.rc = rc
+        self.par = par
+
+
+def main():
+    n: int
+    ans: int = sys.maxsize
+    par: int
+    lc: int
+    rc: int
+    num: int
+    n = int(input())
+    a = [Node(num=i) for i in range(105)]
+    for i in range(1, n + 1):
+        a[i].num, a[i].lc, a[i].rc = map(int, input().split())
+        if a[i].lc != 0:
+            a[a[i].lc].par = i
+        if a[i].rc != 0:
+            a[a[i].rc].par = i
+
+    for i in range(1, n + 1):
+        flag = [0] * 105
+        dis = [0] * 105
+        temp: int = 0
+        flag[i] = 1
+        q = queue.Queue(maxsize=0)
+        q.put(i)
+        temp += a[i].num * dis[i]
+        # print("i:    " + str(i) + "   " + str(q.queue[0]))
+        while not q.empty():
+            j: int = q.queue[0]
+            par: int = a[j].par
+            lc: int = a[j].lc
+            rc: int = a[j].rc
+            if par and flag[par] == 0:
+                flag[par] = 1
+                q.put(par)
+                dis[par] = dis[j] + 1
+                temp += a[par].num * dis[par]
+                # print("temp:   " + str(temp))
+            if lc != 0 and flag[lc] == 0:
+                flag[lc] = 1
+                q.put(lc)
+                dis[lc] = dis[j] + 1
+                temp += a[lc].num * dis[lc]
+                # print("temp:   " + str(temp))
+
+            if rc != 0 and flag[rc] == 0:
+                flag[rc] = 1
+                q.put(rc)
+                dis[rc] = dis[j] + 1
+                temp += a[rc].num * dis[rc]
+                # print("temp:   " + str(temp))
+
+            if temp >= ans:
+                break
+            q.get()
+        ans = min(ans, temp)
+    print(ans)
+
+
+if __name__ == main():
+    main()

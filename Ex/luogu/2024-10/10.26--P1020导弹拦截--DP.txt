@@ -1,0 +1,39 @@
+//a[]存储数据    f[]存储当前导弹被系统（可能有多个）第几个拦截       d[]存储现在最低的导弹高度
+//往前找，有比自己高的就使用一个系统同时f[i]+1，且将f[i]存入d中
+#include<bits/stdc++.h>
+using namespace std;
+int a[100005], n, ans = 1, f[100005], d[100005], t;
+int main() {
+	while (scanf("%d", &a[++n]) != EOF);
+	n--;
+	for (int i = 1; i <= n; i++) {
+		f[i] = 1;
+		for (int j = t; j > 0; j--) {
+			if (a[i] <= a[d[j]]) {
+				f[i] = f[d[j]] + 1;
+				break;
+			}
+		}
+		t = max(t, f[i]);
+		d[f[i]] = i;
+		ans = max(ans, f[i]);
+	}
+	cout << ans << endl;
+	ans = 1;
+	t = 0;
+//往前找，有比自己小的，说明系统不足，加一
+	for (int i = 1; i <= n; i++) {
+		f[i] = 1;
+		for (int j = t; j > 0; j--) {
+			if (a[i] > a[d[j]]) {
+				f[i] = f[d[j]] + 1;
+				break;
+			}
+		}
+		t = max(t, f[i]);
+		d[f[i]] = i;
+		ans = max(ans, f[i]);
+	}
+	cout << ans;
+	return 0;
+}

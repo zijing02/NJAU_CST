@@ -1,0 +1,72 @@
+f[i][j]从中取i个数字，分割j次
+//4, 2, 1231
+//f[1][0] = 1, f[1][1] = 0, f[1][2] = 0, f[1][3] = 0, f[1][4] = 0
+//f[2][0] = 12, f[2][1] = 1 * 2 = 2
+//f[3][0] = 123, f[3][1] = max(1 * 23, 12 * 3) = max(f[1][0] * rval(2, 3), f[2][0] * rval(3, 3)) = 36
+//f[i][j] = max(f[i][j], f[k][j - 1] * rval(k + 1, i))(1 <= k <= i - 1)
+#include<bits/stdc++.h>
+using namespace std;
+int n, k;
+string s, f[45][10];
+string mul(string a, string b) {
+    int m[10000], n[10000], c[10000], x;
+    for (int i = 1; i <= a.length(); i++) m[i] = a[a.length() - i] - 48;
+    for (int i = 1; i <= b.length(); i++) n[i] = b[b.length() - i] - 48;
+    for (int i = 1; i <= a.length() + b.length(); i++) c[i] = 0;
+    for (int i = 1; i <= b.length(); i++) {
+        x = 0;
+        for (int j = 1; j <= a.length(); j++) {
+            c[i + j - 1] += m[j] * n[i] + x;
+            x = c[i + j - 1] / 10;
+            c[i + j - 1] %= 10;
+        }
+        c[i + a.length()] = x;
+    }
+    string k;
+    bool flag = true;
+    for (int i = a.length() + b.length(); i > 0; i--) {
+        if (c[i] != 0) {
+            for (int j = i; j > 0; j--)
+                k += c[j] + 48;
+            flag = false;
+            break;
+        }
+    }
+    if (flag)
+        return "0";
+    return k;
+}
+string maxn(string a, string b) {
+    if (a.size() != b.size())
+        return a.size() > b.size() ? a : b;
+    return a > b ? a : b;
+}
+string a(int start, int end) {
+    string cnt;
+    while (start <= end) {
+        cnt += s[start];
+        start++;
+    }
+    return cnt;
+}
+int main() {
+    cin >> n >> k;
+    char q;
+//resize使得从s[1]开始放
+    s.resize(1);
+    for (int i = 1; i <= n; i++) {
+        cin >> q;
+        s += q;
+    }
+    for (int i = 1; i <= n; i++)
+        f[i][0] = a(1, i);
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= k; j++) {
+            for (int l = 1; l < i; l++) {
+                f[i][j] = maxn(f[i][j], mul(f[l][j - 1], a(l + 1, i)));
+            }
+        }
+    }
+    cout << f[n][k];
+    return 0;
+}

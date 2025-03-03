@@ -1,0 +1,36 @@
+/从(0,0)到(n,m)共有min(n,m)个正方形,n*m个矩形,n*m-min(n,m)个长方形
+//故从一开始遍历到结尾
+#include<iostream>
+using namespace std;
+int min(int a, int b) {
+	return a < b ? a : b;
+}
+int main()
+{
+	long long int n, m, z = 0, c = 0;//z正方形c长方形
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {         
+		for (int j = 1; j <= m; j++) {
+			z += min(i, j); c += i * j - min(i,j);
+		}
+	}
+	cout << z << " " << c;
+	return 0;
+}
+
+//已知一个n行m列的方形中有(((n + 1) * n/2 )* ((m + 1) * m/2))个矩形，有(n - i + 1) * (m - i + 1)个边长为i的正方形
+#include<iostream>
+using namespace std;
+int min(int a,int b) {
+	return a < b ? a : b;
+}
+int main()
+{
+	long long int n, m; cin >> n >> m; long long int jx = (((n + 1) * n/2 )* ((m + 1) * m/2)), zfx = 0, cfx = 0;
+	for (int i = 1; i <= min(n, m);i++) {
+		zfx += (n - i + 1) * (m - i + 1);
+	}
+	cfx = jx - zfx;
+	cout << zfx << " " << cfx;
+	return 0;
+}

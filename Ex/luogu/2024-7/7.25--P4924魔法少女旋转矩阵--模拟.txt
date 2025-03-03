@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+int  a[505][505] = { 0 };
+void shun(int x, int y, int r) {
+	int b[505][505];
+	for (int i = 0; i < 2 * r + 1; i++) {
+		int m = x + r, n = y - r + i;
+		for (int j = 0; j < 2 * r + 1; j++)
+			b[i][j] = a[m--][n];
+	}
+	int m = 0, n = 0;
+	for (int i = x - r; i <= x + r; i++){
+		n = 0;
+		for (int j = y - r; j <= y + r; j++)
+			a[i][j] = b[m][n++];
+		m++;
+	}
+}
+void ni(int x, int y, int r) {
+	int b[505][505];
+	for (int i = 0; i < 2 * r + 1; i++) {
+		int m = x - r, n = y + r - i;
+		for (int j = 0; j < 2 * r + 1; j++)
+			b[i][j] = a[m++][n];
+	}
+	int m = 0, n = 0;
+	for (int i = x - r; i <= x + r; i++) {
+		n = 0;
+		for (int j = y - r; j <= y + r; j++)
+			a[i][j] = b[m][n++];
+		m++;
+	}
+}
+int main() {
+	int n, num, idx = 1, x, y, r, z;
+	cin >> n >> num;
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n; j++)
+			a[i][j] = idx++;
+
+	for (int i = 0; i < num; i++) {
+		cin >> x >> y >> r >> z;
+		if (z) ni(x, y, r);
+		else shun(x, y, r);
+	}
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++)
+			cout << a[i][j] << " ";
+		cout << endl;
+	}
+	return 0;
+}

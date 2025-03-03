@@ -1,0 +1,17 @@
+#include<stdio.h>
+int main() {
+	int a[10];
+	int b;
+	int count = 0;
+	scanf_s("%d", &b);
+	for (int i = 0; i < 10; i++) {
+		scanf_s("%d", &a[i]);
+	}
+	for (int n = 0; n < 10; n++) {
+		if (a[n] <= (b + 30)) {
+			count++;
+		}
+	}
+	printf("%d", count);
+	return 0;
+}

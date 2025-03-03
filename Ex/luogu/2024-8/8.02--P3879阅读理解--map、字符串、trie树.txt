@@ -1,0 +1,112 @@
+//tle
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, msize;
+string temp;
+map<int, map<int, string>>mymap;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> msize;
+		for (int j = 1; j <= msize; j++) 
+			cin >> mymap[i][j];
+	}
+	cin >> m; 
+	for (int i = 1; i <= m; i++) {
+		cin >> temp;
+		for (int i = 1; i <= n; i++) 
+			for (int j = 1; j <= mymap[i].size(); j++) 
+				if (temp == mymap[i][j]) {
+					cout << i << " ";
+					break;
+				}
+		
+		cout << endl;
+	}
+	return 0;
+}
+
+//题目核心是短文序号，将短文序号放在一起
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, msize;
+string ms;
+map<string, vector<int>>mymap;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> msize;
+		for (int j = 1; j <= msize; j++) {
+			cin >> ms;
+			mymap[ms].push_back(i);
+		}
+	}
+	cin >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> ms;
+		int now = 0;
+		for (int j = 0; j < mymap[ms].size(); j++) {
+			if(now != mymap[ms][j])
+				if (j == mymap[ms].size() - 1)
+					cout << mymap[ms][j];
+				else
+					cout << mymap[ms][j] << " ";
+			now = mymap[ms][j];
+		}
+		if (i != m)
+			cout << endl;
+	}
+	return 0;
+}
+
+
+//ACtrie树
+#include<bits/stdc++.h>
+using namespace std;
+int nex[500010][26], n, m, cnt = 0;
+bool exist[500010][1010];
+void insert(string s,int i){ 
+	int p = 0;
+	for (int i = 0; i < s.size(); i++) {
+		int c = s[i] - 'a';
+		if (!nex[p][c])
+			nex[p][c] = ++cnt;
+		p = nex[p][c];
+	}
+	exist[p][i] = 1;
+}
+void check(string s) {
+	int p = 0, flag = 1;
+	for (int i = 0; i < s.size(); i++) {
+		int c = s[i] - 'a';
+		if (!nex[p][c]) {
+			flag = 0;
+			break;
+		}
+		p = nex[p][c];
+	}
+	if (flag)
+		for (int i = 1; i <= n; i++)
+			if (exist[p][i])
+				cout << i << " ";
+
+	cout << endl;
+}
+int main() {
+	string s; int num;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> num;
+		for (int j = 1; j <= num; j++) {
+			cin >> s;
+			insert(s, i);
+		}
+	}
+	cin >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> s;
+		check(s);
+	}
+	return 0;
+}
+

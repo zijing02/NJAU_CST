@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    char t[65000];
+    int i = 0;
+    do {
+        cin >> t[i];
+    } while (t[i++] != 'E');
+    t[i++] = '\0';
+    string s(t);
+    //cout << s << endl;
+    for (int j = 11; j < 22; j += 10) {
+        int score1 = 0, score2 = 0;
+        for (int i = 0; s[i] != 'E'; i++) {
+            if (s[i] == 'W')
+                score1 += 1;
+            else if (s[i] == 'L')
+                score2 += 1;
+            if ((score1 >= j || score2 >= j) && abs(score1 - score2) >= 2)
+                cout << score1 << ":" << score2 << endl,
+                score1 = score2 = 0;
+        }
+        cout << score1 << ":" << score2 << endl << endl;
+    }
+    return 0;
+}

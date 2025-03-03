@@ -1,0 +1,34 @@
+def preorder(inorder: str, postorder: str):
+    if len(inorder) > 0:
+        c = postorder[len(postorder) - 1]
+        print(c, end='')
+        ind = inorder.find(c)
+        preorder(inorder[0:ind], postorder[0:ind])
+        preorder(inorder[ind+1:], postorder[ind:len(postorder) - 1])
+
+
+inorder = input()
+postorder = input()
+preorder(inorder, postorder)
+
+
+#include<bits/stdc++.h>
+using namespace std;
+//s.substr(pos, len)
+// 返回值： string，包含s中从pos开始的len个字符的拷贝
+// pos的默认值是0，len的默认值是s.size() - pos，即不加参数会默认拷贝整个s
+void pre(string in,string post) {
+	if (in.size() > 0) {
+		char c = post[post.size() - 1];
+		cout << c;
+		int ind = in.find(c);
+		pre(in.substr(0, ind), post.substr(0, ind));
+		pre(in.substr(ind + 1), post.substr(ind, post.size() - ind - 1));
+	}
+}
+int main() {
+	string in, post;
+	cin >> in >> post;
+	pre(in, post);
+	return 0;
+}

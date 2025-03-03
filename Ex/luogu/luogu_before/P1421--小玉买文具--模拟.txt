@@ -1,0 +1,10 @@
+#include<stdio.h>
+int main()
+{
+	double a, b,price,num;
+	price = 1.9;
+	scanf_s("%lf %lf", &a, &b);
+	num = (a + b / 10) / price;
+	printf("%1.0f", num);
+	return 0;
+}

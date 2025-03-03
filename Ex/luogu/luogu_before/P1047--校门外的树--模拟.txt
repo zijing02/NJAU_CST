@@ -1,0 +1,21 @@
+#include<stdio.h>
+int main()
+{
+	int l, m, sum = 0, x1, x2;
+	int a[10000];
+	scanf_s("%d %d", &l, & m);
+	for (int i = 0; i <= l; i++) {
+		a[i] = 1;
+	}
+	for (int i = 0; i < m; i++) {
+		scanf_s("%d %d", &x1, &x2);
+		for (int k = x1-1; k < x2; k++) {
+			a[k] = 0;
+		}
+	}
+	for (int i = 0; i <= l; i++) {
+		sum += a[i];
+	}
+	printf("%d ",sum); 
+	return 0;
+}

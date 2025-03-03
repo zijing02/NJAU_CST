@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct point {
+	int xl, yd;
+	int xr, ya;
+
+}p[10010];
+int main() {
+	int n, tx, ty, temp = 0;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> p[i].xl >> p[i].yd >> tx >> ty;
+		p[i].xr = p[i].xl + tx; p[i].ya = p[i].yd + ty;
+	}
+	cin >> tx >> ty;
+	for (int i = 1; i <= n; i++)
+		if (tx <= p[i].xr && tx >= p[i].xl && ty <= p[i].ya && ty >= p[i].yd)
+			temp = i;
+	if (temp)	cout << temp;
+	else cout << "-1";
+	return 0;
+}

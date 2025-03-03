@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node {
+	int left, right;
+}tree[300];
+int n;
+void preorder_traversal(int i) {
+	if (i == int('*'))return;
+	cout << char(i);
+	preorder_traversal(tree[i].left);
+	preorder_traversal(tree[i].right);
+}
+int main() {
+	cin >> n; char k, l, r;
+	int first;
+	for (int i = 1; i <= n; i++) {
+		cin >> k >> l >> r;
+		if (i == 1)first = int(k);
+		tree[int(k)].left = int(l);
+		tree[int(k)].right = int(r);
+	}
+	preorder_traversal(first);
+	return 0;
+
+}

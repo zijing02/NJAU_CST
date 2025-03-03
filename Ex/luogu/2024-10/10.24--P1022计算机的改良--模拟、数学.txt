@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+string s; char ch;
+double flag = -1, xishu = 0, changshu = 0, temp = 0, t = 0;
+int main() {
+    cin >> s;
+    int i;
+    for (i = 0; i < s.length(); ) {
+        if (s[i] == '=') {
+            t = 0;
+            flag = 1;
+            i++;
+            continue;
+        }
+        else if (t == 0 && (s[i] != '+' && s[i] != '-')) {
+            temp = 0;
+            for (i; s[i] != '+' && s[i] != '-' && s[i] != '=' && s[i] != '\0'; i++)
+                temp = temp * 10 + s[i] - '0';
+            if ((s[i - 1] >= 'a' && s[i - 1] <= 'z') || (s[i - 1] >= 'A' && s[i - 1] <= 'Z')) {
+                ch = s[i - 1];
+                temp = (temp + '0' - s[i - 1]) / 10;
+                if (temp == 0)
+                    temp = 1;
+                xishu = xishu + temp * flag * (-1);
+            }
+            else
+                changshu = changshu + temp * flag;
+            t = 1;
+        }
+        else if (s[i] == '-') {
+            temp = 0; i++;
+            for (i; s[i] != '+' && s[i] != '-' && s[i] != '=' && s[i] != '\0'; i++)
+                temp = temp * 10 + s[i] - '0';
+            if ((s[i - 1] >= 'a' && s[i - 1] <= 'z') || (s[i - 1] >= 'A' && s[i - 1] <= 'Z')) {
+                ch = s[i - 1];
+                temp = (temp + '0' - s[i - 1]) / 10;
+                xishu = xishu - temp * flag * (-1);
+            }
+            else
+                changshu = changshu - temp * flag;
+        }
+        else if (s[i] == '+') {
+            temp = 0; i++;
+            for (i; s[i] != '+' && s[i] != '-' && s[i] != '=' && s[i] != '\0'; i++)
+                temp = temp * 10 + s[i] - '0';
+            if ((s[i - 1] >= 'a' && s[i - 1] <= 'z') || (s[i - 1] >= 'A' && s[i - 1] <= 'Z')) {
+                ch = s[i - 1];
+                temp = (temp + '0' - s[i - 1]) / 10;
+                xishu = xishu + temp * flag * (-1);
+            }
+            else
+                changshu = changshu + temp * flag;
+        }
+    }
+    if(xishu ==0)
+        printf("%c=0.000", ch);
+    else 
+        printf("%c=%.3lf", ch, changshu / xishu);
+    return 0;
+}

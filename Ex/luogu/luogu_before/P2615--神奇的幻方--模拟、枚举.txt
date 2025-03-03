@@ -1,0 +1,92 @@
+#include<stdio.h>
+int main()
+{
+	int num[1521] = { 0 }, n,  now = 0, i, line, list;   //now为数字当前的输入位置
+	scanf_s("%d", &n);                   //-1则转变为数组的位置
+	now = (n + 1) / 2;
+	for (i = 1; i <= n*n; i++)            //i为当前准备输入的数字大小
+	{
+		num[now - 1] = i;       //进行本次的数字填入，下面开始下一次的数字填入准备
+		if (now == n) {    //如果now在最右上角
+			now = 2 * n;
+			continue;
+		}
+		if (now <= n - 1) {     //如果now在第一行
+			now += n * (n - 1) + 1;
+			continue;
+		}
+		if (now % n == 0) {    //如果now在最后一列
+			now -= 2 * n - 1;
+			continue;
+		}          //如果上述情况都不符合，即在左下区域内
+		if (num[now - n] == 0) {      //如果now右上方还没有数
+			now -= n - 1;
+			continue;
+		}
+		now += n;         //如果now右上方已经被占了
+	}
+	for (line = 1; line <= n; line++)
+	{
+		for (list = 1; list <= n; list++)
+		{
+			printf("%d ", num[(line - 1) * n + list - 1]);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+
+#include<stdio.h>
+int main()
+{
+	void huan_fang(int);
+	int n;
+	scanf_s("%d", &n);
+	huan_fang(n);
+	return 0;
+}
+void huan_fang(int n)
+{
+	int a[39][39], c, i, j;
+	for (i = 0; i < n; i++)
+		for (j = 0; j < n; j++)
+			a[i][j] = 0;
+	a[0][(n - 1) / 2] = 1;
+	i = 0;
+	j = (n - 1) / 2;
+	for (c = 2; c <= n * n; c++)
+	{
+		if (i==0 && j != n - 1)
+		{
+			i = n - 1;
+			j = j + 1;
+		}
+		else if (i && j == n - 1)
+		{
+
+			i = i - 1;
+			j = 0;
+		}
+		else if (i==0 && j == n - 1)
+		{
+			i = i + 1;
+		}
+		else
+		{
+			if (a[i - 1][j + 1])
+				i = i + 1;
+			else
+			{
+				i = i - 1;
+				j = j + 1;
+			}
+		}
+		a[i][j] = c;
+	}
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < n; j++)
+			printf("%d ", a[i][j]);
+		printf("\n");
+	}
+}

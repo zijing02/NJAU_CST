@@ -1,0 +1,118 @@
+//ac
+//#include<bits/stdc++.h>
+//using namespace std;
+//int main() {
+//
+//
+//    return 0;
+//}
+
+#include <iostream>
+#include <cmath>
+#include <algorithm>//头文件
+using namespace std;//名字空间
+long long line[100100], fenshu[100100];//定义两个数组，分别储存每个学校的分数线，和每个同学的估分
+int main()//主函数
+{
+	int n, m;//定义n,m
+	cin >> n >> m;//输入
+	for (int i = 1; i <= n; i++)
+	{
+		cin >> line[i];//输入
+	}
+	for (int i = 1; i <= m; i++)
+	{
+		cin >> fenshu[i];//还是输入
+	}
+	sort(fenshu + 1, fenshu + m + 1);
+	sort(line + 1, line + n + 1);//把每个学校的分数线从小到大排序
+	long long ans = 0;//答案一开始为0，因为要累加和。
+	for (int i = 1; i <= m; i++)
+	{
+		int l = 0, r = n + 1;//定义左边界与右边界
+		while (l < r)
+		{
+			int mid = (l + r) / 2;//取查找范围的中间值
+			if (line[mid] <= fenshu[i])//如果录取分数线数组中的第mid个元素小于或等于那位同学的分数
+			{
+				l = mid + 1;//左边界就往右移
+			}
+			else
+			{
+				r = mid;//右边界就往左移
+			}
+		}
+		if (fenshu[i] <= line[1])//这里需要特判断一下，不然只能得70分
+		{
+			ans += line[1] - fenshu[i];
+		}
+		else
+		{
+			ans += min(abs(line[l - 1] - fenshu[i]), abs(line[l] - fenshu[i]));//加上两个绝对值中最小
+		}
+	}
+	cout << ans;//输出ans
+	return 0;//结束程序
+}
+
+//自己写二分，不过
+#include<bits/stdc++.h>
+using namespace std;
+long long n, m, ans = 0;
+//先找到差不多的，之后向左一位，向右一位，选择小的
+long long line[100100], fenshu[100100];
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+		cin >> line[i];
+	for (int i = 1; i <= m; i++)
+		cin >> fenshu[i];
+	sort(line + 1, line + n + 1);
+	sort(fenshu + 1, fenshu + m + 1);
+	for (int i = 1; i <= n; i++) {
+		int l = 0, r = n + 1;
+		while (l < r) {
+			int mid = (l + r) / 2;
+			if (line[mid] <= fenshu[i]) l = mid + 1;
+			else r = mid;
+		}
+		if (fenshu[i] <= line[1])
+			ans += line[1] - fenshu[i];
+		else
+			ans += min(abs(line[l - 1] - fenshu[i]), abs(line[l] - fenshu[i]));
+	}
+	cout << ans;
+	return 0;
+}
+
+//wrong，因为abs的原因，很多负数边正之后无法正确向后
+#include<bits/stdc++.h>
+using namespace std;
+long long n, m, ans = 0;
+//先找到差不多的，之后向左一位，向右一位，选择小的
+int line[100005], fenshu[100005];
+int main() {
+	cin >> m >> n;
+	for (int i = 0; i < m; i++) 
+		cin >> line[i];
+	for (int i = 0; i < n; i++)
+		cin >> fenshu[i];
+	sort(line, line + m);
+	sort(fenshu, fenshu + n);
+	int ind = 1, j = 0;
+	for (int i = 0; i < n; i++) {
+		long long tmp = INT_MAX;
+		for (j; j < m; j++) {
+			if (abs(line[j] - fenshu[i]) < tmp) {
+				tmp = abs(line[j] - fenshu[i]);
+			}
+			else if (abs(line[j] - fenshu[i]) >= tmp) {
+				break;
+			}
+		}
+		j--;
+		ans += tmp;
+	}
+	cout << ans;
+	return 0;
+}

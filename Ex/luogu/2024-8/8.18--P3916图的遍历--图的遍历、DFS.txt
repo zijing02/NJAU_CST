@@ -1,0 +1,58 @@
+//找最大值，可反向建立图，从最后面开始遍历
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, u, v, ans = 0;
+// 使用dfs遍历图
+int visited[100005] = { 0 };
+vector<int>s[100005];
+void dfs(int i,int val) {
+	if (visited[i] != 0)
+		return;
+	visited[i] = val;
+	for (int j = 0; j < s[i].size(); j++) 
+		dfs(s[i][j], val);
+}
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> u >> v;
+		s[v].push_back(u);
+	}
+	for (int i = n; i >= 1; i--) 
+		dfs(i, i);
+	for (int i = 1; i <= n; i++) cout << visited[i] << " ";
+	return 0;
+}
+
+//tle
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, u, v, ans = 0;
+vector<int>s[100005];
+bool visited[100005] = { 0 };
+void dfs(int i) {
+	ans = ans > i ? ans : i;
+	for (int j = 0; j < s[i].size(); j++) {
+		if (visited[s[i][j]] == 1)
+			continue;
+		else {
+			visited[s[i][j]] = 1;
+			dfs(s[i][j]);
+		}
+	}
+}
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> u >> v;
+		s[u].push_back(v);
+	}
+	for (int i = 1; i <= n; i++) {
+		memset(visited, 0, sizeof(visited));
+		ans = 0;
+		dfs(i);
+		cout << ans << " ";
+	}
+	return 0;
+}
+

@@ -1,0 +1,106 @@
+//向下搜索，打标记时只需要向下标记，回溯时也不会影响之前的标记
+#include <bits/stdc++.h>
+using namespace std;
+int n, cnt = 0, a[15][15] = {0}, ans[15];
+void seta(int i, int j, int p)
+{
+    ans[i] = j;
+    a[i][j] += p;
+    for (int k = 1; k <= n; k++) // 同行同列
+    {
+        a[k][j] += p;
+        a[i][k] += p;
+    }
+    // for (int m = 1; m <= n; m++)
+    // { // 副对角线方向
+    //     for (int l = 1; l <= n; l++)
+    //     {
+    //         if (m + l == i + j)
+    //             a[m][l] += p;
+    //         if (m - l == i - j) // 主对角线方向
+    //             a[m][l] += p;
+    //     }
+    // }
+    int x = i + 1, y = j + 1;		//修改时只需要修改往下的部分即可
+    while (x <= n && y <= n)
+        a[x][y] += p, x++, y++;
+    x = i + 1, y = j - 1;
+    while (x <= n && y)
+        a[x][y] += p, x++, y--;
+}
+void dfs(int pos)
+{
+    if (pos == n + 1)
+    {
+        cnt += 1;
+        if (cnt <= 3)
+        {
+            for (int i = 1; i <= n; i++)
+                cout << ans[i] << " ";
+            cout << endl;
+        }
+    }
+    else if (pos < n + 1)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            if (!a[pos][j])
+            {
+                seta(pos, j, 1);
+                dfs(pos + 1);
+                seta(pos, j, -1);
+            }
+        }
+    }
+}
+int main()
+{
+    cin >> n;
+    dfs(1);
+    cout << cnt;
+    return 0;
+}
+
+
+
+
+// #include<iostream>
+// #include<algorithm>
+// #include<cstdio>
+// using namespace std;
+// int n, m1[30]={0}, m2[30]={0}, m3[30]={0}, ans[15]={0}, mark = 0;
+// void setvalue(int x,int y,int k) {
+// 	ans[x]=y;
+// 	m1[y] = k;
+// 	m2[x + y] = k;
+// 	m3[x - y + n] = k;
+// }
+// void dfs(int step) {
+// 	if (step > n) {
+// 		mark++;
+// 		if (mark <= 3) {
+// 			for (int i = 1; i <= n; i++) {
+// 				cout << ans[i] << " ";
+// 			}
+// 			cout << endl;
+
+// 		}
+// 		return;
+// 	}
+// 	for (int j = 1; j <= n; j++) {
+// 		if (m1[j] || m2[step + j] || m3[step - j + n]) {
+// 			continue;
+// 		}
+// 		setvalue(step, j, 1);
+// 		dfs(step + 1);
+// 		setvalue(step, j, 0);
+// 	}
+// }
+// int main()
+// {
+// 	cin >> n;
+// 	dfs(1);
+// 	cout << mark;
+
+// 	return 0;
+// }

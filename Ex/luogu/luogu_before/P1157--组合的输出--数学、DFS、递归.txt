@@ -1,0 +1,28 @@
+//DFS
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int n, k, a[25];
+void dfs(int step,int flag) {
+	if (step == k) {
+		for (int i = 0; i < k; i++) {
+			printf("%3d", a[i]);
+		}
+		cout << endl;
+		return;
+	}
+	//if (n - flag < k - step) {
+	//	return;
+	//}																	//剪枝操作但此题可有可无
+	for (int i = flag + 1; i <= n; i++) {
+		a[step] = i;
+		dfs(step + 1, i);
+	}
+}
+int main()
+{
+	cin >> n >> k;
+	dfs(0, 0);
+	return 0;
+}
+

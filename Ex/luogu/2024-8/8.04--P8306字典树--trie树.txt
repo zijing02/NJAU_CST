@@ -1,0 +1,175 @@
+//c语言输入输出时间开销小于c++
+#include<bits/stdc++.h>
+using namespace std;
+int T, q, n, nex[3000005][65];
+int exist[3000005], cnt;
+char s[3000005];
+int change(char ch) {
+    if (ch >= '0' && ch <= '9')
+        return ch - '0';
+    else if (ch >= 'A' && ch <= 'Z')
+        return ch - 'A' + 10;
+    else if (ch >= 'a' && ch <= 'z')
+        return ch - 'a' + 36;
+}
+void insert(char str[]) {
+    int p = 0, len = strlen(str);
+    for (int i = 0; i < len; i++) {
+        int c = change(str[i]);
+        if (!nex[p][c])
+            nex[p][c] = ++cnt;
+        p = nex[p][c];
+//对每一个字母进行计数
+        exist[p]++;
+    }
+}
+int find(char str[]) {
+    int p = 0, len = strlen(str);
+    for (int i = 0; i < len; i++) {
+        int c = change(str[i]);
+        if (!nex[p][c])
+            return 0;
+        p = nex[p][c];
+    }
+    return exist[p];
+}
+int main() {
+    scanf("%d", &T);
+    for (int m = 0; m < T; m++) {
+        for (int i = 0; i <= cnt; i++)
+            for (int j = 0; j <= 122; j++)
+                nex[i][j] = 0;
+        for (int i = 0; i <= cnt; i++)
+            exist[i] = 0;
+        cnt = 0;
+        scanf("%d%d", &n, &q);
+        for (int i = 1; i <= n; i++) {
+            scanf("%s", s);
+            insert(s);
+        }
+        for (int i = 1; i <= q; i++) {
+            scanf("%s", s);
+            printf("%d\n", find(s));
+        }
+    }
+    return 0;
+}
+
+//tle
+#include<bits/stdc++.h>
+using namespace std;
+int nex[500010][70] = { 0 };
+int T, n, q, cnt = 0, maxsize = 0;
+bool exist[500010] = { 0 };
+string s;
+int change(char ch) {
+	if (ch >= '0' && ch <= '9')
+		return ch - '0';
+	else if (ch >= 'A' && ch <= 'Z')
+		return ch - 'A' + 10;
+	else if (ch >= 'a' && ch <= 'z')
+		return ch - 'a' + 36;
+}
+void insert() {
+	int p = 0;
+	for (int i = 0; i < s.size(); i++) {
+		int c = change(s[i]);
+		if (!nex[p][c])
+			nex[p][c] = ++cnt;
+		p = nex[p][c];
+	}
+	exist[p] = true;
+}
+void check() {
+	int p = 0;
+	for (int i = 0; i < s.size(); i++) {
+		int c = change(s[i]);
+		if (!nex[p][c])
+			return;
+		p = nex[p][c];
+	}
+	if (exist[p])cnt++;
+	for (int i = 0; i < 70; i++)
+		if (nex[p][i])
+			cnt++;
+}
+int main(){
+	cin >> T;
+	for (int i = 1; i <= T; i++) {
+		cin >> n >> q;
+		cnt = 0; maxsize = 0;
+		memset(nex, 0, sizeof(nex));
+		memset(exist, 0, sizeof(exist));
+		for (int j = 1; j <= n; j++) {
+			cin >> s;
+			maxsize = max(maxsize, int(s.size()));
+			insert();
+		}
+		for (int j = 1; j <= q; j++) {
+			cin >> s;
+			cnt = 0;
+			check();
+			cout << cnt << endl;
+		}
+	}
+
+	return 0;
+}
+
+//python
+class TrieNode:  
+    def __init__(self):  
+        self.children = [None] * 65  # 用于存储指向下一个节点的指针  
+        self.count = 0  # 节点出现的次数  
+
+def change(ch):  
+    if '0' <= ch <= '9':  
+        return ord(ch) - ord('0')  
+    elif 'A' <= ch <= 'Z':  
+        return ord(ch) - ord('A') + 10  
+    elif 'a' <= ch <= 'z':  
+        return ord(ch) - ord('a') + 36  
+    return -1  # 输入字符不在可处理范围内  
+
+class Trie:  
+    def __init__(self):  
+        self.root = TrieNode()  
+
+    def insert(self, string):  
+        p = self.root  # 从根节点开始  
+        for char in string:  
+            c = change(char)  # 转换字符  
+            if c == -1:  # 如果字符不在范围内  
+                continue  
+
+            if p.children[c] is None:  
+                p.children[c] = TrieNode()  # 创建新节点  
+            p = p.children[c]  
+            p.count += 1  # 更新计数  
+
+    def find(self, string):  
+        p = self.root  # 从根节点开始  
+        for char in string:  
+            c = change(char)  # 转换字符  
+            if c == -1 or p.children[c] is None:  
+                return 0  # 如果字符不在 Trie 中  
+            p = p.children[c]  
+
+        return p.count  # 返回节点计数  
+
+def main():  
+    T = int(input())  
+    for _ in range(T):  
+        trie = Trie()  # 每轮测试用例初始化一个 Trie  
+        n, q = map(int, input().split())  
+        
+        for _ in range(n):  
+            s = input().strip()  # 读入字符串  
+            trie.insert(s)  
+
+        for _ in range(q):  
+            s = input().strip()  # 读入查询字符串  
+            print(trie.find(s))  
+
+if __name__ == "__main__":  
+    main()

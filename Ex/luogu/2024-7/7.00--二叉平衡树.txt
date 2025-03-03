@@ -1,0 +1,182 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef struct TreeNode {  
+    int key;  
+    struct TreeNode* left;  
+    struct TreeNode* right;  
+    int size;   // 当前节点为根的子树大小  
+    int count;  // 当前节点的重复数量  
+    TreeNode(int value)
+        : key(value), size(1), count(1), left(NULL), right(NULL) {}
+} TreeNode;   
+// 插入节点的递归函数，其实就是创建树 
+//若 root 为空，直接返回一个值为 value 的新节点
+//若 root 的权值等于 value，该节点的附加域该值出现的次数自增 1
+//若 root 的权值大于 value，在 root 的左子树中插入权值为 value 的节点
+//若 root 的权值小于 value，在 root 的右子树中插入权值为 value 的节点
+TreeNode* insert(TreeNode* node, int value) {  
+    if (node == NULL) 
+        //使用c++语法少写一个create函数
+        return new TreeNode(value);
+    if (value < node->key)  
+        node->left = insert(node->left, value);  
+    else if (value > node->key)   
+        node->right = insert(node->right, value);  
+    else   
+        // 如果值相同，增加当前节点的重复数量  
+        node->count++;   
+    // 更新当前节点的 size  
+    node->size = 1 + (node->left ? node->left->size : 0) + (node->right ? node->right->size : 0);  
+    return node;  
+    //root = insert(root, value);
+}  
+//找最小、最大值
+int findMin(TreeNode* root) {
+    if (root == NULL)
+        return -1;
+    while (root->left)
+        root = root->left;
+    return root->key;
+}
+int findMax(TreeNode* root) {
+    if (root == NULL)
+        return -1;
+    while (root->right)
+        root = root->right;
+    return root->key;
+}
+//查询树中是否存在某一个值
+//必须每一个都返回，否则不知道有没有，好比传递信息，不能只传递一层
+bool search(TreeNode* root, int value) {
+    if (root == NULL)
+        return false;
+    if (root->key == value)
+        return true;
+    else if (root->key > value)
+        return search(root->left, value);
+    else if (root->key < value)
+        return search(root->right, value);
+}
+//删除节点
+//若该节点的附加 count 大于 1，只需要减少 count
+//若该节点的附加 count 为 1：
+//若 root 为叶子节点，直接删除该节点即可
+//若 root 为链节点，即只有一个儿子的节点，返回这个儿子
+//若 count 有两个非空子节点，一般是用它左子树的最大值（左子树最右的节点）或右子树的最小值（右子树最左的节点）代替它，然后将它删除
+TreeNode* findMinNode(TreeNode* root) {
+    while (root->left != NULL) {
+        root = root->left;
+    }
+    return root;
+}
+TreeNode* remove(TreeNode* root, int value) {
+    if (root == NULL)
+        return root;
+    if (value < root->key)
+        root->left = remove(root->left, value);
+    else if (value > root->key)
+        root->right = remove(root->right, value);
+    else {
+        if (root->count > 1)
+            root->count--;
+        else {
+            if (root->left == NULL && root->right == NULL) {
+                delete root;
+                return root;  // 返回空指针  
+            }
+            // 情况2: 只有一个子节点  
+            else if (root->left == NULL && root->right != NULL) {
+                TreeNode* temp = root->right;
+                delete root;
+                return temp;
+            }
+            else if (root->right == NULL && root->left != NULL) {
+                TreeNode* temp = root->left;
+                delete root;
+                return temp;
+            }
+            // 情况3: 有两个子节点  
+            else {
+                TreeNode* successor = findMinNode(root->right); // 找到后继节点  
+                root->key = successor->key;                     // 替换值  
+                root->count = successor->count;                 // 更新重复数量  
+                root->right = remove(root->right, successor->key); // 删除后继节点  
+            }
+        }
+    }
+    return root; // 返回更新后的根节点 
+    //root = remove(root, value);
+}
+/*
+void remove(TreeNode** root, int key) {
+    if (*root == nullptr) {
+        return; // 节点不存在
+    }
+
+    if (key < (*root)->val) {
+        remove(&((*root)->left), key);
+    } else if (key > (*root)->val) {
+        remove(&((*root)->right), key);
+    } else {
+        // 找到要删除的节点
+        TreeNode* nodeToDelete = *root;
+        if ((*root)->left == nullptr) {
+            *root = (*root)->right; // 只有右子树
+        } else if ((*root)->right == nullptr) {
+            *root = (*root)->left; // 只有左子树
+        } else {
+            // 两个子节点
+            TreeNode* temp = findMinNode((*root)->right); // 找到右子树的最小节点
+            (*root)->val = temp->val; // 用最小节点替换当前节点的值
+            remove(&((*root)->right), temp->val); // 删除右子树中的替代节点
+        }
+        delete nodeToDelete; // 释放被删除节点的内存
+    }
+}
+这段代码可以直接remove(&root,value);
+*/
+//求某个元素的排名(位置)
+int queryRank(TreeNode* root, int v) {
+    if (root == NULL) return 0;
+    if (root->key == v) return (root->left ? root->left->size : 0) + 1;
+    if (root->key > v) return queryRank(root->left, v);
+    return queryRank(root->right, v) + (root->left ? root->left->size : 0) +
+        root->count;
+}
+//查询排名为k的节点
+//在一棵子树中，根节点的排名取决于其左子树的大小
+//若其左子树的大小大于等于 k，则该元素在左子树中；
+//若其左子树的大小在区间[k - count , k - 1]（count 为当前结点的值的出现次数）中，则该元素为子树的根节点；
+//若其左子树的大小小于 k - count，则该元素在右子树中
+int querykth(TreeNode* root, int k) {
+    if (root == nullptr) return -1;  // 或者根据需求返回其他合适的值
+    if (root->left) {
+        if (root->left->size >= k) return querykth(root->left, k);
+        if (root->left->size + root->count >= k) return root->key;
+    }
+    else {
+        if (k == 1) return root->key;
+    }
+    return querykth(root->right,
+        k - (root->left ? root->left->size : 0) - root->count);
+}
+// 中序遍历打印节点  
+void inorderTraversal(TreeNode* node) {  
+    if (node == NULL) return;  
+    inorderTraversal(node->left);  
+    cout << node->key << " ";
+    inorderTraversal(node->right);
+}  
+// 主函数  
+int main() {  
+    TreeNode* root = NULL;  
+    // 插入节点  
+    root = insert(root, 10);  
+    root = insert(root, 5);  
+    root = insert(root, 15);  
+    root = insert(root, 5);  // 插入一个重复的值  
+    cout << "inorder_traversal:";
+    inorderTraversal(root);
+    cout << endl;
+    return 0;  
+}

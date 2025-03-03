@@ -1,0 +1,75 @@
+//DFS 严重超时
+#include<bits/stdc++.h>
+using namespace std;
+int ans[405][405], x, y, row, col;
+void fun(int pos, int trow, int tcol) {
+	if (pos >= row * col)return;
+	else {
+		if (ans[trow][tcol] == -1)		ans[trow][tcol] = pos;
+		else ans[trow][tcol] = min(ans[trow][tcol], pos);
+		if (trow - 1 >= 1 && tcol - 2 >= 1) { fun(pos + 1, trow - 1, tcol - 2); }
+		if (trow - 1 >= 1 && tcol + 2 <= col) { fun(pos + 1, trow - 1, tcol + 2); }
+		if (trow - 2 >= 1 && tcol - 1 >= 1) { fun(pos + 1, trow - 2, tcol - 1); }
+		if (trow - 2 >= 1 && tcol + 1 <= col) { fun(pos + 1, trow - 2, tcol + 1); }
+		if (trow + 1 <= row && tcol - 2 >= 1) { fun(pos + 1, trow + 1, tcol - 2); }
+		if (trow + 1 <= row && tcol + 2 <= col) { fun(pos + 1, trow + 1, tcol + 2); }
+		if (trow + 2 <= row && tcol - 1 >= 1) { fun(pos + 1, trow + 2, tcol - 1); }
+		if (trow + 2 <= row && tcol + 1 <= col) { fun(pos + 1, trow + 2, tcol + 1); }
+	}
+}
+int main() {
+	//cin >> n >> m >> x >> y;
+	row = col = 4; x = y = 1;
+	for (int i = 1; i <= row; i++) 
+		for (int j = 1; j <= col; j++) 
+			ans[i][j] = -1;
+	fun(0, x, y);
+	for (int i = 1; i <= row; i++) {
+		for (int j = 1; j <= col; j++)
+			cout << ans[i][j] << " ";
+		cout << "\n";
+	}
+	return 1;
+}
+
+
+//BFS
+#include<bits/stdc++.h>
+using namespace std;
+struct node {
+    int row, col;
+    node(int d1, int d2) :row(d1), col(d2) {}   
+};
+const int dr[8] = { -1,-1,-2,-2,1,1,2,2 };
+const int dc[8] = { -2,2,-1,1,-2,2,-1,1 };
+int n, m, x, y;
+queue<node>q;
+//bushu就是步数，val是当前点是否走过 0表示未走过，1表示走过
+int bushu[405][405],val[400][400];
+int main() {
+    cin >> n >> m >> x >> y;
+    memset(bushu, -1, sizeof(bushu)); 
+    memset(val, 0, sizeof(val));
+    bushu[x][y] = 0;
+    val[x][y] = 1; 
+    q.push(node(x, y));
+    while (!q.empty()) {
+        int nrow = q.front().row, ncol = q.front().col;
+        q.pop();
+        for (int i = 0; i < 8; i++) {
+            int trow = nrow + dr[i], tcol = ncol + dc[i];
+            if (trow < 1 || trow > n || tcol < 1 || tcol > m || val[trow][tcol])
+                continue;
+            bushu[trow][tcol] = bushu[nrow][ncol] + 1;
+            val[trow][tcol] = 1;
+            q.push(node(trow, tcol)); 
+        }
+    }
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++)
+            cout << bushu[i][j]<<" ";
+        cout << "\n";
+    }
+	return 0;
+}
+

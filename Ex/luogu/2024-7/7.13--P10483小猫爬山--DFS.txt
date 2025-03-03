@@ -1,0 +1,30 @@
+//先对小猫体重排序，之后对缆车负重进行贪心
+#include<bits/stdc++.h>
+using namespace std;
+int a[20] = { 0 }, sum[20] = { 0 }, n, maxw, ans = 2000;
+void dfs(int pos, int cnt) {
+	if (cnt > ans) return;
+	if (pos == n) { ans = cnt; return; }
+	for (int i = 0; i < cnt; i++) {
+		if (sum[i] + a[pos] <= maxw) { 
+			sum[i] += a[pos];
+			dfs(pos + 1, cnt); 
+			sum[i] -= a[pos];
+		}
+	}
+	sum[cnt] = a[pos];
+	dfs(pos + 1, cnt + 1);
+	sum[cnt] = 0;
+}
+bool cmp(int a, int b) {
+	return a > b;
+}
+int main() {
+	cin >> n >> maxw;
+	for (int i = 0; i < n; i++) 
+		cin >> a[i];
+	sort(a, a + n, cmp);
+	dfs(0, 0);
+	cout << ans;
+	return 0;
+}

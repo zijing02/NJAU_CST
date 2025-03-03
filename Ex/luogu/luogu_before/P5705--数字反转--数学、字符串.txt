@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+	int a, b, c, d;
+	scanf("%c%c%c.%c", &a, &b, &c, &d);
+	printf("%c.%c%c%c", d, c, b, a);
+	return 0;
+}
+#include <stdio.h>
+int main()
+{
+	int M=0;
+	float m;
+	scanf_s("%f", &m);
+	m = m * 10;
+	while (m > 0)
+	{
+		M = M * 10 + (int)m % 10;
+		m = (int)m / 10;
+	}
+	printf("%.3f", (float)M / 1000);
+	return 0;
+}

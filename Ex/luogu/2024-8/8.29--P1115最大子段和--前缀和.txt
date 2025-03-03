@@ -1,0 +1,15 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,a,b,i,ans=-2147483647;
+int main(){
+   cin>>n;
+   for(i=1;i<=n;i++){
+   	cin>>a;
+   	if(i==1) b=a;
+	//每次更新时都要比较，但不是和减去头比较，减去头比较时滑动窗口
+   	else b=max(a,a+b);
+   	ans=max(ans,b);
+   }
+   cout<<ans;
+   return 0;
+}

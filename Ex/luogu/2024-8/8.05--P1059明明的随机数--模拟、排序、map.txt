@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+int a[105] = { 0 }, n, temp, cnt = 0, re = 0;
+map<int, bool>mymap;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> temp;
+		if (mymap[temp] == false) {
+			a[i - re] = temp;
+			mymap[a[i - re]] = true;
+			cnt++;
+		}
+		else if (mymap[temp] == true)
+			re++;
+	}
+	cout << cnt << endl;
+	sort(a + 1, a + 1 + cnt);
+	for (int i = 1; i <= cnt; i++)
+		cout << a[i] << " ";
+	return 0;
+}

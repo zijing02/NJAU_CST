@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+int origin, target,a[10000000];
+int tmp;
+string in;
+int main() {
+	cin >> origin >> in >> target;
+	long long int t = in.size() - 1;
+	for (int i = 0; i < in.size(); i++) {
+		if (in[i] >= 'A' && in[i] <= 'Z') {
+			tmp += (int(in[i]) - 55) * pow(origin,t);
+			t--;
+		}
+		else {
+			tmp += (int(in[i]) - 48) * pow(origin, t);
+			t--;
+		}
+	}
+	//cout << tmp << "\t" << t << endl;
+	while (tmp) {
+		if (tmp % target<10) {
+			a[++t] = tmp % target + 48;
+		}
+		else {
+			a[++t] = tmp % target + 55;
+		}
+		tmp /= target;
+	}
+	//cout << t << "\t" << endl;
+	for (int i = t; i >= 0; i--)
+		cout << char(a[i]);
+	return 0;
+}

@@ -1,0 +1,71 @@
+//调整题目，从前向后跳
+#include <bits/stdc++.h>
+using namespace std;
+int a[1000010] = { 0 };
+int main()
+{
+    queue<int> q;
+    int n;
+    cin >> n;
+    for (int i = 0; i <= n; i++)
+        a[i] = -1;
+    a[1] = 0;
+    q.push(1);
+    while (!q.empty())
+    {
+        int t = q.front();
+        q.pop();
+        if (t == n) {
+            cout << a[n];
+            exit(0);
+        }
+        if (t - 1 >= 1 && t - 1 <= n && a[t - 1] == -1)     //同一个数据可能会衍生出三个后续数据，所以不能用else if
+        {
+            a[t - 1] = a[t] + 1;
+            q.push(t - 1);
+        }
+        if (t + 1 >= 1 && t + 1 <= n && a[t + 1] == -1)
+        {
+            a[t + 1] = a[t] + 1;
+            q.push(t + 1);
+        }
+        if (t * 2 >= 1 && t * 2 <= n && a[t * 2] == -1)
+        {
+            a[t * 2] = a[t] + 1;
+            q.push(t * 2);
+        }
+    }
+    return 0;
+}
+
+
+//RE
+// #include <bits/stdc++.h>
+// using namespace std;
+// int search(int n, int cnt)
+// {
+//     if (n == 1)
+//         return cnt;
+//     else if (n < 1)
+//         return 1000000000;
+//     else
+//     {
+//         if (n % 2 == 0)
+//         {
+//             search(n / 2, cnt + 1);				//cnt不能是全局变量，否则回溯太过复杂
+//         }
+//         else
+//         {
+//             int r = search(n + 1, cnt + 1);
+//             int l = search(n - 1, cnt + 1);
+//             return min(l, r);
+//         }
+//     }
+// }
+// int main()
+// {
+//     int n;
+//     cin >> n;
+//     cout << search(n, 0);
+//     return 0;
+// }

@@ -1,0 +1,15 @@
+//当一个节点只有一个儿子的时候，不管是左孩子还是右孩子，前序遍历是AB，后序遍历就是BA
+#include<bits/stdc++.h>
+using namespace std;
+long res = 1;
+string pre, post;
+int main() {
+    cin >> pre >> post;
+    int n = pre.size();
+    for (int i = 0; i < n; i++) 
+        for (int j = 1; j < n; j++) 
+            if (pre[i] == post[j] && pre[i + 1] == post[j - 1]) 
+                res *= 2;
+    cout << res;
+    return 0;
+}

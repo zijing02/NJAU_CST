@@ -1,0 +1,32 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+struct coin {
+	int m, v; double ave;
+}coins[105];
+bool cmp(coin cs1, coin cs2) {
+	return cs1.ave > cs2.ave;
+}
+int main()
+{
+	int n, t, pp = 0;//n堆数,t能装的重量,mark哪一堆
+	double ans = 0;
+	cin >> n >> t;
+	for (int i = 0; i < n; i++) {
+		cin >> coins[i].m >> coins[i].v;
+		coins[i].ave = 1.0 * coins[i].v / coins[i].m;
+	}
+	sort(coins, coins + n, cmp);   
+	while (t >= coins[pp].m&&pp<n) {    //pp<n不加得80 存在情况t比所有重量加起来都大，会一直循环
+		t -= coins[pp].m;
+		ans += coins[pp].v;
+		pp++;
+	}
+	ans += t * coins[pp].ave;
+	printf("%.2lf",ans);
+
+
+	return 0;
+}
+

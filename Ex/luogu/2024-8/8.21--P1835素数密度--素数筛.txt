@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long l, l1, r, cnt = 0;
+long long prime[50005] = { 0 };
+bool visited[1000005] = { 0 };
+map<int, bool>mymap;
+//艾氏线性筛
+void ai() {
+	for (register int i = 2; i <= 50000; i++) {
+		if (!visited[i])
+			prime[++cnt] = i;
+		for (int j = 1; prime[j] * i <= 50000; j++) {
+			visited[prime[j] * i] = 1;
+			if (i % prime[j] == 0)
+				break;
+		}
+	}
+}
+int main() {
+	cin >> l >> r;
+	if (l == 1)
+		l = 2;
+	ai();
+	memset(visited, 0, sizeof(visited));
+	for (register long long i = 1; i <= cnt; i++) {
+		long long p = prime[i];
+		if (p > r)
+			break;
+		//在指定的范围内找到最小的p的倍数
+		long long begin = (l + p - 1) / p * p;
+		if (begin <= 2 * p)
+			begin = 2 * p;
+		//每次往后走p，确保是合数
+		//此处的visited数组标记不能使用map代替，会超时
+		for (register long long j = begin; j <= r; j += p)
+			visited[j - l + 1] = 1;
+	}
+	cnt = 0;
+	for (register int j = 1; j <= r - l + 1; ++j)
+		if (!visited[j])
+			cnt++;
+	cout << cnt;
+	return 0;
+}

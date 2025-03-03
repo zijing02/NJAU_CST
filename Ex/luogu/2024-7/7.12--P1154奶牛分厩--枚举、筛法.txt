@@ -1,0 +1,61 @@
+//不在同一个厩中-->说明几个数mod同一个数字余数不同-->几个数字差不同
+#include<bits.stdc++.h>
+using namespace std;
+const int N = 5010, K = 1000010;
+int a[N];
+bool st[K];//标记a-b
+int n;
+int main()
+{
+	cin >> n;
+	for (int i = 0; i < n; i++) cin >> a[i];
+	//预处理所有数之间的差值a-b
+	for (int i = 0; i < n - 1; i++)
+		for (int j = i + 1; j < n; j++)
+			st[abs(a[i] - a[j])] = true;
+	//从小到大枚举k
+	for (int i = n; i < K; i++)
+		if (!st[i])
+		{
+			bool flag = true;
+			for (int j = i + i; j < K; j += i)//判断i是否是a-b的因子
+				if (st[j])
+				{
+					flag = false;
+					break;
+				}
+			if (flag)
+			{
+				cout << i << endl;
+				break;
+			}
+		}
+	return 0;
+}
+
+
+//tle
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n, a[1000010] = { 0 }, b[1000010], max = 0, k = 1;
+    cin >> n;
+    for (int i = 1; i <= n; i++)
+        cin >> b[i];
+    for (int i = 1; i <= n;)
+    {
+        if (a[b[i] % k] == 0) {
+            a[b[i] % k]++;
+            i++;
+        }
+        else
+        {
+            i = 1;
+            k++;
+            memset(a, 0, sizeof(a));
+        }
+    }
+    cout << k;
+    return 0;
+}

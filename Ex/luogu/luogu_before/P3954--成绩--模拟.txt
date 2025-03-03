@@ -1,0 +1,8 @@
+#include<stdio.h>
+int main()
+{
+	int a,b, c;
+	scanf_s("%d %d %d", &a, &b, &c);
+	printf("%d*0.2 + %d*0.3 + %d*0,5 = %3.1f", a, b, c, a*0.2+b*0.3+c*0.5);
+	return 0;
+}

@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define de descendant
+int n, de, in_num[105] = { 0 };
+bool visited[105] = { 0 };
+vector<int>s[105];
+void fun(int i) {
+	cout << i << " ";
+	visited[i] = true;
+	for (auto it = s[i].begin(); it != s[i].end(); it++) {
+		in_num[*it]--;
+		if (in_num[*it] == 0 && !visited[*it])
+			fun(*it);
+	}
+}
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> de;
+		while (de) {
+			in_num[de]++;
+			s[i].push_back(de);
+			cin >> de;
+		}
+	}
+	//并不是从一个点出发就能遍历所有点，即不一定是连通图？
+	for (int i = 1; i <= n; i++) 
+		if (in_num[i] == 0 && !visited[i]) 
+			fun(i);
+	return 0;
+}
+

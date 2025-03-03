@@ -1,0 +1,77 @@
+//#include<bits/stdc++.h>
+//using namespace std;
+//int main() {
+//	long long int n, a[15], b[15], max = 0, x = 0, s;
+//	cin >> n;
+//	for (int i = 0; i < n;i++) {
+//		cin >> a[i] >> b[i];
+//		if (max < a[i])
+//			max = a[i],
+//			x = b[i];
+//	}
+//	
+//	for (;; x += max) {
+//		s = 0;
+//		for (int i = 0; i < n; i++) {
+//			if (x % a[i] != b[i]) {
+//				s = 1;
+//				break;
+//			}
+//		}
+//		if (!s)break;
+//	}
+//	cout << x;
+//	return 0;
+//}
+
+
+//#include <bits/stdc++.h>
+// using namespace std;
+// int main()
+// {
+//     // a[i]为余数数组    m[i]为mod（n）数组
+//     //  M[i]为total/m[i]  ans[i]:M[i]*ans[i]]%m[i]=1
+//     int n, a[15] = {0}, m[15] = {0}, result = 0;
+//     unsigned long long M[15] = {0}, ans[15] = {0}, total = 1;
+//     cin >> n;
+//     for (int i = 0; i < n; i++)
+//     {
+//         cin >> m[i] >> a[i];
+//         total *= m[i];
+//     }
+//     for (int i = 0; i < n; i++)
+//         M[i] = total / m[i];
+//     for (int i = 0; i < n; i++)
+//         for (int j = 1;; j++)
+//             if ((j * M[i]) % m[i] == 1)
+//             {
+//                 result += a[i] * M[i] * j; // % total;
+//                 break;
+//             }
+//     cout << result % total;
+//     return 0;
+// }
+
+
+#include<bits/stdc++.h>
+using namespace std;
+//long long mingbs(long long x, long long y) {
+//	return x * y / __gcd(x, y);
+//}
+int main() {
+	//b[i]为余数数组    a[i]为mod（n）数组      
+	long long n, a[15], b[15], result, temp;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+		cin >> a[i] >> b[i];
+	result = b[0]; temp = a[0];
+	for (int i = 1; i < n; i++) {
+		while (result % a[i] != b[i])result += temp;
+		//因为题目给定m[i]互质，所以temp就是每个数字沉积，如果不是互质，就需要求最小公倍数
+		//temp = mingbs(temp, a[i]);
+		temp *=a[i];
+	}
+	cout << result;
+	return 0;
+}
+

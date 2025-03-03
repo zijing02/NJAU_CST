@@ -1,0 +1,33 @@
+重点：在外围加一层无用组，打印时不用
+#include<iostream>
+using namespace std;
+char s[110][110] = { 0 };
+int a[110][110] = { 0 };
+int main()
+{
+	
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1; i <=n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> s[i][j];
+			if (s[i][j] == '*') {
+				a[i-1][j-1]++; a[i-1][j]++; a[i-1][j+1]++;
+				a[i][j-1]++;    			a[i][j+1]++;
+				a[i+1][j-1]++; a[i+1][j]++; a[i+1][j+1]++;
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (s[i][j] == '*') {
+				cout << '*';
+			}
+			else {
+				cout << a[i][j];
+			}
+		}			
+		cout << "\n";
+	}
+	return 0;
+}

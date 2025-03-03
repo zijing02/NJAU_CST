@@ -1,0 +1,31 @@
+//把问题先给左脑，左脑做过之后回溯给右脑再做一遍，选择最大时间的最小值
+#include<bits/stdc++.h>
+using namespace std;
+int s[5] = { 0 }, a[5][25] = { 0 };
+int ti, ans = 0, lef = 0, rig = 0;
+void fun(int pos, int ind) {
+	if (pos >= s[ind]) {
+		ti = min(ti, max(lef, rig));
+		return;
+	}
+	lef += a[ind][pos];
+	fun(pos + 1, ind);
+	lef -= a[ind][pos];
+	rig += a[ind][pos];
+	fun(pos + 1, ind);
+	rig -= a[ind][pos];
+}
+int main() {
+	for (int i = 0; i < 4; i++)
+		cin >> s[i];
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < s[i]; j++)
+			cin >> a[i][j];
+		ti = 99999999999999999;
+		lef = rig = 0;
+		fun(0, i);
+		ans += ti;
+	}
+	cout << ans;
+	return 0;
+}

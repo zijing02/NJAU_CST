@@ -1,0 +1,29 @@
+//两个士兵相遇掉头，但是因为速度相等，其实就是接着向前走
+#include <bits/stdc++.h>
+using namespace std;
+struct point
+{
+    int p;
+    int max;
+    int min;
+} p[5010];
+int main()
+{
+    int len, num, tmin = 0, tmax = 0;
+    cin >> len >> num;
+    for (int i = 1; i <= num; i++)
+    {
+        cin >> p[i].p;
+        int t1 = p[i].p - 0, t2 = len + 1 - p[i].p;
+        p[i].min = t1 < t2 ? t1 : t2;
+        p[i].max = t1 > t2 ? t1 : t2;
+    }
+
+    for (int i = 1; i <= num; i++)
+    {
+        tmax = tmax > p[i].max ? tmax : p[i].max;
+        tmin = tmin > p[i].min ? tmin : p[i].min;
+    }
+    cout << tmin <<" "<< tmax;
+    return 0;
+}

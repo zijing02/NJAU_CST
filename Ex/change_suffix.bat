@@ -1,0 +1,1 @@
+ren *.cpp   *.txt

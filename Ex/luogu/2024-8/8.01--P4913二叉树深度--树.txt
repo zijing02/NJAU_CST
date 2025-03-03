@@ -1,0 +1,74 @@
+//使用数组代替树
+#include <iostream>
+using namespace std;
+const int MAXN = 1e6 + 10;
+struct node {
+    int left, right;
+};
+node tree[MAXN];
+int n, ans;
+void dfs(int id, int deep) {
+    if (id == 0) return;
+    ans = max(ans, deep);
+    dfs(tree[id].left, deep + 1);
+    dfs(tree[id].right, deep + 1);
+}
+
+int main() {
+    cin >> n;
+    for (int i = 1; i <= n;i++) cin >> tree[i].left >> tree[i].right;
+    dfs(1, 1);
+    cout << ans << endl;
+    return 0;
+}
+
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef struct TreeNode {
+	int key;
+	struct TreeNode* left;
+	struct TreeNode* right;
+	TreeNode(int value) : key(value), left(NULL), right(NULL) { }
+}TreeNode;
+TreeNode* insert(TreeNode* node, int value, int value1, int value2) {
+	if (node == NULL) {
+		TreeNode *t = new TreeNode(value);
+		t->left = new TreeNode(value1);
+		t->right = new TreeNode(value2);
+		return t;
+	}
+	else {
+		if (node->key==value) {
+			node->left = new TreeNode(value1);
+			node->right = new TreeNode(value2);
+		}
+		insert(node->left, value, value1, value2);
+		insert(node->right, value, value1, value2);
+	}
+	return node;
+}
+int count_height(TreeNode *node) {
+	if (node->key == 0)return 0;
+	return max(count_height(node->left), count_height(node->right)) + 1;
+}
+void inorderTraversal(TreeNode* node) {
+	if (node->key == 0) return;
+	inorderTraversal(node->left);
+	cout << node->key << " ";
+	inorderTraversal(node->right);
+}
+int main() {
+	int n, value1, value2;
+	TreeNode* root = NULL;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> value1 >> value2;
+		root = insert(root, i, value1, value2);
+	}
+	inorderTraversal(root);
+	cout << endl;
+	cout << count_height(root) << endl;
+
+	return 0;
+}

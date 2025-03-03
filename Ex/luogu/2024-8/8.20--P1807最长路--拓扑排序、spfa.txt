@@ -1,0 +1,123 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,in[1505];//存入度数量
+vector<int>g[1505];//存边
+vector<int>d[1505];//存边权
+queue<int>q;//队列
+int v[1505];//存最长路
+int main()
+{
+	cin>>n>>m;
+	for(int i=1;i<=m;i++)
+	{
+		int ff,tt,dd;
+		cin>>ff>>tt>>dd;
+		g[ff].push_back(tt);
+		d[ff].push_back(dd);
+		in[tt]++;
+	}
+	for(int i=2;i<=n;i++)
+	{
+		v[i]=-1e9;
+		if(!in[i]) q.push(i);
+	}//初始化
+	//精髓，从其他入度为0的点开始遍历，去掉他们之后手动把1加到队列里
+	while(!q.empty())
+	{
+		int x=q.front();
+		q.pop();
+		for(int i=0;i<g[x].size();i++)
+			if(!--in[g[x][i]]) q.push(g[x][i]);
+	}
+	//废弃其他的入度为0的点。
+	q.push(1);
+	while(!q.empty())
+	{
+		int x=q.front();
+		q.pop();
+		for(int i=0;i<g[x].size();i++)
+		{
+			if(v[g[x][i]]<v[x]+d[x][i]) v[g[x][i]]=v[x]+d[x][i];//松弛
+			if(!--in[g[x][i]]) q.push(g[x][i]);//如果入度为0就加入队列
+		}
+	}
+	if(v[n]==-1e9) cout<<"-1";
+	else cout<<v[n];//输出结果
+	return 0;
+}
+
+//dfs超时
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, ru, chu, val, ans = 0, flag = 0;
+int s[1505][1505] = { 0 };
+void dfs(int pos,int total) {
+	if (pos == n) {
+		flag = 1;
+		ans = max(ans, total);
+		return;
+	}
+	for (int i = 1; i <= n; i++) {
+		if (s[pos][i]) {
+			dfs(i, total + s[pos][i]);
+		}
+	}
+	
+}
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> ru >> chu >> val;
+		s[ru][chu] = max(s[ru][chu], val);
+	}
+
+	dfs(1, 0);
+	cout << (flag == 0 ? -1 : ans) << endl;;
+
+	return 0;
+}
+
+//自己的bfs
+//主要问题，不一定在第一次输入就可以判断出1是否能到达某点，如先输入6-4-5在输入1-6-1前一条记录会被忽略
+//同时如果另在写函数去做就变成dfs
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, ru, chu, val, ru_num[1505] = { 0 };
+int s[1505][1505] = { 0 }, flag[1505] = { 0 }, tmp[1505] = { 0 };
+queue<int>q;
+int main() {
+	cin >> n >> m;
+	//fill(tmp, tmp + 1505, INT_MIN);
+	memset(tmp, INT_MIN, sizeof(tmp));
+	for (int i = 1; i <= m; i++) {
+		cin >> ru >> chu >> val;
+		//只有当flag[i]=1即1能够到达时，才进行计数，其他路径放弃
+		if (ru == 1 || flag[ru] == 1) {
+			ru_num[chu]++;
+			flag[chu] = 1;
+			s[ru][chu] = max(s[ru][chu], val);
+		}
+	}
+	if (flag[n] == 0) cout << -1;
+	else {
+		q.push(1);
+		while (!q.empty()) {
+			int a = q.front();
+			q.pop();
+			for (int i = 2; i <= n; i++) {
+				//能走通就进去
+				if (s[a][i]) {
+					//进去之后入度(以1为基准)减一
+					ru_num[i]--;
+					//入度为0，入队
+					if (ru_num[i] == 0)
+						q.push(i);
+					//无论入度多少，都要改变路径长度
+					tmp[i] = max(tmp[i], tmp[a] + s[a][i]);
+				}
+			}
+		}
+		cout << tmp[n];
+	}
+	return 0;
+}

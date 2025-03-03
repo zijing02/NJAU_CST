@@ -1,0 +1,17 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n, m, l, r;
+int a[100005], total[100005] = { 0 };
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i];
+		total[i] = total[i - 1] + a[i];
+	}
+	cin >> m;
+	for (int j = 1; j <= m; j++) {
+		cin >> l >> r;
+		cout << total[r] - total[l - 1] << endl;
+	}
+	return 0;
+}

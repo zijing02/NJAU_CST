@@ -1,0 +1,80 @@
+//类似于7.11猫粮规划
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int a[210], v[210], n, l, h, t;
+    queue<int> q;
+    cin >> n >> l >> h;
+    for (int i = 1; i <= n; i++) {
+        cin >> v[i];
+        a[i] = -1;
+    }
+    q.push(l);
+    a[l] = 0; v[0] = 0;
+    while (!q.empty())
+    {
+        t = q.front();
+        q.pop();
+        if (t == h) {
+            break;
+        }
+        if (t + v[t] >= 1 && t + v[t] <= n && a[t + v[t]] == -1)
+        {
+            q.push(t + v[t]);
+            a[t + v[t]] = a[t] + 1;
+        }
+        if (t - v[t] >= 1 && t - v[t] <= n && a[t - v[t]] == -1)
+        {
+            q.push(t - v[t]);
+            a[t - v[t]] = a[t] + 1;
+        }
+    }
+    cout << a[h];
+    return 0;
+}
+
+
+#include<bits/stdc++.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+struct floors {
+	int up, down, step;
+	bool visit;
+
+}lc[205];
+int main() {
+	int n, a, b, t;
+	cin >> n >> a >> b;
+	for (int i = 1; i <= n; i++) {
+		cin >> t;
+		lc[i].up = i + t;
+		lc[i].down = i - t;
+		lc[i].step = -1;
+		lc[i].visit = false;
+	}
+	queue < floors > q;
+	lc[a].step = 0, lc[a].visit = true;
+	q.push(lc[a]);
+	while (!q.empty()) {
+		floors f = q.front();
+		q.pop();
+		int u = f.up, d = f.down;
+		if (u >= 1 && u <= n && lc[u].visit == false) {
+			lc[u].visit = true;
+			lc[u].step = f.step + 1;
+			q.push(lc[u]);
+		}
+		if (d >= 1 && d <= n && lc[d].visit == false) {
+			lc[d].visit = true;
+			lc[d].step = f.step + 1;
+			q.push(lc[d]);
+		}
+		if (u == b || d == b)break;
+	}
+	cout << lc[b].step;
+	return 0;
+}
+

@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std;
+map<string, int>mymap;
+int n, score, type;
+string name;
+int main() {
+	cin >> n;
+	for(int i = 1;i<=n;i++){
+		cin >> type;
+		if (type != 4) {
+			cin >> name;
+			if (type == 1) {
+				cin >> score;
+				mymap[name] = score;
+				cout << "OK";
+			}
+			else if (type == 2) {
+				if (mymap.count(name))
+					cout << mymap[name];
+				else
+					cout << "Not found";
+			}
+			else if (type == 3) {
+				if (mymap.count(name))
+					mymap.erase(name),
+					cout << "Deleted successfully";
+				else
+					cout << "Not found";
+			}
+		}
+		else if (type == 4) {
+			cout << mymap.size();
+		}
+		cout << endl;
+	}
+	return 0;
+}
+
+
+# ptython中没有map，使用字典模拟map
+mymap = {}
+
+n = int(input())
+
+for _ in range(n):
+    parts = input().split()
+    ty = int(parts[0])
+    if ty != 4:
+        name = parts[1]
+        if ty == 1:
+            score = parts[2]
+            mymap[name] = score
+            print("OK")
+        elif ty == 2:
+            if name in mymap:
+                print(mymap[name])
+            else:
+                print("Not found")
+        elif ty == 3:
+            if name in mymap:
+                del mymap[name]
+                print("Deleted successfully")
+            else:
+                print("Not found")
+    else:
+        print(len(mymap))

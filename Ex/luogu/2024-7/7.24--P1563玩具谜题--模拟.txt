@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct {
+    int face_dire;
+    string job;
+}toy[100010];
+int main()
+{
+    int n, m, dire, num, flag = 1, ans = 0;
+    cin >> n >> m;
+    for (int i = 0; i < n; i++)
+        cin >> toy[i].face_dire >> toy[i].job;
+    for (int i = 0; i < m; i++) {
+        cin >> dire >> num;
+        if (toy[ans].face_dire == dire)
+            flag = -1;
+        else if (toy[ans].face_dire != dire)
+            flag = 1;
+        ans += flag * num;
+        while (ans < 0)ans += n;
+        while (ans >= n)ans %= n;
+    }
+    cout << toy[ans].job;
+    return 0;
+}

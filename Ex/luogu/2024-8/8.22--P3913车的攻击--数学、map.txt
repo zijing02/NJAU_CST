@@ -1,0 +1,16 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n, k, r, c;
+unordered_map<int, bool>row;
+unordered_map<int, bool>col;
+long long ans;
+int main() {
+	cin >> n >> k;
+	for (int i = 1; i <= k; i++) {
+		cin >> r >> c;
+		row.insert(pair<int, bool>(r, true));
+		col.insert(pair<int, bool>(c, true));
+	}
+	cout << row.size() * n + col.size() * n - row.size() * col.size();
+	return 0;
+}

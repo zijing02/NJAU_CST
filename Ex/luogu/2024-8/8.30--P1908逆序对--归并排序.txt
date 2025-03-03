@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+int arr[500005], tmp[500005];
+int n;
+long long cnt;
+void merge_sort(int start, int end) {
+    if (start >= end)return;
+    int mid = (start + end) / 2;
+    merge_sort(start, mid); merge_sort(mid + 1, end);
+    int i = start, j = mid + 1, k = start;
+    while (i <= mid && j <= end) {
+        if (arr[i] <= arr[j])
+            tmp[k++] = arr[i++];
+        else
+            cnt += mid - i + 1,
+            tmp[k++] = arr[j++];
+    }
+    while (i <= mid)tmp[k++] = arr[i++];
+    while (j <= end)tmp[k++] = arr[j++];
+    for (int i = start; i <= end; i++)
+        arr[i] = tmp[i];
+}
+int main() {
+    cin >> n;
+    for (int i = 0; i < n; i++) 
+        cin >> arr[i];
+    merge_sort(0, n - 1);
+    cout << cnt;
+    return 0;
+}
+
+//tle
+#include<bits/stdc++.h>
+using namespace std;
+int a[500005];
+int n, cnt;
+int main() {
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+    for (int i = 1; i <= n - 1; i++) {
+        for (int j = i + 1; j <= n; j++) {
+            if (a[i] > a[j])
+                cnt++;
+        }
+    }
+    cout << cnt;
+    return 0;
+}

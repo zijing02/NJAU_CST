@@ -1,0 +1,19 @@
+#include<iostream>
+using namespace std;
+int dp[1000];
+int main()
+{
+    int t,m;
+    cin>>t>>m;
+    int a,b;
+    for(int i=1;i<=m;i++)
+    {
+        cin>>a>>b;//a代表采药所需的时间，b代表采药所需的价值
+        for(int j=t;j>=0;j--)
+        {
+            if(j>=a)
+            dp[j]=max(dp[j],dp[j-a]+b);
+        }
+    }
+    cout<<dp[t];
+}

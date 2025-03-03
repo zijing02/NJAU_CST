@@ -1,0 +1,20 @@
+#include<bits/stdc++.h>
+using namespace std;
+int a[1000010] = { 0 }, n, m;
+int main() {
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)cin >> a[i];
+	for (int i = 1; i <= m; i++) {
+		int ind, l = 1, r = n;
+		cin >> ind;
+		while (l < r) {
+			int mid = l + (r - l) / 2;
+			if (a[mid] >= ind)r = mid;//注意是大于等于，这样才能满足题中要求的第一个
+			else l = mid + 1;
+		}
+		if (a[l] == ind)cout << l;
+		else cout << -1;
+		cout << " ";
+	}
+
+}

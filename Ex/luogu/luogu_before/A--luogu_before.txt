@@ -1,0 +1,2714 @@
+﻿/*
+//牛牛的成绩
+#include<stdio.h>
+int main()
+{
+	int a,b, c;
+	scanf_s("%d %d %d", &a, &b, &c);
+	printf("%d*0.2 + %d*0.3 + %d*0,5 = %3.1f", a, b, c, a*0.2+b*0.3+c*0.5);
+	return 0;
+}
+
+//小玉买文具
+#include<stdio.h>
+int main()
+{
+	double a, b,price,num;
+	price = 1.9;
+	scanf_s("%lf %lf", &a, &b);
+	num = (a + b / 10) / price;
+	printf("%1.0f", num);
+	return 0;
+}
+
+//大象喝水
+#include<stdio.h>
+int main() {
+	double h, r, pi = 3.1415926535;
+	scanf_s("%lf %lf", &h, &r);
+	int c = 20000 / (pi * r * r * h) + 1;
+	printf("%d", c);
+	return 0;
+}
+
+//菱形
+#include<stdio.h>
+int main()
+{
+	printf(
+		"  *\n"
+		" ***\n"
+		"*****\n"
+		" ***\n"
+		"  *\n");
+	return 0;
+}
+
+//字符转换
+#include<stdio.h>
+int main()
+{
+	char letter;
+	letter = getchar();
+	printf("%c", letter - 32);
+	return 0;
+}
+//用python
+a = input()
+print(a.upper())
+
+//数字转换
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+	int a, b, c, d;
+	scanf("%c%c%c.%c", &a, &b, &c, &d);
+	printf("%c.%c%c%c", d, c, b, a);
+	return 0;
+}
+#include <stdio.h>
+int main()
+{
+	int M=0;
+	float m;
+	scanf_s("%f", &m);
+	m = m * 10;
+	while (m > 0)
+	{
+		M = M * 10 + (int)m % 10;
+		m = (int)m / 10;
+	}
+	printf("%.3f", (float)M / 1000);
+	return 0;
+}
+
+//数列求和
+#include<stdio.h>
+int main()
+{
+	int n;
+	int i;
+    int sum = 0;
+	scanf_s("%d", &n);
+	for (i = 0; i <= n; i++)
+		sum = sum + i;
+
+	printf("%d", sum);
+	return 0;
+}
+
+//斐波那契
+#include<stdio.h>
+int fib(int);
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	printf("%d", fib(n));
+	return 0;
+}
+int fib(int n)
+{
+	if (n <= 2) {
+		return 1;
+	}
+	else {
+		return (fib(n - 1) + fib(n - 2));
+	}
+}
+
+#include<stdio.h>
+int main()
+{
+	double f[50];
+	int n, i;
+	f[0] = 0;
+	f[1] = 1;
+	f[2] = 1;  
+	scanf_s("%d", &n);
+	for (i = 3; i <= n; i++) {
+		f[i] = f[i - 1] + f[i - 2];
+	}
+	printf("%0.2f", f[n]); 
+	return 0;
+}
+
+//闰年
+#include<stdio.h>
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	if (n % 4== 0 ){
+		if (n % 100 != 0) {
+			printf("1");
+		}
+		else if(n % 400 == 0){
+			printf("1");
+		}
+		else if (n % 100 == 0 && n % 400 != 0) {
+		printf("0");
+		}
+		
+	}
+	else if (n % 4 != 0) {
+		printf("0");
+	}
+	return 0;
+}
+
+//阶乘之和
+#include<stdio.h>
+int main()
+{
+	int n, i, x, ans = 0;
+	scanf_s("%d", &n);
+	for (i = 1; i <= n; i++) {
+		int ind = 1;
+		for (x = 1; x <= i; x++) {
+			ind = ind * x;
+		}
+		ans = ans + ind;
+	}			
+
+	printf("%d", ans);
+	return 0;
+}
+
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int n, a[101] = {0}, s[101] = {0};
+void big_muti(int x) {
+	int temp = 0;
+	for(int i = 100; i >= 0; i--) {
+		a[i] = a[i] * x + temp;
+		temp = a[i] / 10;
+		a[i] = a[i] % 10;
+	}
+}
+void big_sum() {
+	int temp = 0;
+	for(int i = 100; i >= 0; i--) {
+		s[i] = s[i] + a[i] + temp;
+		temp = s[i] / 10;
+		s[i] = s[i] % 10;
+	}
+}
+
+int main() {
+	int n;
+	cin >> n;
+	s[100] = a[100] = 1;
+	for(int i = 2; i <= n; i++) {
+		big_muti(i);
+		big_sum();
+	}
+
+	int temp;
+	for(int i = 0; i <= 100; i++) {
+		if(s[i] != 0) {
+			temp = i;
+			break;
+		}
+	}
+	for(int i = temp; i <= 100; i++)
+		cout << s[i];
+	return 0;
+}
+
+//再分快乐水
+#include<stdio.h>
+int main(void)
+{
+	int n;
+	float t;
+	scanf("%f%d", &t, &n);
+	printf("%.3f\n%d", t / n, 2 * n);
+	return(0);
+}
+
+//摘苹果
+#include<stdio.h>
+int main() {
+	int a[10];
+	int b;
+	int count = 0;
+	scanf_s("%d", &b);
+	for (int i = 0; i < 10; i++) {
+		scanf_s("%d", &a[i]);
+	}
+	for (int n = 0; n < 10; n++) {
+		if (a[n] <= (b + 30)) {
+			count++;
+		}
+	}
+	printf("%d", count);
+	return 0;
+}
+
+#include<stdio.h>
+int main() {
+	int a[10];
+	int b, count = 0;
+	for (int i = 0; i < 10; i++) {
+		scanf_s("%d", &a[i]);
+	}
+	scanf_s("%d", &b);
+	for (int n = 0; n < 10; n++) {
+		if (a[n] <= (b + 30)) {
+			count++;
+		}
+	}
+	printf("%d", count);
+	return 0;
+}
+
+//计数
+#include<stdio.h>
+int main()
+{
+	int n, x, count =0;
+	scanf_s("%d %d", &n, &x);
+	for	(int i = 1; i <= n; i++){
+		int num = i;
+		while(num >0){
+			int a = num %10;
+			num = num /10;
+				if(a == x) {
+				count ++;
+			}
+		}
+	}
+	printf("%d",count);
+	return 0;
+}
+
+//极差
+#include<stdio.h>
+int main()
+{
+	int n;
+	int a[110] ;
+	scanf_s("%d", &n);
+	for (int i = 1; i <= n; i++) {
+		scanf_s("%d", &a[i]);
+	}
+	int max = 0;
+	for (int b = 1; b <= n; b++) {
+		if (max > a[b])
+			max = max;
+		else
+			max = a[b];
+	}
+	int min = a[1];
+	for (int c = 1; c <= n; c++) {
+		if (min >= a[c])
+			min = a[c];
+		else
+			min = min;
+	}
+	printf("%d\n", max - min);
+	return 0;
+}
+
+//买铅笔
+#include<stdio.h>
+int main()
+{
+	int n;
+	int a, b;
+	int c, d;
+	int e, f;
+	int pri1, pri2, pri3, min;
+	scanf_s("%d", &n);
+	scanf_s("%d %d", &a, &b);
+	scanf_s("%d %d", &c, &d);
+	scanf_s("%d %d", &e, &f);
+	if (n % a == 0)
+		pri1 = (n / a) * b;
+	else
+		pri1 = ((n / a) + 1) * b;
+	if (n % c == 0)
+		pri2 = (n / c) * d;
+	else
+		pri2 = ((n / c) + 1) *d;	
+	if (n % e == 0)
+		pri3 = (n / e) *f;
+	else
+		pri3 = ((n / e) + 1) *f;
+	if (pri1 > pri2)
+		if (pri2 > pri3)
+			min = pri3;
+		else
+			min = pri2;
+	else
+		if (pri1 > pri3)
+			min = pri3;
+		else
+			min = pri1;
+	printf("%d", min);
+	return 0;
+}
+
+//三角形分类
+#include<stdio.h>
+int max(int, int, int);
+int main()
+{
+	int a, b, c;
+	scanf_s("%d %d %d", &a, &b, &c);
+	if (a + b < c || b + c < a || a + c < b) {
+		printf("Not triangle\n");
+	}
+	else if (a == max(a, b, c)) {
+		if (b * b + c * c == a * a) {
+			printf("Right triangle\n");
+		}
+		else if (b * b + c * c >= a * a) {
+			printf("Acute triangle\n");
+		}
+		else {
+			printf("Obtuse triangle\n");
+		}
+		if (b == c) {
+			printf("Isosceles triangle\n");
+		}
+	}
+	else if (b == max(a, b, c)) {
+		if (a * a + c * c == b * b) {
+			printf("Right triangle\n");
+		}
+		else if (a * a + c * c >= b * b) {
+			printf("Acute triangle\n");
+		}
+		else {
+			printf("Obtuse triangle\n");
+		}
+		if (a == c) {
+			printf("Isosceles triangle\n");
+		}
+	}
+	else
+		if (b * b + a * a ==c * c) {
+			printf("Right triangle\n");
+		}
+		else if (b * b + a * a >= c * c) {
+			printf("Acute triangle\n");
+		}
+		else {
+			printf("Obtuse triangle\n");
+		}
+		if (b == a) {
+			printf("Isosceles triangle\n");
+		}
+	if (a == b && b == c) {
+		printf("Equilateral triangle\n");
+	}
+
+
+	return 0;
+}
+
+int max(int a, int b, int c)
+{	
+	int max = 0;
+	if (a > b) {
+		if (a > c)
+			max = a;
+		else
+			max = c;
+	}
+	else if (b > a) {
+		if (b > c)
+			max = b;
+		else
+			max = c;
+	}
+	return max;
+}
+
+using namespace std;
+#include <algorithm>
+#include <cstdio>
+int a, b, c;
+int main() {
+	scanf_s("%d %d %d", &a, &b, &c);
+	int n[4] = { 0, a, b, c };
+		sort(n + 1, n + 4);
+	if (n[1] + n[2] <= n[3]) {
+		printf("Not triangle\n");
+		return 0;
+	}
+	if (n[1] * n[1] + n[2] * n[2] == n[3] * n[3]) {
+		printf("Right triangle\n");
+	}
+	else if (n[1] * n[1] + n[2] * n[2] > n[3] * n[3]) {
+		printf("Acute triangle\n");
+	}
+	else if (n[1] * n[1] + n[2] * n[2] < n[3] * n[3]) {
+		printf("Obtuse triangle\n");
+	}
+	if (a == b || b == c || a == c) {
+		printf("Isosceles triangle\n");
+	}
+	if (a == b && b == c) {
+		printf("Equilateral triangle\n");
+	}
+	return 0;
+}
+#include<stdio.h>
+int main()
+{
+	int a[3], i, c = 1, j, t;
+	for (i = 0; i < 3; i++)
+		scanf("%d,", &a[i]);
+	if (a[0] == a[1] && a[1] == a[2])
+	{
+		printf("Acute triangle\nIsosceles triangle\nEquilateral triangle");
+		c = 0;
+	}
+	while (c)
+	{
+		for (i = 0; i < 2; i++)
+			for (j = 0; j < 2 - i; j++)
+			{
+				if (a[j] < a[j + 1])
+				{
+					t = a[j];
+					a[j] = a[j + 1];
+					a[j + 1] = t;
+				}
+			}
+		if (a[1] + a[2] > a[0])
+		{
+			if (a[1] * a[1] + a[2] * a[2] > a[0] * a[0])
+				printf("Acute triangle\n");
+			else if (a[1] * a[1] + a[2] * a[2] == a[0] * a[0])
+				printf("Right triangle\n");
+			else
+				printf("Obtuse triangle\n");
+			if (a[0] == a[1] || a[1] == a[2])
+				printf("Isosceles triangle");
+		}
+		else
+			printf("Not triangle");
+		c = 0;
+	}
+	return 0;
+}
+
+//金币
+# include<stdio.h>
+int main() {
+	int n, sum = 0, count = 0;
+	scanf_s("%d", &n);
+	for (int x = 1; x <= n; ++x) {
+		for (int i = 1; i <= x; ++i) {
+			sum = sum + x; 
+				count++; 
+			if(count == n)
+			printf("%d\n", sum);
+		}
+	}
+	return 0;
+}
+
+//超级玛丽
+#include<stdio.h>
+int main() {
+	printf(
+		"                ********\n"
+		"               ************\n"
+		"               ####....#.\n"
+		"             #..###.....##....\n"
+		"             ###.......######              ###            ###\n"
+		"                ...........               #...#          #...#\n"
+		"               ##*#######                 #.#.#          #.#.#\n"
+		"            ####*******######             #.#.#          #.#.#\n"
+		"           ...#***.****.*###....          #...#          #...#\n"
+		"           ....**********##.....           ###            ###\n"
+		"           ....****    *****....\n"
+		"             ####        ####\n"
+		"           ######        ######\n"
+		"##############################################################\n"
+		"#...#......#.##...#......#.##...#......#.##------------------#\n"
+		"###########################################------------------#\n"
+		"#..#....#....##..#....#....##..#....#....#####################\n"
+		"##########################################    #----------#\n"
+		"#.....#......##.....#......##.....#......#    #----------#\n"
+		"##########################################    #----------#\n"
+		"#.#..#....#..##.#..#....#..##.#..#....#..#    #----------#\n"
+		"##########################################    ############\n"
+	);
+	return 0;
+}
+
+
+//冰雹猜想
+#include<stdio.h>
+int main()
+{
+	int a[50];
+	int n;
+	for (int k = 1; k < 49; k++)
+		a[k] = 0;
+	scanf_s("%d", &n);
+	for (int i = 1; i < 50; i++) {
+		if (n % 2 == 0 && n != 1) {
+			a[i] = n;
+			n = n / 2;
+		}
+		else if (n % 2 != 0 && n != 1) {
+			a[i] = n;
+			n = n * 3 + 1;
+		}
+		else if (n == 1) {
+			a[i] = 1;
+			break;
+		}
+	}
+	for (int j = 49; j >= 1; j--) {
+	 		if(a[j]>0)
+		printf("%d ", a[j]);
+	}
+	return 0;
+}
+#include <stdio.h>
+int main()
+{
+	int n, i = 0;
+	int a[1000] = { 0 };
+	scanf("%d", &n);
+	while (n != 1) {
+		a[i] = n; i++;
+		if (n % 2 == 0)
+			n = n / 2;
+		else
+			n = 3 * n + 1;
+	}
+	a[i] = 1;
+	for (; i >= 0; i--) {
+		printf("%d ", a[i]);
+	}
+	return 0;
+}
+
+//杨辉三角
+//排列组合用不了，数据溢出
+#include<stdio.h>
+int jc(int);
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j <= i; j++) {
+			printf("%d ", jc(i)/(jc(j)*jc(i-j)));
+		}
+		printf("\n");
+	}
+	return 0;
+}
+int jc(int k)
+{
+	int result = 1;
+	for (int m = 1; m <= k; m++) {
+		result *= m;
+	}
+	return result;
+}
+//数组
+#include<stdio.h>
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	int a[20][20];
+	for (int i = 0; i < 20; i++) {
+		for (int j = 0; j < 20; j++) {
+			a[i][j] = 1;
+		}
+	}
+	for (int i = 2;  i < 20; i++) {
+		for (int j = 1; j < i; j++) {
+			a[i][j] = a[i - 1][j - 1] + a[i - 1][j];
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j <= i; j++) {
+			printf("%d ", a[i][j]);
+			if (j == i) { printf("\n"); }
+		}
+	}
+	return 0;
+}
+
+
+//计算阶乘
+#include<stdio.h>
+int main()
+{
+	int n,sum=1;
+	scanf_s("%d", &n);
+	for (int i = 1; i <= n; i++) {
+		sum *= i;
+	}
+	printf("%d", sum);
+	return 0;
+}
+
+//自动修正
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char s[101];
+	int i;
+	gets_s(s);
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		if (s[i] >= 97 && s[i] <= 122)
+			s[i] = s[i] - 32;
+		printf("%c", s[i]);
+	}
+	return 0;
+}
+//python
+a = input()
+print(a.upper())
+
+//蛇形方阵
+// #include<stdio.h>
+//int main()
+//{
+//	int n;
+//	scanf_s("%d", &n);
+//	switch (n)
+//	{
+//	case(1):printf("  1"); break;
+//	case(2):printf("  1  2\n");
+//		printf("  4  3\n"); break;
+//	case(3):printf("  1  2  3\n");
+//		printf("  8  9  4\n");
+//		printf("  7  6  5\n"); break;
+//	case(4):printf("  1  2  3  4\n");
+//		printf(" 12 13 14  5\n");
+//		printf(" 11 16 15  6\n");
+//		printf(" 10  9  8  7"); break;
+//	case(5):printf("  1  2  3  4  5\n");
+//		printf(" 16 17 18 19  6\n");
+//		printf(" 15 24 25 20  7\n");
+//		printf(" 14 23 22 21  8\n");
+//		printf(" 13 12 11 10  9\n"); break;
+//	case(6):printf("  1  2  3  4  5  6\n");
+//		printf(" 20 21 22 23 24  7\n");
+//		printf(" 19 32 33 34 25  8\n");
+//		printf(" 18 31 36 35 26  9\n");
+//		printf(" 17 30 29 28 27 10\n");
+//		printf(" 16 15 14 13 12 11\n"); break;
+//	case(7):printf("  1  2  3  4  5  6  7\n");
+//		printf(" 24 25 26 27 28 29  8\n");
+//		printf(" 23 40 41 42 43 30  9\n");
+//		printf(" 22 39 48 49 44 31 10\n");
+//		printf(" 21 38 47 46 45 32 11\n");
+//		printf(" 20 37 36 35 34 33 12\n");
+//		printf(" 19 18 17 16 15 14 13\n"); break;
+//	case(8):printf("  1  2  3  4  5  6  7  8\n");
+//		printf(" 28 29 30 31 32 33 34  9\n");
+//		printf(" 27 48 49 50 51 52 35 10\n");
+//		printf(" 26 47 60 61 62 53 36 11\n");
+//		printf(" 25 46 59 64 63 54 37 12\n");
+//		printf(" 24 45 58 57 56 55 38 13\n");
+//		printf(" 23 44 43 42 41 40 39 14\n");
+//		printf(" 22 21 20 19 18 17 16 15\n"); break;
+//	case(9):printf("  1  2  3  4  5  6  7  8  9\n");
+//		printf(" 32 33 34 35 36 37 38 39 10\n");
+//		printf(" 31 56 57 58 59 60 61 40 11\n");
+//		printf(" 30 55 72 73 74 75 62 41 12\n");
+//		printf(" 29 54 71 80 81 76 63 42 13\n");
+//		printf(" 28 53 70 79 78 77 64 43 14\n");
+//		printf(" 27 52 69 68 67 66 65 44 15\n");
+//		printf(" 26 51 50 49 48 47 46 45 16\n");
+//		printf(" 25 24 23 22 21 20 19 18 17\n"); break;
+//	}
+//	return 0;
+//}
+
+#include<stdio.h>
+int main() 
+{
+	int x, cnt=1;
+	int a[9][9];
+	scanf_s("%d", &x);
+	for (int m = 0; m < x; m++) {
+		for (int n = 0; n < x; n++) {
+			a[m][n] = 0;
+		}
+	}
+	for (int k = 1; k <= x * x; k++) {
+
+		}
+	for (int m = 0; m < x; m++) {
+		for (int n = 0; n < x; n++) {
+			printf("%d ", a[m][n]);
+		}			
+		printf("\n");
+	}
+	return 0;
+}
+
+//距离函数
+#include<stdio.h>
+#include<math.h>
+int main() 
+{
+	double x1, x2, x3, y1, y2, y3,l1,l2,l3;
+	scanf_s("%lf %lf", &x1, &y1);
+	scanf_s("%lf %lf", &x2, &y2);
+	scanf_s("%lf %lf", &x3, &y3);
+	l1 = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	l2 = sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2));
+	l3 = sqrt((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3));
+	printf("%.2lf", l1 + l2 + l3);
+	return 0;
+}
+
+//标题统计
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char s[10];
+	gets_s(s);
+	int i = 0, cnt = 0;
+	while (s[i]!= '\0') {
+		if (s[i] != 32) {
+			cnt++;
+			i++;
+		}
+		else {
+			i++;
+		}
+	}
+	printf("%d", cnt);
+	return 0;
+}
+
+#include<stdio.h>
+int main()
+{
+	int x;
+	scanf_s("%d", &x);
+	int a[40][40];
+	for (int i = 0; i < 40; i++) {
+		for (int j = 0; j < 40; j++) {
+			a[i][j] = 1;
+		}
+	}
+	a[0][(x + 1) / 2] = 1;
+
+	for (int k = 1; k <= x * x; k++) {
+		
+	}
+	for (int i = 0; i < x; i++) {
+		for (int j = 0; j < x; j++) {
+			printf("%d",a[i][j]);
+		}
+	}
+	return 0;
+}
+//幻方
+#include<stdio.h>
+int main()
+{
+	int num[1521] = { 0 }, n,  now = 0, i, line, list;   //now为数字当前的输入位置
+	scanf_s("%d", &n);                   //-1则转变为数组的位置
+	now = (n + 1) / 2;
+	for (i = 1; i <= n*n; i++)            //i为当前准备输入的数字大小
+	{
+		num[now - 1] = i;       //进行本次的数字填入，下面开始下一次的数字填入准备
+		if (now == n) {    //如果now在最右上角
+			now = 2 * n;
+			continue;
+		}
+		if (now <= n - 1) {     //如果now在第一行
+			now += n * (n - 1) + 1;
+			continue;
+		}
+		if (now % n == 0) {    //如果now在最后一列
+			now -= 2 * n - 1;
+			continue;
+		}          //如果上述情况都不符合，即在左下区域内
+		if (num[now - n] == 0) {      //如果now右上方还没有数
+			now -= n - 1;
+			continue;
+		}
+		now += n;         //如果now右上方已经被占了
+	}
+	for (line = 1; line <= n; line++)
+	{
+		for (list = 1; list <= n; list++)
+		{
+			printf("%d ", num[(line - 1) * n + list - 1]);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+
+#include<stdio.h>
+int main()
+{
+	void huan_fang(int);
+	int n;
+	scanf_s("%d", &n);
+	huan_fang(n);
+	return 0;
+}
+void huan_fang(int n)
+{
+	int a[39][39], c, i, j;
+	for (i = 0; i < n; i++)
+		for (j = 0; j < n; j++)
+			a[i][j] = 0;
+	a[0][(n - 1) / 2] = 1;
+	i = 0;
+	j = (n - 1) / 2;
+	for (c = 2; c <= n * n; c++)
+	{
+		if (i==0 && j != n - 1)
+		{
+			i = n - 1;
+			j = j + 1;
+		}
+		else if (i && j == n - 1)
+		{
+
+			i = i - 1;
+			j = 0;
+		}
+		else if (i==0 && j == n - 1)
+		{
+			i = i + 1;
+		}
+		else
+		{
+			if (a[i - 1][j + 1])
+				i = i + 1;
+			else
+			{
+				i = i - 1;
+				j = j + 1;
+			}
+		}
+		a[i][j] = c;
+	}
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < n; j++)
+			printf("%d ", a[i][j]);
+		printf("\n");
+	}
+}
+
+//集合求和
+#include<stdio.h>
+int main()
+{
+	long long int sum=0;
+	int a, k = 0;
+	while ((scanf_s("%d", &a))!= EOF) {
+		k++;
+		sum += a;
+	}
+	for (int j = 1; j < k; j++) {
+		sum *= 2;
+	}
+	printf("%lld", sum);
+	return 0;
+}
+
+//校门口的树
+#include<stdio.h>
+int main()
+{
+	int l, m, sum = 0, x1, x2;
+	int a[10000];
+	scanf_s("%d %d", &l, & m);
+	for (int i = 0; i <= l; i++) {
+		a[i] = 1;
+	}
+	for (int i = 0; i < m; i++) {
+		scanf_s("%d %d", &x1, &x2);
+		for (int k = x1-1; k < x2; k++) {
+			a[k] = 0;
+		}
+	}
+	for (int i = 0; i <= l; i++) {
+		sum += a[i];
+	}
+	printf("%d ",sum); 
+	return 0;
+}
+
+//回文质数
+#include<stdio.h>
+int ss(int);
+int fz(int);
+int main()
+{ 
+	int x, y;
+	int a[100000000];
+	scanf_s("%d %d", &x, &y);
+	int i; i = x;
+	for (int j = 0; j < y-x; j++){
+		for (i; i <= y; i++) {
+			a[j] = i;	
+		if (ss(a[j]) && fz(a[j]) == a[j])
+			printf("%d \n", a[j]);
+		else
+			continue;	
+		}	
+	
+	}
+	return 0;
+}
+
+int ss(int i)
+{
+	int cnt=0;
+	for (int x = 2; x < i; x++) {
+		if (i % x == 0)
+			cnt++;
+		else
+			cnt += 0;
+	}
+	if (cnt == 0)
+		return 1;
+	else
+		return 0;
+}
+int fz(int m)
+{
+	int M = 0,t;
+	t = m;
+	while (t > 0)
+	{
+		M = M * 10 + m % 10;
+		t /= 10;
+	}
+	if (M == m)
+		return m;
+	else
+		return 0;
+}
+#include<iostream>
+#include<cstdio>
+#define MAXN 10000005
+using namespace std;
+int prime[MAXN];
+bool pp[MAXN];
+int vis[MAXN];
+bool pd_h(int x)
+{
+
+	int y = x, num = 0;//int y=x,防止x被改变
+	while (y != 0)
+	{
+		num = num * 10 + y % 10;//上一次数字的记录进位再加上下一位数
+		y /= 10;
+	}
+	if (num == x) return 1;
+	else return 0;
+}
+int main()
+{
+	int a, b;
+	cin >> a >> b;
+	int cnt = 0;
+	if (b > 10000000) b = 10000000;
+	for (int i = 2; i <= b; i++)
+	{
+		if (!vis[i]) prime[cnt++] = i, pp[i] = 1;
+		for (int j = 0; j < cnt && i * prime[j] <= b; j++)
+		{
+			vis[i * prime[j]] = i;
+			if (i % prime[j] == 0) break;
+		}
+	}
+	for (int i = a; i <= b; i++)
+	{
+		if (i > 10000000) break;
+		if (pd_h(i) && pp[i]) printf("%d\n", i);
+	}
+}
+
+#include<iostream>
+using namespace std;
+bool isprime(int x){ //判断质数的函数，应该不用我多解释
+	if(x<2)return false;
+	if(x==2)return true;
+	for(int i=2;i*i<=x;i++){
+		if(x%i==0)return false;
+	}
+	return true;
+}
+int l,r,x,y; //l,r是题目范围，x,y是他们的长度
+int a[10];  //储存创造出来的数
+bool b=true;  //用来作为是否跳出的判断
+void go(int x,int k){  //k是总位数，x是目前枚举到的位置
+	if(x==(k+1)/2){  //(k+1)/2是k位的中间数，可以自己算一下
+		for(int i=k;i>x;i--){  //把剩下的位数完善
+			a[i]=a[k-i+1];
+		}
+		int shu=0;  //将数组转化成数
+		for(int i=1;i<=k;i++){
+			shu=shu*10+a[i];
+		}
+		if(shu<l)return; //小于l就跳过
+		if(shu>r){ //大于r就跳出
+			b=false;
+			return;
+		}
+		if(isprime(shu))cout<<shu<<endl; //是质数就输出
+		return; //这个一定不能漏，要不然会一直搜下去（本人是亲身体验过的受害者）
+	}
+	int i;
+	if(x)i=0;
+	else i=1; //最高位不能是0
+	for(i=i;i<=9;i++){ //dfs(深度优先搜索)下一位，没学过可以去看下P1706
+		if(b==false)return; //如果已经出现大于r的数，就跳出函数
+		a[x+1]=i;
+		go(x+1,k);
+	}
+	return;
+}
+int weishu(int j){ //计算一个数的长度
+	int b=j,count=0;
+	while(b>0){
+		b/=10;
+		count++;
+	}
+	return count;
+}
+int main(){
+	cin>>l>>r;
+	x=weishu(l);
+	y=weishu(r);
+	for(int i=x;i<=y;i++){
+		if(i==1){ //一位数特判
+			if(l<=5&&r>=5)cout<<5<<endl;
+			if(l<=7&&r>=7)cout<<7<<endl;
+			continue;
+		}
+		if(i==2){ //两位数特判
+			if(l<=11&&r>=11)cout<<11<<endl;
+			continue;
+		}
+		if(i%2==0)continue; //偶数位就跳过
+		if(i==9)break; //九位直接跳出
+		b=true; //每次搜索要先重置这个变量
+		go(0,i); //从第0位开始搜
+	}
+	return 0;
+}
+//笨小猴
+//不能AC
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char s[101];
+	int a[101];
+	for (int p = 0; p < 100; p++) {
+		a[p] = 0;
+	}
+	gets_s(s);
+	int i = 0, j = 0,cnt = 0;
+	while (s[i] != '\0') {
+		for (j; j <= i; j++) {
+			a[j] = 1; 
+			for (int k = 0;  k < strlen(s); k++) {
+				if (k == i) continue;
+				else if (s[k] == s[i]) a[j] += 1;
+			}
+			printf("%d\t", a[j]);		
+
+		}
+		i++;
+	}
+	printf("\n");
+	int max = 0, min = a[0];
+	for (int m = 0; m <j; m++) {
+		if (max < a[m]) max = a[m];
+		else max = max;
+		if (min > a[m]) min = a[m];
+		else min = min;
+	}
+	printf("%d\t%d\t", max, min); printf("\n");
+	int t = max - min;
+	for (int x = 2; x < t; x++) {
+		if (t % x == 0) cnt = 1;
+	}
+	if (cnt == 0) printf("Lucky Word\n%d", t);
+	else printf("No Answer\n0");
+	return 0;
+}
+//能AC
+#include<stdio.h>
+#include<string.h>
+#define maxn 300
+#include<math.h>
+int max(int MAX,int voc)
+{
+	if(MAX<voc) MAX=voc;
+	return MAX;
+}
+int min(int MIN,int voc)
+{
+	if(MIN>voc) MIN=voc;
+	return MIN;
+
+}
+int is(int span)
+{
+	int i;
+	if(span==1||span==0) return 0;
+	else{
+			for(i=2; i<span; i++)
+			  if(span%i==0) return 0;
+	}
+	return 1;
+}
+int main(void)
+{
+	int voc[maxn]= {0};
+	char s[maxn],cha;
+	scanf("%s",s);
+
+	int MAX=1,MIN=strlen(s);
+	int i,j,span;
+	int x=strlen(s);
+
+	for(i=0; i<strlen(s); i++)
+	{
+		for(j=0; j<strlen(s); j++)
+			if(s[i]==s[j]) voc[i]++;
+		MAX=max(MAX,voc[i]);
+		MIN=min(MIN,voc[i]);
+	}
+	span=MAX-MIN;
+	if(is(span))
+	{
+		printf("Lucky Word\n%d",MAX-MIN);
+	}
+	else
+	{
+		printf("No Answer\n0");
+
+	}
+	return 0;
+}
+
+//珠心算
+#include<stdio.h>
+int main()
+{
+	int n, cnt = 0, a[101],flag[101];
+	scanf_s("%d", &n);
+	for (int i = 0; i < 101; i++){
+		a[i] = 0;
+		flag[i] = 0;
+	}
+	for (int i = 0; i < n; i++){
+		scanf_s("%d", &a[i]);
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = i+1; j < n; j++){
+			for (int k = 0; k < n; k++){
+				if (k != i && j != k && a[k] == a[i] + a[j]&&flag[k]==0){
+					cnt += 1;
+					flag[k]=1;
+				}
+			}
+		}
+	}
+	printf("%d", cnt);
+	return 0;
+}
+
+//口算练习题
+#include <stdio.h>
+#include<string.h>
+#include "math.h"
+#include<stdlib.h>
+int main()
+{
+	char s[10], t;
+	int a, b, c = 0;
+	int n, i, m, j, q, r, p;
+	scanf("%d", &n);
+	for (i = 0; i < n; i++) {
+		scanf("%s", s);
+		m = strlen(s);//判断读入的第一个字符串是数字还是字母
+		if (m > 1) {//若为数字   m==1也有可能是1位数，但是洛谷没有考虑这种情况，个人可以再写个判断考虑输入一位数的情况
+			scanf("%d", &a);//此时只需输入一个数字，将其记为a或b
+			c = 0;
+			for (j = 0; j < m; j++) {
+				r = j;
+				q = 1;
+				while (r < m - 1) {
+					q *= 10;
+					r++;
+				}
+				c += (s[j] - 48) * q;//将字符串s中数字转换成int类型
+			}
+			b = a;//将a值赋予b，c值赋予a，若上面输入记为b则只需将c值赋予a
+			a = c;
+			if (t == 97) {//加法
+				printf("%d+%d=%d\n", a, b, a + b);
+				p = a + b;
+			}
+			if (t == 98) {//减法
+				printf("%d-%d=%d\n", a, b, a - b);
+				p = a - b;
+			}
+			if (t == 99) {//除法
+				p = a * b;
+				printf("%d*%d=%d\n", a, b, a * b);
+			}
+			printf("%d\n", chang(a, b, p));//长度函数
+		}
+		if (m == 1) {//为字母，与上面步骤基本一样
+			scanf("%d %d", &a, &b);
+			if (s[0] == 97) {
+				printf("%d+%d=%d\n", a, b, a + b);
+				p = a + b;
+			}
+			if (s[0] == 98) {
+				printf("%d-%d=%d\n", a, b, a - b);
+				p = a - b;
+			}
+			if (s[0] == 99) {
+				p = a * b;
+				printf("%d*%d=%d\n", a, b, a * b);
+			}
+			t = s[0];//将此时的字母记下，用于往下的数据
+			printf("%d\n", chang(a, b, p));
+		}
+	}
+	return 0;
+}
+int chang(int a, int b, int p) {//算长度函数
+	int cnt = 0;
+	if (a == 0) {//不考虑a==0跟b==0，第五个数据会WA
+		cnt++;
+	}
+	else {
+		while (a > 0) {
+			a /= 10;
+			cnt++;
+		}
+	}
+	if (b == 0) {
+		cnt++;
+	}
+	else {
+		while (b > 0) {
+			b /= 10;
+			cnt++;
+		}
+	}
+	if (p < 0) {
+		p = -p;
+		cnt++;
+	}
+	if (p == 0) {
+		cnt++;
+	}
+	else {
+		while (p > 0) {
+			p /= 10;
+			cnt++;
+		}
+	}
+	return cnt + 2;//返回数字长度加上运算符长度2
+}
+
+//键盘(66分)
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n, cnt = 0; char s[101];
+	cin >> n;
+	cin >> s;
+	for (int i = 0; i < n; i++) {
+		if (s[i] == 'V' && s[i + 1] == 'K') {
+			cnt += 1;
+			s[i] = 0;
+			s[i + 1] = 0;
+		}
+		else if (s[i] == 'V' && s[i + 1] == 'V') {
+			cnt += 1;
+			s[i] = 0;
+			s[i + 1] = 0;
+		}
+		else if(s[i] == 'K' && s[i + 1] == 'K') {
+			cnt += 1;
+			s[i] = 0;
+			s[i + 1] = 0;
+		}
+	}
+	cout << cnt;
+	return 0;
+}
+//AC
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n,cnt=0; char s[101];
+	cin >> n;
+	cin >> s;
+	for (int i = 0; i < n; i++) {
+		if (s[i]=='V'&& s[i + 1]=='K') {
+			cnt += 1;
+			s[i] = 0;
+			s[i + 1] = 1;
+		}
+	}
+	for (int i = 0; i < n; i ++ ){
+		if (s[i]!=0&&s[i] == s[i + 1]) {
+			cnt += 1;
+			break;
+		}
+	}
+	cout << cnt;
+	return 0;
+}
+
+//数字反转
+//不能AC
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char s[30],sum[30];
+	int h = 0;
+	for (int m = 0; m < 30; m++) {
+		sum[m] = -1;
+	}
+	gets_s(s);
+	for (int i = 0; i < 30&&s[i]!=-2; i++) {
+		if (s[i] == '.') {
+			for (int k = 0;k<i;) {
+				for (int j = i - 1; j >= 0; j--) {
+					sum[k]=s[j];
+					++k;
+				}
+			}
+			for (int k = i+1;k<strlen(s);) {
+				for (int j = strlen(s); j > i; j--) {
+						sum[k] = s[j];
+						++k;
+				}
+			}
+			sum[i] = '.';
+			for (int l = 0; l < 30; l++) {
+				if (sum[l] != '0') {
+					h = l;
+					break;
+				}
+			}
+			for (h; h < 30 && sum[h] != -1; h++) {
+				printf("%c", sum[h]);
+			}
+		}
+		if (s[i] == '%') {
+			for (int k = 0; k < i - 1;) {
+				for (int j = i - 1; j >= 0; j--) {
+					sum[k] = s[j];
+					++k;
+				}
+			}
+			sum[i] = '%';
+			for (int l = 0; l < 30; l++) {
+				if (sum[l] != '0') {
+					h = l;
+					break;
+				}
+			}
+			for (h; h < 30 && sum[h] != -1; h++) {
+				printf("%c", sum[h]);
+			}
+		}
+		if (s[i] == '/') {
+			for (int k = 0; k < i;) {
+				for (int j = i - 1; j >= 0; j--) {
+					sum[k] = s[j];
+					++k;
+				}
+			}
+			for (int k = i + 1; k < strlen(s);) {
+				for (int j = strlen(s); j > i; j--) {
+					sum[k] = s[j];
+					++k;
+				}
+			}
+			sum[i] = '/';
+			for (int l = 0; l < 30; l++) {
+				if (sum[l] != '0') {
+					h = l;
+					break;
+				}
+			}
+			for (h; h < 30 && sum[h] != -1; h++) {
+				printf("%c", sum[h]);
+			}
+		}
+		else if(i=strlen(s)) {
+			for (int k = 0; k < strlen(s);) {
+				for (int j = strlen(s); j >= 0; j--) {
+					sum[k] = s[j];
+					++k;
+				}
+			}
+			for (int l = 0; l < 30; l++) {
+				if (sum[l] != '0') {
+					h = l;
+					break;
+				}
+			}
+			for (h; h < 30 && sum[h] != -1; h++) {
+				printf("%c", sum[h]);
+			}
+		}
+	}
+
+	
+	return 0;
+}
+
+//能AC
+#include<stdio.h>
+char s[22];
+int i = 0, k = 0, x = 0;
+int main()
+{
+	int fz(int a, int b);
+	int c = 0;
+	gets(s);
+	while (s[i] != '\0')
+	{
+		if (!(s[i] >= '0' && s[i] <= '9'))
+		{
+			c = i;
+			fz(0, c - 1);
+			printf("%c", s[c]);
+			k = 1;
+			if (s[c] == '/')
+				x = 1;
+		}
+		i++;
+	}
+	if (k)
+		fz(c + 1, i - 1);
+	else
+		fz(c, i - 1);
+	return 0;
+}
+int fz(int a, int b)
+{
+	char t;
+	int flag = 0;
+	if (a > b)
+		return 0;
+	for (i = 0; i <= (a + b) / 2 - a; i++)
+	{
+		t = s[a + i];
+		s[a + i] = s[b - i];
+		s[b - i] = t;
+	}
+	i = a;
+	while (i <= b)
+		if (s[i++] != '0')
+		{
+			flag = 1;
+			break;
+		}
+	if (!flag)
+		printf("0");
+	else
+	{
+		if (!k)
+		{
+			while (s[a] == '0')
+				a++;
+			i = a;
+			while (i <= b)
+				printf("%c", s[i++]);
+		}
+		else if (x)
+		{
+			while (s[a] == '0')
+				a++;
+			i = a;
+			while (i <= b)
+				printf("%c", s[i++]);
+		}
+		else
+		{
+			while (s[b] == '0' && b >= a)
+				b--;
+			i = a;
+			while (i <= b)
+				printf("%c", s[i++]);
+		}
+	}
+	return 0;
+}
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	int chang, d, i, e = 0, j;
+	char size[600];
+	gets(size);
+	chang = d = strlen(size);
+	for (i = 0; i < chang; i++)
+		if (size[i] == '/' || size[i] == '.' || size[i] == '%')
+			d = i;
+	for (i = d - 1; i >= 0; i--) {
+		if (e == 0 && size[i] == '0') continue;
+		e += 1;
+		printf("%c", size[i]);
+	}
+	if (e == 0 && i == -1) { printf("0"); }
+	e = 0;
+	printf("%c", size[d]);
+	if (d != chang - 1 || d != chang) {
+		if (size[d] == '/') {
+			for (i = chang - 1; i > d; i--) {
+				if (e == 0 && size[i] == '0') continue;
+				break;
+			}
+			for (j = i; j > d; j--)
+				printf("%c", size[j]);
+			return 0;
+		}
+		else {
+			for (i = d + 1; i < chang; i++) {
+				if (e == 0 && size[i] == '0') { size[i] = ' '; continue; }
+				e += 1;
+			}
+			for (i = d + 1; i <= chang; i++) {
+				if (size[i] == '0') continue;
+				if (i == chang && size[chang - 1] == ' ') size[chang - 1] = '0';
+			}
+
+
+			for (i = chang - 1; i > d; i--)
+				printf("%c", size[i]);
+			return 0;
+		}
+	}
+}
+
+//上楼梯
+//超时
+#include<stdio.h>
+int f(int);
+int main()
+{
+	int n;
+	scanf_s("%d", &n);
+	printf("%d", f(n));
+	return 0;
+}
+int f(int n)
+{
+	if (n <= 2) {
+		return n;
+	}
+	else {
+		return (f(n - 1) + f(n - 2));
+	}
+}
+
+
+#include<iostream>
+using namespace std;
+int a[5000], b[5000], c[5000];//分别作为走一阶和走两阶楼梯的方法数，用字符数组防止溢出 
+int main()
+{
+	int n;
+	int x = 1;					//表示有几位数字，即数字的位数 
+	cin >> n;					//表示阶梯数 
+	if (n < 3)						//当只有一阶或者两阶的时候，一阶只有一种方式，两阶有两种走法，所以可以直接输出 
+	{
+		cout << n;
+		return 0;
+	}
+	a[1] = 1; b[1] = 2;				//当只有一阶或者两阶的时候，一阶只有一种方式，两阶有两种走法
+
+	//1.既然太大的数字没有办法直接相加减，那么我们来模拟竖式的算法，逐位相加，满十进一。
+	//2.好了，那我们用 a，b 两个数组 来存两个加数，用 c 来存答案。
+	//3.那么就有以下等式 c[i]=a[i]+b[i]，同时我们再判断，如果c[i]>9，那就向高一位进一即可。
+	//4.用x来就答案的长度，最后输出即可。
+
+	for (int i = 3; i <= n; i++)//当有三个及以上的台阶 ，每多一个台阶都要进行方法数的更新 
+	{
+		for (int j = 1; j <= x; j++)
+			c[j] = a[j] + b[j];
+		for (int j = 1; j <= x; j++)
+		{
+			if (c[j] > 9)			//进位 
+			{
+				c[j + 1] += c[j] / 10;
+				c[j] %= 10;
+				if (j + 1 > x)
+					x++;			//更新进位数 
+			}
+		}
+		for (int j = 1; j <= x; j++)//注意原理是斐波那契数列，所以 
+			a[j] = b[j];
+		for (int j = 1; j <= x; j++)
+			b[j] = c[j];
+	}
+	for (int i = x; i > 0; i--)//因为前面逆序相加，所以后面要逆序输出 
+		cout << b[i];
+	return 0;
+}
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+int a[5005][6005];
+int n;
+void add(int i, int j);
+int main()
+{
+	memset(a, 0, sizeof(a));
+	cin >> n;
+	a[0][1] = 0;
+	a[1][1] = 1;
+	a[2][1] = 2;
+	for (int i = 3; i <= n; i++)
+		add(i - 1, i - 2);
+	if (n == 0)
+		cout << 0;
+	else
+	{
+		for (int k = n; k <= n; k++)
+		{
+			int i = 6000;
+			//cout<<k<<": ";
+			while (a[k][i] == 0)
+				i--;
+			for (; i >= 1; i--)
+				cout << a[k][i];
+			cout << endl;
+		}
+	}
+	return 0;
+}
+void add(int i, int j)
+{
+	int t = 1;
+	int cf = 0;
+	while (t < 6000)
+	{
+		int temp = a[i][t] + a[j][t] + cf;
+		cf = temp / 10;
+		temp = temp % 10;
+
+		a[i + 1][t] = temp;
+		t++;
+	}
+
+	if (cf > 0)
+		a[i + 1][t] = cf;
+	//cout<<"a is "<<a[i+1][3]<<a[i+1][2]<<a[i+1][1]<<endl;
+}
+
+//蜜蜂  将上楼梯的n换成两数之差即可
+#include <cstdio>
+using namespace std;
+int n, m, len = 1;
+int f[1005][1005];
+void plus(int x)
+{
+	for (int i = 1; i <= len; i++)
+		f[x][i] = f[x - 1][i] + f[x - 2][i];  //x表示两个数字的差值(差值相等步数相等) i表示所需步数的每一位数字
+	for (int i = 1; i <= len; i++)
+		if (f[x][i] > 9)
+		{
+			f[x][i + 1] += f[x][i] / 10;
+			f[x][i] %= 10;
+		}
+	if (f[x][len + 1]) len++;
+}
+int main()
+{
+	scanf_s("%d%d", &m, &n);
+	f[1][1] = 1, f[2][1] = 2;
+	for (int x = 3; x <= n - m; x++) plus(x);
+	for (int i = len; i; i--) printf("%d", f[n - m][i]);
+	return 0;
+}
+
+//A+B高精度
+a = input()
+b = input()
+a = int(a)
+b = int(b)
+print(a + b)
+
+#include<bits/stdc++.h>
+using namespace std;
+int a[1000001],b[1000001],c[1000001],j;
+bool x=false;
+char s[1000001],ss[1000001];
+int main() {
+
+	memset(a,0,sizeof(a));
+	memset(b,0,sizeof(b));
+	memset(c,0,sizeof(c));//初始化
+	scanf("%s%s",s,ss);//读入两个数
+	a[0]=strlen(s);
+	b[0]=strlen(ss);//获取长度
+	for(int i=1; i<=a[0]; i++) a[i]=s[a[0]-i]-'0';
+	for(int i=1; i<=b[0]; i++) b[i]=ss[b[0]-i]-'0';//反转并转化为数字使之后的遍历从前往后
+	for(j=1; j<=max(a[0],b[0])+1; j++) {
+		c[j]=a[j]+b[j];
+		if(c[j]>=10) {
+			c[j]%=10;
+			a[j+1]++;
+		}
+	}//模拟加法
+	c[0]=j;
+	if(c[j+1]>0) c[0]++;//特判进位
+	for(int i=c[0]; i>=1; i--) {//输出（删除前导零）//从后往前打印才是结果
+		if(x==false&&c[i]==0) continue;
+		x=true;
+		cout<<c[i];
+	}
+	if(x==false) cout<<0;//一重保险
+	printf("\n");//二重保险
+	return 0;//三重保险
+}
+
+#include<stdio.h>
+#include<string>
+#include<string.h>
+#include<iostream>
+using namespace std;
+//compare比较函数：相等返回0，大于返回1，小于返回-1
+int compare(string str1,string str2)
+{
+	if(str1.length()>str2.length()) return 1;
+	else if(str1.length()<str2.length())  return -1;
+	else return str1.compare(str2);
+}
+
+//高精度加法
+//只能是两个正数相加
+string add(string str1,string str2)//高精度加法
+{
+	string str;
+	int len1=str1.length();
+	int len2=str2.length();
+	//前面补0，弄成长度相同
+	if(len1<len2)
+	{
+		for(int i=1;i<=len2-len1;i++)
+		   str1="0"+str1;
+	}
+	else
+	{
+		for(int i=1;i<=len1-len2;i++)
+		   str2="0"+str2;
+	}
+	len1=str1.length();
+	int cf=0;
+	int temp;
+	for(int i=len1-1;i>=0;i--)
+	{
+		temp=str1[i]-'0'+str2[i]-'0'+cf;
+		cf=temp/10;
+		temp%=10;
+		str=char(temp+'0')+str;
+	}
+	if(cf!=0)  str=char(cf+'0')+str;
+	return str;
+}
+
+//高精度减法
+//只能是两个正数相减，而且要大减小
+string sub(string str1,string str2)
+{
+	string str;
+	int tmp=str1.length()-str2.length();
+	int cf=0;
+	for(int i=str2.length()-1;i>=0;i--)
+	{
+		if(str1[tmp+i]<str2[i]+cf)
+		{
+			str=char(str1[tmp+i]-str2[i]-cf+'0'+10)+str;
+			cf=1;
+		}
+		else
+		{
+			str=char(str1[tmp+i]-str2[i]-cf+'0')+str;
+			cf=0;
+		}
+	}
+	for(int i=tmp-1;i>=0;i--)
+	{
+		if(str1[i]-cf>='0')
+		{
+			str=char(str1[i]-cf)+str;
+			cf=0;
+		}
+		else
+		{
+			str=char(str1[i]-cf+10)+str;
+			cf=1;
+		}
+	}
+	str.erase(0,str.find_first_not_of('0'));//去除结果中多余的前导0
+	return str;
+}
+//高精度乘法
+//只能是两个正数相乘
+string mul(string str1,string str2)
+{
+	string str;
+	int len1=str1.length();
+	int len2=str2.length();
+	string tempstr;
+	for(int i=len2-1;i>=0;i--)
+	{
+		tempstr="";
+		int temp=str2[i]-'0';
+		int t=0;
+		int cf=0;
+		if(temp!=0)
+		{
+			for(int j=1;j<=len2-1-i;j++)
+			  tempstr+="0";
+			for(int j=len1-1;j>=0;j--)
+			{
+				t=(temp*(str1[j]-'0')+cf)%10;
+				cf=(temp*(str1[j]-'0')+cf)/10;
+				tempstr=char(t+'0')+tempstr;
+			}
+			if(cf!=0) tempstr=char(cf+'0')+tempstr;
+		}
+		str=add(str,tempstr);
+	}
+	str.erase(0,str.find_first_not_of('0'));
+	return str;
+}
+//高精度除法
+//两个正数相除，商为quotient,余数为residue
+//需要高精度减法和乘法
+void div(string str1,string str2,string &quotient,string &residue)
+{
+	quotient=residue="";//清空
+	if(str2=="0")//判断除数是否为0
+	{
+		quotient=residue="ERROR";
+		return;
+	}
+	if(str1=="0")//判断被除数是否为0
+	{
+		quotient=residue="0";
+		return;
+	}
+	int res=compare(str1,str2);
+	if(res<0)
+	{
+		quotient="0";
+		residue=str1;
+		return;
+	}
+	else if(res==0)
+	{
+		quotient="1";
+		residue="0";
+		return;
+	}
+	else
+	{
+		int len1=str1.length();
+		int len2=str2.length();
+		string tempstr;
+		tempstr.append(str1,0,len2-1);
+		for(int i=len2-1;i<len1;i++)
+		{
+			tempstr=tempstr+str1[i];
+			tempstr.erase(0,tempstr.find_first_not_of('0'));
+			if(tempstr.empty())
+			  tempstr="0";
+			for(char ch='9';ch>='0';ch--)//试商
+			{
+				string str,tmp;
+				str=str+ch;
+				tmp=mul(str2,str);
+				if(compare(tmp,tempstr)<=0)//试商成功
+				{
+					quotient=quotient+ch;
+					tempstr=sub(tempstr,tmp);
+					break;
+				}
+			}
+		}
+		residue=tempstr;
+	}
+	quotient.erase(0,quotient.find_first_not_of('0'));
+	if(quotient.empty()) quotient="0";
+}
+
+int main()
+{
+	string str1, str2;
+	//string str3,str4;
+	cin >> str1 >> str2;
+	//while()
+	//{
+	cout << add(str1, str2) << endl;
+	//cout<<sub(str1,str2)<<endl;
+	//cout<<mul(str1,str2)<<endl;
+	//div(str1,str2,str3,str4);
+	//cout<<str3<<"  "<<str4<<endl;
+    }
+	return 0;
+}
+
+//扫雷，重点：在外围加一层无用组，打印时不用
+#include<iostream>
+using namespace std;
+char s[110][110] = { 0 };
+int a[110][110] = { 0 };
+int main()
+{
+	
+	int n, m;
+	cin >> n >> m;
+	for (int i = 1; i <=n; i++) {
+		for (int j = 1; j <= m; j++) {
+			cin >> s[i][j];
+			if (s[i][j] == '*') {
+				a[i-1][j-1]++; a[i-1][j]++; a[i-1][j+1]++;
+				a[i][j-1]++;    			a[i][j+1]++;
+				a[i+1][j-1]++; a[i+1][j]++; a[i+1][j+1]++;
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (s[i][j] == '*') {
+				cout << '*';
+			}
+			else {
+				cout << a[i][j];
+			}
+		}			
+		cout << "\n";
+	}
+	return 0;
+}
+
+//烤鸡
+//暴力求解
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n,cnt=0,a,b,c,d,e,f,g,h,i,j;
+	cin >> n;
+	for (a=1; a <= 3; a++) {
+		for (b=1; b <= 3; b++) {
+			for (c=1; c<= 3; c++) {
+				for (d=1; d <= 3; d++) {
+					for (e=1; e <= 3; e++) {
+						for (f=1; f <= 3; f++) {
+							for (g=1; g <= 3; g++) {
+								for (h=1; h <= 3; h++) {
+									for (i=1; i <= 3; i++) {
+										for (j=1; j <= 3; j++) {
+											if (a + b + c + d + e + f + g + h + i + j == n) {
+												cnt++;
+											}																							
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	printf("%d\n", cnt);
+	for (a = 1; a <= 3; a++) {
+		for (b = 1; b <= 3; b++) {
+			for (c = 1; c <= 3; c++) {
+				for (d = 1; d <= 3; d++) {
+					for (e = 1; e <= 3; e++) {
+						for (f = 1; f <= 3; f++) {
+							for (g = 1; g <= 3; g++) {
+								for (h = 1; h <= 3; h++) {
+									for (i = 1; i <= 3; i++) {
+										for (j = 1; j <= 3; j++) {
+											if (a + b + c + d + e + f + g + h + i + j == n) {
+												printf("%d %d %d %d %d %d %d %d %d %d\n", a, b, c, d, e, f, g, h, i, j);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+//回溯
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int n, ans1, ans2[10001][11], sum, a[11];
+void trys(int t, int m)//t代表当前的尝试的调料。m代表当前美味程度
+{
+	if (t > 10)
+	{
+		if (m == n) //如果美味程度与猪猪的要求相等
+		{
+			ans1++;//统计方案总数
+			for (int i = 1; i <= 10; i++)
+				ans2[ans1][i] = a[i];//存入答案的数组
+		}
+		return;
+	}
+	for (int i = 1; i <= 3; i++)
+	{
+		if (m + i > n) break;//如果超过了要求，那么后面的就可以直接忽略
+		a[t] = i;//储存答案
+		trys(t + 1, m + i);//查看下一种调料
+		a[t] = 0;//状态恢复
+	}
+}
+int main()
+{
+	cin >> n;
+	trys(1, 0);//从第一种调料开始尝试，美味程度为0
+	cout << ans1 << endl;
+	for (int i = 1; i <= ans1; i++)
+	{
+		for (int j = 1; j <= 10; j++)
+			cout << ans2[i][j] << " ";
+		cout << endl;
+	}//输出结果
+	return 0;
+}
+
+//全排列问题(深搜)//忘得差不多了
+//暴力求解
+#include<stdio.h>
+int main()
+{
+	int n; scanf_s("%d", &n);
+	for (int a = 1; a <= n; a++) {
+		if (n == 1) {
+			printf("    %d\n", a);
+			continue;
+		}
+		for (int b = 1; b <= n; b++) {
+			if (a == b)continue;
+			if (n == 2) {
+				printf("    %d    %d\n", a, b);
+				continue;
+			}
+			for (int c = 1; c <= n; c++) {
+				if (c == b||c==a)continue;
+				if (n == 3) {
+					printf("    %d    %d    %d\n", a, b,c);
+					continue;
+				}
+				for (int d = 1; d <= n; d++) {
+					if (d == a||d==b||d==c)continue;
+					if (n == 4) {
+						printf("    %d    %d    %d    %d\n", a, b,c,d);
+						continue;
+					}
+					for (int e = 1; e<= n; e++) {
+						if (e ==a||e==b||e==c||e==d)continue;
+						if (n == 5) {
+							printf("    %d    %d    %d    %d    %d\n", a, b,c,d,e);
+							continue;
+						}
+						for (int f = 1; f <= n; f++) {
+							if (f == a||f==b||f==c||f==d||f==e)continue;
+							if (n == 6) {
+								printf("    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f);
+								continue;
+							}
+							for (int g = 1; g <= n; g++) {
+								if ( g== a || g == b || g == c || g == d ||g == e||g==f)continue;
+								if (n == 7) {
+									printf("    %d    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f,g);
+									continue;
+								}
+								for (int h = 1; h <= n; h++) {
+									if (h == a || h == b || h == c || h == d || h == e||h==f||h==g)continue;
+									if (n == 8) {
+										printf("    %d    %d    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f,g,h);
+										continue;
+									}
+									for (int i = 1; i <= n; i++) {
+										if ( i == a || i == b || i == c || i == d || i == e||i==f||i==g||i==h)continue;
+										if (n == 9) {
+											printf("    %d    %d    %d    %d    %d    %d    %d    %d    %d\n", a, b, c, d, e, f,g,h,i);
+											continue;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+//DFS
+#include<iostream>
+using namespace std;
+int n, a[10], book[10] = {0};
+void dfs(int step) 
+{
+	if (step == n) {
+		for (int i = 0; i < n; i++) {
+			cout << "    "<<a[i];
+		}
+		printf("\n");
+		return;
+	}
+	for (int i = 1; i <= n; i++) {    //枚举有几层
+		if (book[i]!= 1) {
+			a[step] = i;
+			book[i] = 1;				//将用过的数字打上标签
+			dfs(step+1);      		  //递归后面的
+			book[i] = 0;				//恢复初始状态
+		}
+	}
+}
+int main()
+{
+	cin >> n;
+	dfs(0);
+	return 0;
+}
+
+//排队接水
+//正常计算
+#include<stdio.h>
+int main()
+{
+	float a[1005] = { 0 }, c[1005] = { 0 }, max = 1000001;
+	double n, sum = 0; int h = 0, b[1005] = { 0 }, l = 0, k;
+	scanf_s("%lf", &n);
+	for (int i = 0; i < n; i++) {
+		scanf_s("%f", &a[i]); c[i] = a[i];
+	}
+
+	float min = max;
+	for (int j = 0; j < n; j++) {
+		for (k = 0; k < n; k++) {
+			if (min > c[k]) {
+				min = c[k];	l = k;  //找出现存的最小值
+			}
+		}
+		min = max; sum += c[l] * (n - 1 - j); c[l] = 1000002;    //总时间+=现存最小的*剩下的人，之后将这个最小值改到最大
+		b[h++] = l + 1; 										//接水顺序，小的在前面
+	}
+	for (int i = 0; i < n; i++) {
+		printf("%d ", b[i]);
+	}
+	printf("\n%.2lf", sum / n);
+	return 0;
+}
+//贪心算法
+//i从1开
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+struct people {
+	int time; int num;
+}ps[1005];
+bool cmp(people p1, people p2) {
+	return p1.time < p2.time;
+}
+int main()
+{
+	int n; double sum = 0, ave = 0;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {					//i从1开始时是因为后面排序没有0
+		cin >> ps[i].time; ps[i].num = i;		
+	}
+	sort(ps+1, ps + n + 1, cmp);		
+	for (int i = 1; i <= n; i++) {
+		cout << ps[i].num << " ";
+		sum += (n - i) * ps[i].time;				//若i从0开始此处为n-i-1
+	}
+	ave = 1.0 * sum / n;
+	cout << endl; printf("%.2lf", ave);
+	return 0;
+}
+//i从0开
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+struct people {
+	int time; int num;
+}ps[1005];
+bool cmp(people p1, people p2) {
+	return p1.time < p2.time;
+}
+int main()
+{
+	int n; double sum = 0, ave = 0;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> ps[i].time; ps[i].num = i;
+	}
+	sort(ps, ps + n, cmp);
+	for (int i = 0; i < n; i++) {
+		cout << ps[i].num + 1<< " ";
+		sum += (n - i - 1) * ps[i].time;
+	}
+	ave = 1.0 * sum / n;
+	cout << endl; printf("%.2lf", ave);
+	return 0;
+}
+
+//过河卒
+//60
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int a[100][100] = { 0 }, b[100][100] = { 0 };
+int main()
+{
+	int x, y; //最终坐标
+	int n, m; //马
+	cin >> x >> y;
+	cin >> n >> m;
+	for (int i = 0; i <= x; i++) {
+		for (int j = 0; j <= y; j++) {
+			a[i][j] = 1;
+		}
+	}	
+	a[n][m] = 0;
+	if (n == 0 && m == 0) {
+		a[n + 1][m + 2] = 0;a[n + 2][m + 1] = 0; 
+	}
+	else if (n == 0 && m == 1) {
+		a[n + 1][m + 2] = 0; a[n + 2][m + 1] = 0; 
+		a[n + 2][m - 1] = 0;
+	}
+	else if (n == 0 && m > 1 && m <= 20) {
+		a[n + 1][m - 2] = 0; a[n + 1][m + 2] = 0;
+		a[n + 2][m + 1] = 0; a[n + 2][m - 1] = 0;
+	}
+	else if (n == 1 && m==0) {
+		a[n + 1][m + 2] = 0; a[n - 1][m + 2] = 0;
+		a[n + 2][m + 1] = 0;
+	}
+	else if (n == 1 && m == 1) {
+		a[n + 1][m + 2] = 0; a[n - 1][m + 2] = 0;
+		a[n + 2][m + 1] = 0; a[n + 2][m - 1] = 0;
+	}
+	else if (n == 1 && m > 1&&m<=20) {
+		a[n + 1][m - 2] = 0; a[n + 1][m + 2] = 0;
+		a[n - 1][m - 2] = 0; a[n - 1][m + 2] = 0;
+		a[n + 2][m + 1] = 0; a[n + 2][m - 1] = 0;
+	}
+	else if (n>1 && m==0) {
+		a[n + 1][m + 2] = 0; a[n - 1][m + 2] = 0;
+		a[n - 2][m + 1] = 0; a[n + 2][m + 1] = 0;
+	}
+	else if (n>1 && m==1) {
+		a[n + 1][m + 2] = 0; a[n - 1][m + 2] = 0;
+		a[n - 2][m + 1] = 0; a[n - 2][m - 1] = 0;
+		a[n + 2][m + 1] = 0; a[n + 2][m - 1] = 0;
+	}
+	else if (n > 1 && m > 1&&m<=20) {
+		a[n + 1][m - 2] = 0; a[n + 1][m + 2] = 0;
+		a[n - 1][m - 2] = 0; a[n - 1][m + 2] = 0;
+		a[n - 2][m + 1] = 0; a[n - 2][m - 1] = 0;
+		a[n + 2][m + 1] = 0; a[n + 2][m - 1] = 0;
+	}
+	
+	a[0][0] = 1;
+	for (int i = 0; i <= x; i++) {
+		for (int j = 0; j <= y; j++) {
+			b[i][j] = a[i][j];
+			//cout << b[i][j] << "\t";
+		}
+		//cout << endl;
+	}
+	for (int i = 1; i <= x; i++) {
+		if (b[0][i] * b[0][i - 1] == 1) { b[0][i] = 1; }	else { b[0][i] = 0; }
+	}
+	for (int j = 1; j <= y; j++) {
+		if (b[j][0] * b[j-1][0] == 1) { b[j][0] = 1; }		else { b[j][0] = 0; }
+	}
+	for (int i = 1; i <= x; i++) {
+		for (int j = 1; j <= y; j++) {
+			if (b[i][j] != 0) {
+				b[i][j] = b[i][j - 1] + b[i - 1][j];
+			}
+		}
+	}
+	cout << b[x][y];
+	return 0;
+}
+
+//AC
+#include<cstdio>
+#include<iostream>
+using namespace std;
+long long f[25][25];
+bool g[25][25];
+int main() {
+	int x1, y1, x2, y2;
+	cin >> x1 >> y1;
+	cin >> x2 >> y2;
+	g[x2][y2] = 1;
+	if (x2 > 1 and y2 != 0)   g[x2 - 2][y2 - 1] = 1;
+	if (x2 < 19 and y2 != 0)  g[x2 + 2][y2 - 1] = 1;
+	if (x2 > 1 and y2 != 20)  g[x2 - 2][y2 + 1] = 1;
+	if (x2 < 19 and y2 != 20) g[x2 + 2][y2 + 1] = 1;
+	if (x2 != 0 and y2 > 1)   g[x2 - 1][y2 - 2] = 1;
+	if (x2 != 0 and y2 < 19)  g[x2 - 1][y2 + 2] = 1;
+	if (x2 != 20 and y2 > 1)  g[x2 + 1][y2 - 2] = 1;
+	if (x2 != 20 and y2 < 19) g[x2 + 1][y2 + 2] = 1;
+	for (int i = 0; i <= x1; ++i)
+		for (int j = 0; j <= y1; ++j)
+			if (!g[i][j]) {
+				if (i == 0 and j == 0)
+					f[0][0] = 1;
+				else if (i == 0 and j > 0)
+					f[0][j] = f[0][j - 1];
+				else if (i > 0 and j == 0)
+					f[i][0] = f[i - 1][0];
+				else
+					f[i][j] = f[i - 1][j] + f[i][j - 1];
+			}
+
+	cout << f[x1][y1];
+	return 0;
+}
+
+//部分背包
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+struct coin {
+	int m, v; double ave;
+}coins[105];
+bool cmp(coin cs1, coin cs2) {
+	return cs1.ave > cs2.ave;
+}
+int main()
+{
+	int n, t, pp = 0;//n堆数,t能装的重量,mark哪一堆
+	double ans = 0;
+	cin >> n >> t;
+	for (int i = 0; i < n; i++) {
+		cin >> coins[i].m >> coins[i].v;
+		coins[i].ave = 1.0 * coins[i].v / coins[i].m;
+	}
+	sort(coins, coins + n, cmp);   
+	while (t >= coins[pp].m&&pp<n) {    //pp<n不加得80 存在情况t比所有重量加起来都大，会一直循环
+		t -= coins[pp].m;
+		ans += coins[pp].v;
+		pp++;
+	}
+	ans += t * coins[pp].ave;
+	printf("%.2lf",ans);
+
+
+	return 0;
+}
+
+//统计方形
+//从(0,0)到(n,m)共有min(n,m)个正方形,n*m个矩形,n*m-min(n,m)个长方形
+//故从一开始遍历到结尾
+#include<iostream>
+using namespace std;
+int min(int a, int b) {
+	return a < b ? a : b;
+}
+int main()
+{
+	long long int n, m, z = 0, c = 0;//z正方形c长方形
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {         
+		for (int j = 1; j <= m; j++) {
+			z += min(i, j); c += i * j - min(i,j);
+		}
+	}
+	cout << z << " " << c;
+	return 0;
+}
+
+//已知一个n行m列的方形中有(((n + 1) * n/2 )* ((m + 1) * m/2))个矩形，有(n - i + 1) * (m - i + 1)个边长为i的正方形
+#include<iostream>
+using namespace std;
+int min(int a,int b) {
+	return a < b ? a : b;
+}
+int main()
+{
+	long long int n, m; cin >> n >> m; long long int jx = (((n + 1) * n/2 )* ((m + 1) * m/2)), zfx = 0, cfx = 0;
+	for (int i = 1; i <= min(n, m);i++) {
+		zfx += (n - i + 1) * (m - i + 1);
+	}
+	cfx = jx - zfx;
+	cout << zfx << " " << cfx;
+	return 0;
+}
+
+//组合的输出
+//DFS
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int n, k, a[25];
+void dfs(int step,int flag) {
+	if (step == k) {
+		for (int i = 0; i < k; i++) {
+			printf("%3d", a[i]);
+		}
+		cout << endl;
+		return;
+	}
+	//if (n - flag < k - step) {
+	//	return;
+	//}																	//剪枝操作但此题可有可无
+	for (int i = flag + 1; i <= n; i++) {
+		a[step] = i;
+		dfs(step + 1, i);
+	}
+}
+int main()
+{
+	cin >> n >> k;
+	dfs(0, 0);
+	return 0;
+}
+
+//疯狂的采药
+#include<iostream>
+#include<algorithm>
+using namespace std;
+long long v[10010], t[10010], f[10000010];  //如果是int范围不够,开long龙
+int main() {
+	int ti, m;
+	cin >> ti >> m;
+	for (int i = 1; i <= m; i++) cin >> t[i] >> v[i];
+	for (int i = 1; i <= m; i++) {
+		for (int j = t[i]; j <= ti; j++) {
+			f[j] = max(f[j], f[j - t[i]] + v[i]);
+			//cout << i<<t[i]<<j;
+		}
+	}
+	cout << f[ti];
+	return 0;
+}
+
+//八皇后
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+int n, m1[30]={0}, m2[30]={0}, m3[30]={0}, ans[15]={0}, mark = 0;
+void setvalue(int x,int y,int k) {
+	ans[x]=y;
+	m1[y] = k;
+	m2[x + y] = k;
+	m3[x - y + n] = k;
+}
+void dfs(int step) {
+	if (step > n) {
+		mark++;
+		if (mark <= 3) {
+			for (int i = 1; i <= n; i++) {
+				cout << ans[i] << " ";
+			}
+			cout << endl;
+		}
+		return;
+	}
+	for (int j = 1; j <= n; j++) {
+		if (m1[j] || m2[step + j] || m3[step - j + n]) {
+			continue;
+		}
+		setvalue(step, j, 1);
+		dfs(step + 1);
+		setvalue(step, j, 0);
+	}
+}
+int main()
+{
+	cin >> n;
+	dfs(1);
+	cout << mark;
+	return 0;
+}
+//小A的糖果
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+long long n, a[100010], x, ans, t;//我知道可以不定义数组，但为了用空间换时间（怕超时）
+int main()
+{
+	register int i;//register定义循环变量据说能加速
+	scanf("%lld%lld", &n, &x);//注意是%lld
+	for (i = 1; i <= n; i++)//从1~n很好地保证了第一个是a[0]和a[1],相当于单独考虑a[1]
+	{
+		scanf("%lld", &a[i]);//输入
+		if (a[i] + a[i - 1] > x)t = a[i] + a[i - 1] - x, a[i] -= t, ans += t;//两数之和超过，优先吃后面的，贪心（为了使后面加起来更小），if如果不加{}逗号表示一直在if中
+	}
+	printf("%lld", ans);//lld哦
+	return 0;//记得返回0
+}
+
+//互不侵犯
+#include<cstdio>
+#include<iostream>
+using namespace std;
+long long a[300] = {
+1,
+4,0,0,0,
+9,16,8,1,0,0,0,0,0,
+16,78,140,79,0,0,0,0,0,0,0,0,0,0,0,0,
+25,228,964,1987,1974,978,242,27,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+36,520,3920,16834,42368,62266,51504,21792,3600,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+49,1020,11860,85275,397014,1220298,2484382,3324193,2882737,1601292,569818,129657,18389,1520,64,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+64,1806,29708,317471,2326320,12033330,44601420,119138166,229095676,314949564,305560392,204883338,91802548,25952226,4142000,281571,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+81,2968,65240,962089,10087628,77784658,450193818,1979541332,6655170642,17143061738,33787564116,50734210126,57647295377,49138545860,31122500764,14518795348,4959383037,1237072414,224463798,29275410,2673322,163088,6150,125,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+}, b, c;
+int main() {
+	cin >> b >> c;
+	std::cout << a[(b - 1) * b * (2 * b - 1) / 6 + c - 1];
+}
+
+//电梯
+#include<bits/stdc++.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+struct floors {
+	int up, down, step;
+	bool visit;
+
+}lc[205];
+int main() {
+	int n, a, b, t;
+	cin >> n >> a >> b;
+	for (int i = 1; i <= n; i++) {
+		cin >> t;
+		lc[i].up = i + t;
+		lc[i].down = i - t;
+		lc[i].step = -1;
+		lc[i].visit = false;
+	}
+	queue < floors > q;
+	lc[a].step = 0, lc[a].visit = true;
+	q.push(lc[a]);
+	while (!q.empty()) {
+		floors f = q.front();
+		q.pop();
+		int u = f.up, d = f.down;
+		if (u >= 1 && u <= n && lc[u].visit == false) {
+			lc[u].visit = true;
+			lc[u].step = f.step + 1;
+			q.push(lc[u]);
+		}
+		if (d >= 1 && d <= n && lc[d].visit == false) {
+			lc[d].visit = true;
+			lc[d].step = f.step + 1;
+			q.push(lc[d]);
+		}
+		if (u == b || d == b)break;
+	}
+	cout << lc[b].step;
+	return 0;
+}
+*/
+#include<stdio.h>
+int main()
+{
+	int n = 3; char c;
+	c = getchar();
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n - i; j++)printf(" ");
+		for (int j = 1; j <= 2 * i - 1; j++)printf("%c", c);
+		printf("\n");
+	}
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

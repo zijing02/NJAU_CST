@@ -1,0 +1,24 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+int n, i, t = 1;
+int main() {
+	cin >> n >> i;
+	int ind = n * t + i;
+//特判n=1
+	if (n == 1) {
+		cout << "1";
+		return 0;
+	}
+	for (int k = 1; k < n; k++) {
+		if (ind % (n - 1) == 0)
+			ind = ind / (n - 1) * n + i;
+		else {
+			k = 0;
+			t++;
+			ind = n * t + i;
+		}
+	}
+	cout << ind;
+	return 0;
+}

@@ -1,0 +1,11 @@
+#include<stdio.h>
+int main()
+{
+	char letter;
+	letter = getchar();
+	printf("%c", letter - 32);
+	return 0;
+}
+//用python
+a = input()
+print(a.upper())

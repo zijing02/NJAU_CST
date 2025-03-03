@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct pairs {
+	int pos;
+	int num;
+}a[100010];
+int cmp(pairs a, pairs b) {
+	return a.num < b.num;
+}
+int n, m, temp;
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> temp;
+		a[i].num = temp; a[i].pos = i;
+	}
+	sort(a + 1, a + 1 + n, cmp);
+	cin >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> temp;
+		int l = 1, r = n, ans = 0;
+		while (l < r) {
+			int mid = l + (r - l) / 2;
+			if (a[mid].num >= temp)r = mid;
+			else l = mid + 1;
+		}
+		if (a[l].num == temp)ans = a[l].pos;
+		cout << ans << endl;
+	}
+	return 0;
+}

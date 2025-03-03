@@ -1,0 +1,146 @@
+#include<stdio.h>
+int max(int, int, int);
+int main()
+{
+	int a, b, c;
+	scanf_s("%d %d %d", &a, &b, &c);
+	if (a + b < c || b + c < a || a + c < b) {
+		printf("Not triangle\n");
+	}
+	else if (a == max(a, b, c)) {
+		if (b * b + c * c == a * a) {
+			printf("Right triangle\n");
+		}
+		else if (b * b + c * c >= a * a) {
+			printf("Acute triangle\n");
+		}
+		else {
+			printf("Obtuse triangle\n");
+		}
+		if (b == c) {
+			printf("Isosceles triangle\n");
+		}
+	}
+	else if (b == max(a, b, c)) {
+		if (a * a + c * c == b * b) {
+			printf("Right triangle\n");
+		}
+		else if (a * a + c * c >= b * b) {
+			printf("Acute triangle\n");
+		}
+		else {
+			printf("Obtuse triangle\n");
+		}
+		if (a == c) {
+			printf("Isosceles triangle\n");
+		}
+	}
+	else
+		if (b * b + a * a ==c * c) {
+			printf("Right triangle\n");
+		}
+		else if (b * b + a * a >= c * c) {
+			printf("Acute triangle\n");
+		}
+		else {
+			printf("Obtuse triangle\n");
+		}
+		if (b == a) {
+			printf("Isosceles triangle\n");
+		}
+	if (a == b && b == c) {
+		printf("Equilateral triangle\n");
+	}
+
+
+	return 0;
+}
+
+int max(int a, int b, int c)
+{	
+	int max = 0;
+	if (a > b) {
+		if (a > c)
+			max = a;
+		else
+			max = c;
+	}
+	else if (b > a) {
+		if (b > c)
+			max = b;
+		else
+			max = c;
+	}
+	return max;
+}
+
+using namespace std;
+#include <algorithm>
+#include <cstdio>
+int a, b, c;
+int main() {
+	scanf_s("%d %d %d", &a, &b, &c);
+	int n[4] = { 0, a, b, c };
+		sort(n + 1, n + 4);
+	if (n[1] + n[2] <= n[3]) {
+		printf("Not triangle\n");
+		return 0;
+	}
+	if (n[1] * n[1] + n[2] * n[2] == n[3] * n[3]) {
+		printf("Right triangle\n");
+	}
+	else if (n[1] * n[1] + n[2] * n[2] > n[3] * n[3]) {
+		printf("Acute triangle\n");
+	}
+	else if (n[1] * n[1] + n[2] * n[2] < n[3] * n[3]) {
+		printf("Obtuse triangle\n");
+	}
+	if (a == b || b == c || a == c) {
+		printf("Isosceles triangle\n");
+	}
+	if (a == b && b == c) {
+		printf("Equilateral triangle\n");
+	}
+	return 0;
+}
+#include<stdio.h>
+int main()
+{
+	int a[3], i, c = 1, j, t;
+	for (i = 0; i < 3; i++)
+		scanf("%d,", &a[i]);
+	if (a[0] == a[1] && a[1] == a[2])
+	{
+		printf("Acute triangle\nIsosceles triangle\nEquilateral triangle");
+		c = 0;
+	}
+	while (c)
+	{
+		for (i = 0; i < 2; i++)
+			for (j = 0; j < 2 - i; j++)
+			{
+				if (a[j] < a[j + 1])
+				{
+					t = a[j];
+					a[j] = a[j + 1];
+					a[j + 1] = t;
+				}
+			}
+		if (a[1] + a[2] > a[0])
+		{
+			if (a[1] * a[1] + a[2] * a[2] > a[0] * a[0])
+				printf("Acute triangle\n");
+			else if (a[1] * a[1] + a[2] * a[2] == a[0] * a[0])
+				printf("Right triangle\n");
+			else
+				printf("Obtuse triangle\n");
+			if (a[0] == a[1] || a[1] == a[2])
+				printf("Isosceles triangle");
+		}
+		else
+			printf("Not triangle");
+		c = 0;
+	}
+	return 0;
+}
+

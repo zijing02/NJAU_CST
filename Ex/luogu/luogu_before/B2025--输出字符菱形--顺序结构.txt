@@ -1,0 +1,12 @@
+//直接输出偷鸡
+#include<stdio.h>
+int main()
+{
+	printf(
+		"  *\n"
+		" ***\n"
+		"*****\n"
+		" ***\n"
+		"  *\n");
+	return 0;
+}

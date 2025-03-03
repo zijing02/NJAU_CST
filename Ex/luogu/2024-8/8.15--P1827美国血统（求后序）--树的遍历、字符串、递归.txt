@@ -1,0 +1,17 @@
+#include<bits/stdc++.h>
+using namespace std;
+string in, pre;
+void post(string in, string pre) {
+	if (in.size() > 0) {
+		char ch = pre[0];
+		int ind = in.find(ch);
+		post(in.substr(0, ind), pre.substr(1, ind));
+		post(in.substr(ind + 1, in.size() - ind - 1), pre.substr(ind + 1, pre.size() - ind - 1));
+		cout << ch;
+	}
+}
+int main() {
+	cin >> in >> pre;
+	post(in, pre);
+	return 0;
+}

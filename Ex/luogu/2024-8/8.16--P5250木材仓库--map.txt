@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n, type, length;
+map<int, int>mymap;
+int main() {
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> type >> length;
+		if (type == 1) {
+			if (mymap[length] == 0)
+				mymap[length] = 1;
+			else
+				cout << "Already Exist" << endl;
+		}
+		else if (type == 2) {
+			if (mymap.empty())
+				cout << "Empty" << endl;
+			else if (mymap.count(length))
+				cout << length << endl,
+				mymap.erase(length);
+			else {
+				mymap[length] = 1;
+				//map.begin()指向第一个元素，map.end()指向最后一个元素的后一个位置
+				auto it_r = mymap.find(length), it_l = mymap.find(length);
+				it_r++;
+				if (it_l == mymap.begin()) 
+					cout << it_r->first << endl,
+					mymap.erase(it_r);
+				else if (it_r == mymap.end())
+					cout << (--it_l)->first << endl,
+					mymap.erase(it_l);
+				else 
+					--it_l,
+					it_l = it_r->first - length >= length - it_l->first ? it_l : it_r,
+					cout << it_l->first << endl,
+					mymap.erase(it_l);
+				mymap.erase(length);
+			}
+		}
+	}
+	return 0;
+}

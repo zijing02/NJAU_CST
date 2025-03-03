@@ -1,0 +1,11 @@
+git branch ---- checks current branch and all branches
+
+git checkout -b <branch name> ---- create a new branch
+git checkout - ---- switch to previous branch 
+
+git pull origin <branch name> ---- pull origin changes 
+
+git fetch origin <branch name> ----fetch branch content from remote
+git reset origin/<branch name> ----reset the branch local
+git rebase origin/<branch name> ----rebase the branch local
+

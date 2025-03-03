@@ -1,0 +1,7 @@
+git fetch origin (branch_name) ---- sync the origin version of branch
+git rebase origin/(branch_name) ---- perform the rebase operation
+git status ---- git lists all the conflicted flies
+solve all the conflicts manually and save them 
+git add . or files 
+git rebase --continue 
+git push -f ----must be push -f

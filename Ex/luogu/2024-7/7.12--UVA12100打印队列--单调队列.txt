@@ -1,0 +1,45 @@
+//使用双端队列偷鸡
+#include <bits/stdc++.h>
+using namespace std;
+struct node
+{
+    int value;
+    int pos;
+};
+int main()
+{
+    deque<node> q;
+    int s;
+    cin >> s;
+    for (int i = 1; i <= s; i++)
+    {
+        int n, m, cnt = 0, max = 0;
+        cin >> n >> m;
+        for (int i = 0; i < n; i++)
+        {
+            node a;
+            cin >> a.value;
+            a.pos = i;
+            q.push_back(a);
+        }
+        if (q.size() == 1)cout << 1 << endl;
+        while (!q.empty() && q.size() > 1)
+        {
+            max = 0;
+            for (int j = 1; j < q.size(); j++) 
+                max = q[j].value > max ? q[j].value : max;
+            while (q.front().value != max) {
+                q.push_back(q.front());
+                q.pop_front();
+            }
+            cnt++;
+            if (q.front().pos == m) {
+                cout << cnt << endl;
+                break;
+            }
+            q.pop_front();
+        }
+        q.clear();
+    }
+    return 0;
+}

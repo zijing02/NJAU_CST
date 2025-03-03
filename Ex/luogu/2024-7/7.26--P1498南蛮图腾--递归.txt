@@ -1,0 +1,45 @@
+//向右复制再向上复制
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+char a[10000][10000] = { 0 };
+int main() {
+    /*
+           /\
+          /__\
+         /\  /\
+        /__\/__\
+       /\      /\
+      /__\    /__\
+     /\  /\  /\  /\
+    /__\/__\/__\/__\
+    */
+    cin >> n;
+    int row = pow(2, n), col = 2 * row, cnt = 1;
+    for (int i = 1; i <= col; i++)
+        for (int j = 1; j <= row; j++)
+            a[i][j] = '0';
+    a[row][1] = a[row - 1][2] = '/';
+    a[row][2] = a[row][3] = '_';
+    a[row][4] = a[row - 1][3] = '\\';
+    
+    while (cnt++ < n) {
+        int trow = pow(2, cnt - 1), tcol = 2 * trow;
+        for (int i = row; i > row - trow; i--)
+            for (int j = 1; j <= tcol; j++) {
+                a[i][j + tcol] = a[i][j];
+                a[i - trow][j + tcol / 2] = a[i][j];
+            }
+    }
+    for (int i = 1; i <= row; i++) {
+        for (int j = 1; j <= col; j++) {
+            //cout<<(a[j]?"/\\":"  ")
+            if (a[i][j] != '0')
+                cout << a[i][j];
+            else
+                cout << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}

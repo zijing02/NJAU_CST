@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int a, n, m, x, f[25][2] = {0}, sum[25] = {0};
+    cin >> a >> n >> m >> x;
+    // f[i][0]  a系数   
+    f[1][0] = 1;
+    f[2][0] = 0;
+    f[3][0] = 1;
+    f[4][0] = 0;
+    f[n][0] = 0;
+    // f[i][1]  b系数
+    f[1][1] = 0;
+    f[2][1] = 0;
+    f[3][1] = 0;
+    f[4][1] = 1;
+    f[n][1] = 0;
+    for (int i = 5; i < n; i++)
+        for (int j = 0; j < 2; j++)
+            f[i][j] = f[i - 1][j] + f[i - 2][j];
+    for (int j = 0;; j++)
+    {
+        memset(sum, 0, n);
+        for (int i = 1; i <= n; i++)
+            sum[i] = sum[i - 1] + f[i][0] * a + f[i][1] * j;
+        if (sum[n] == m)
+            break;
+    }
+    cout << sum[x];
+    return 0;
+}

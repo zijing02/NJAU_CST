@@ -1,0 +1,54 @@
+//二分查找锯子的高度，不需要对tree排序
+#include<bits/stdc++.h>
+using namespace std;
+long long n, bz, s = 0, mid, leftt = 0, longest, trees[1000008];
+int main()
+{
+    scanf("%lld%lld", &n, &bz);
+    for (int i = 1; i <= n; i++)
+    {
+        scanf("%lld", &trees[i]);
+        longest = max(longest, trees[i]);//找到最长木材 
+    }
+    while (leftt <= longest)
+    {
+        mid = (leftt + longest) / 2; //从中间点开始作为伐木机高度
+        s = 0;
+        for (int i = 1; i <= n; i++)
+            if (trees[i] > mid) //树的高度大于伐木机高度 
+                s += trees[i] - mid; //高的部分累加 
+        if (s < bz) //木材不足 
+            longest = mid - 1;//在左边搜 减小高度增加木材 
+        else
+            leftt = mid + 1;//在右边搜 增加高度减小木材 
+    }
+    cout << leftt - 1;
+    return 0;
+}
+
+
+//从最高的树开始砍，砍到符合条件
+#include<bits/stdc++.h>
+using namespace std;
+int tree[1000001];
+int n, m;
+int main()
+{
+    int i, num, ans;
+    long long sum = 0;
+    cin >> n >> m;   
+    for (i = 1; i <= n; i++)
+	cin>>tree[i];
+    sort(tree + 1, tree + n + 1);
+    num = n;
+    while (sum < m){
+        int number = n - num + 1, delta = tree[num] - tree[num - 1];
+        sum += delta * number;
+        num--;
+    }
+    num++;
+    //树的高度加上砍去的高度
+    ans = tree[num - 1] + (sum - m) / (n - num + 1);
+    cout << ans;  
+    return 0;
+}

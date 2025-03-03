@@ -1,0 +1,128 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define rank rank_
+#define union union_r
+//n个人，m 个亲戚关系，询问p对亲戚关系，r2、r2输入的人
+int n, m, p, r1, r2;
+int parent[5005], rank[5005];
+void init() {
+	for (int i = 1; i <= n; i++) {
+		parent[i] = i;
+		rank[i] = 1;
+	}
+}
+//压缩路径
+int find(int p) {
+	//	第一种
+	//  压缩成二叉树
+	//if (p >= 1 && p <= n) {
+	//	while (p != parent[p]) {
+	//		parent[p] = parent[parent[p]];
+	//		p = parent[p];
+	//	}
+	//}
+	// 	return p;
+	
+	//第二种
+	//压缩为一层
+	if (p >= 1 && p <= n) 
+		if (p != parent[p])
+			parent[p] = find(parent[p]);
+	return parent[p];
+}
+
+//rank 合并
+void union(int p,int q) {
+	int proot = find(p);
+	int qroot = find(q);
+	if (proot == qroot)
+		return;
+	if (rank[proot] > rank[qroot])
+		parent[qroot] = proot;
+	else if (rank[proot] < rank[qroot])
+		parent[proot] = qroot;
+	else if (rank[proot] == rank[qroot])
+		parent[proot] = qroot,
+		rank[qroot] += 1;
+}
+void check(int p, int q) {
+	if (find(p) == find(q))
+		cout << "Yes" << "\n";
+	else
+		cout << "No" << "\n";
+}
+int main() {
+	cin >> n >> m >> p;
+	init();
+	for (int j = 1; j <= m; j++) {
+		cin >> r1 >> r2;
+		union(r1, r2);
+	}
+	for (int j = 1; j <= p; j++) {
+		cin >> r1 >> r2;
+		check(r1, r2);
+	}
+	return 0;
+}
+
+
+
+
+//python
+parent = [0] * 5005
+rank = [0] * 5000
+n: int
+m: int
+P: int
+
+
+def init():
+    global n
+    for i in range(1, n + 1):
+        parent[i] = i
+        rank[i] = 1
+
+
+def find(p: int) -> int:
+    global n
+    if 1 <= p <= n:
+        if p != parent[p]:
+            parent[p] = find(parent[p])
+    return parent[p]
+
+
+def union(p: int, q: int):
+    proot = find(p)
+    qroot = find(q)
+    if proot == qroot:
+        return
+    if rank[proot] > rank[qroot]:
+        parent[qroot] = proot
+    elif rank[proot] < rank[qroot]:
+        parent[proot] = qroot
+    elif rank[proot] == rank[qroot]:
+        parent[proot] = qroot
+        rank[qroot] += 1
+
+
+def check(p: int, q: int):
+    if find(p) == find(q):
+        print("Yes")
+    else:
+        print("No")
+
+
+def main():
+    global n, m, P
+    n, m, P = map(int, input().split())
+    init()
+    for i in range(1, m + 1):
+        r1, r2 = map(int, input().split())
+        union(r1, r2)
+    for i in range(1, P + 1):
+        r1, r2 = map(int, input().split())
+        check(r1, r2)
+
+
+if __name__ == "__main__":
+    main()

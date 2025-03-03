@@ -1,0 +1,40 @@
+//对营业额排序，向前找向后找，差值较小的就是要加上的
+#include<bits/stdc++.h>
+using namespace std;
+int n, sum = 0;
+struct node {
+	int day, num;
+}a[32770];
+bool cmp(node a1,node a2) {
+	return a1.num < a2.num;
+}
+int main() {
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> a[i].num;
+		a[i].day = i;
+	}
+	sort(a + 1, a + n + 1,cmp);
+	for (int i = 1; i <= n; i++) {
+		int p = 99999999, t = 99999999;
+		if (a[i].day == 1) {
+			sum += a[i].num;
+			continue;
+		}
+		for (int j = i - 1; j >= 1; j--) {
+			if (a[j].day < a[i].day) {
+				p = abs(a[j].num - a[i].num);
+				break;
+			}
+		}
+		for (int j = i + 1; j <= n; j++) {
+			if (a[j].day < a[i].day) {
+				t = abs(a[j].num - a[i].num);
+				break;
+			}
+		}
+		sum += min(p, t);
+	}
+	cout << sum;
+	return 0;
+}

@@ -1,0 +1,26 @@
+#include<stdio.h>
+int main()
+{
+	int n;
+	int a[110] ;
+	scanf_s("%d", &n);
+	for (int i = 1; i <= n; i++) {
+		scanf_s("%d", &a[i]);
+	}
+	int max = 0;
+	for (int b = 1; b <= n; b++) {
+		if (max > a[b])
+			max = max;
+		else
+			max = a[b];
+	}
+	int min = a[1];
+	for (int c = 1; c <= n; c++) {
+		if (min >= a[c])
+			min = a[c];
+		else
+			min = min;
+	}
+	printf("%d\n", max - min);
+	return 0;
+}
