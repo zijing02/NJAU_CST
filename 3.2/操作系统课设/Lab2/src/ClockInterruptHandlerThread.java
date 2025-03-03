@@ -2,7 +2,7 @@ public class ClockInterruptHandlerThread extends Thread {
 
     // 共享时间变量，模拟系统的时钟
     public static int simulationTime = 0;  // 当前模拟时间
-    public static int milliseconds = 10; // 每次时钟流逝的时间（毫秒）
+    public static int milliseconds = 1; // 每次时钟流逝的时间（毫秒）
 
     @Override
     public void run() {
@@ -33,6 +33,7 @@ public class ClockInterruptHandlerThread extends Thread {
                 // 等待下一个时钟中断的信号
                 // 请在此处实现条件变量的等待，使时钟线程等待下一个时钟周期信号
                 SyncManager.clkCondition.await();
+                SyncManager.lock.lock();
 
             } catch (InterruptedException e) {
                 // 捕获异常，如果线程被中断，则打印异常信息

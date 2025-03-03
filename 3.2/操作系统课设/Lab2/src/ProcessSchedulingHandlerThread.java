@@ -11,6 +11,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
                 // 等待时钟中断信号，直到时钟线程发出信号
                 // 请在此处实现等待时钟中断的逻辑，让此线程在没有时钟信号时阻塞
                 SyncManager.pstCondition.await();
+                SyncManager.lock.lock();
 
                 // *** 提示：在此处模拟进程调度 ***
                 // 学生需要在此部分实现进程调度的具体逻辑
