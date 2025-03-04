@@ -5,6 +5,8 @@
 ### 代码/图片引用
 &emsp;&emsp;诸位在引用&ensp;*代码*&ensp;或者&ensp;*图片*&ensp;时请不要直接引用，在&ensp;*代码*&ensp;或者&ensp;*图片*&ensp;中加上&ensp;***自己的改变***&ensp;再提交作业，学长毕业之后也不想被某些老师找麻烦。<br>
 ### 论文/资料引用
-&emsp;&emsp;&ensp;*论文*&ensp;严禁直接引用，只能参考格式，切勿&ensp;***复制粘贴***&ensp;，资料诸如&ensp;*pdf*、*docx*&ensp;等都可直接下载使用。诸位若有新的资料想要加入此仓库请在issues中留言，我看到后会联系你的。<br>
+&emsp;&emsp;&ensp;*论文*&ensp;严禁直接引用，只能参考格式，切勿&ensp;***复制粘贴***&ensp;，资料诸如&ensp;*pdf*、*docx*&ensp;等都可直接下载使用。<br>
+### 新的想法
+&emsp;&emsp;诸位若有新的资料想要加入此仓库请在上方的&ensp;*Issues*&ensp;中留言，我看到后会联系你的。
 ### 结语
 &emsp;&emsp;祝你我学业有成，前程似锦。
