@@ -1,0 +1,37 @@
+<!DOCTYPE html>  
+<html>  
+  <head>  
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>  
+  </head>  
+  <body>  
+    <div id="myDiv"></div>  
+  
+    <script>  
+      var data_list = [  
+        {'season': 'summer', 'total_quantity': 8159}, 
+        {'season': 'autumn', 'total_quantity': 11361},
+        {'season': 'spring', 'total_quantity': 15258},
+        {'season': 'winter', 'total_quantity': 15752}
+      ];  
+  
+      // 创建柱状图的数据  
+      var data = [{  
+        x: data_list.map(function (item) {  
+          return item.season;  
+        }),  
+        y: data_list.map(function (item) {  
+          return item.total_quantity;  
+        }),  
+        type: 'bar'  
+      }];  
+  
+      // 设置图表的布局  
+      var layout = {  
+        title: '各季节总数曲线图' // 可选：添加图表标题  
+      };  
+  
+      // 使用Plotly创建柱状图  
+      Plotly.newPlot("myDiv", data, layout);  
+    </script>  
+  </body>  
+</html>

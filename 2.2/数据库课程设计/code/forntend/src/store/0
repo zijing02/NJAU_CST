@@ -1,0 +1,95 @@
+import $ from 'jquery';
+//import { jwtDecode } from 'jwt-decode';
+const ModuleUser = {
+    state: {//存储所有数据
+        username: "",
+        id: "",
+        photo: "",
+        ordercount: 0,
+        access: "",
+        refresh: "",
+        is_login: false,
+    },
+    getters: {//读取数据信息，对数据进行一些调整，不能修改
+    },
+    mutations: {//进行所有修改操作，不能进行异步操作
+        updateUser(state, user) {
+            state.id = user.id;
+            state.username = user.username;
+            //state.photo = user.photo;
+            //state.ordercount = user.followerCount;//
+            //state.access = user.access;
+            //state.refresh = user.refresh;
+            state.is_login = user.is_login;
+        },
+        // updateAccess(state, access) {
+        //     state.access = access;
+        // },
+        logout(state) {
+            state.username = "";
+            state.id = "";
+            //state.photo = "";
+            //state.ordercount = 0;
+            //state.access = "";
+            //state.refresh = "";
+            state.is_login = false;
+        },
+    },
+    actions: {//定义对state(数据)的各种操作，不能修改//增删改查
+        login(context, data) {
+            $.ajax({//获取jwt
+                url: "https://app165.acapp.acwing.com.cn/api/token/",
+                type: "post",
+                data: {
+                    username: data.username,
+                    password: data.password,
+                },
+                success(resp) {
+                    // const { access, refresh } = resp;
+                    // const access_obj = jwtDecode(access);
+                    const access_obj = resp;
+
+                    // setInterval(() => {//每隔4.5分钟,重新或取一次access
+                    //     $.ajax({//刷新jwt
+                    //         url: "https://app165.acapp.acwing.com.cn/api/token/refresh/",
+                    //         type: "post",
+                    //         data: {
+                    //             refresh,
+                    //         },
+                    //         success(resp) {
+                    //             context.commit('updateAccess', resp.access);
+                    //         },
+                    //     })
+                    // }, 4.5 * 60 * 1000);
+
+                    $.ajax({//获取某个用户信息
+                        url: "https://app165.acapp.acwing.com.cn/myspace/getinfo/",
+                        tpye: "get",
+                        data: {
+                            user_id: access_obj.user_id,
+                        },
+                        // headers: {//jwt验证
+                        //     'Authorization': 'Bearer ' + access,
+                        // },
+                        success(resp) {//成功则将resp的信息解构，调用updateUser进行赋值
+                            context.commit("updateUser", {
+                                ...resp,//解构resp
+                                //access: access,
+                                //refresh: refresh,
+                                is_login: true,
+                            });
+                            data.success(resp.id);//调用LoginView文件里面的success
+                        },
+                    })
+                },
+                error() {
+                    data.error();
+                },
+            });
+        }
+    },
+    modules: {//对类进行分割
+    },
+};
+
+export default ModuleUser;

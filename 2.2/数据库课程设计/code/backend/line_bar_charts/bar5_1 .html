@@ -1,0 +1,40 @@
+<!DOCTYPE html>  
+<html>  
+  <head>  
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>  
+  </head>  
+  <body>  
+    <div id="myDiv"></div>  
+  
+    <script>  
+      var data_list = [  
+        {'area': '西南', 'total_num': 5060},  
+        {'area': '西北', 'total_num': 592},  
+        {'area': '华南', 'total_num': 4659},  
+        {'area': '华北', 'total_num': 21839},  
+        {'area': '华东', 'total_num': 13402},  
+        {'area': '华中', 'total_num': 107},  
+        {'area': '东北', 'total_num': 4871}  
+      ];  
+  
+      // 创建柱状图的数据  
+      var data = [{  
+        x: data_list.map(function (item) {  
+          return item.area;  
+        }),  
+        y: data_list.map(function (item) {  
+          return item.total_num;  
+        }),  
+        type: 'bar'  
+      }];  
+  
+      // 设置图表的布局  
+      var layout = {  
+        title: '各地区总数柱状图' // 可选：添加图表标题  
+      };  
+  
+      // 使用Plotly创建柱状图  
+      Plotly.newPlot("myDiv", data, layout);  
+    </script>  
+  </body>  
+</html>
