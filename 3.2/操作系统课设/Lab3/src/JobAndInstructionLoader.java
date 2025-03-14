@@ -100,7 +100,7 @@ public class JobAndInstructionLoader {
                     break;
                 }
             }
-            System.out.print(i + String.valueOf(state));
+            // System.out.print(i + String.valueOf(state));
             instructions.add(new Instruction(i, state));
         }
         return instructions;
@@ -110,7 +110,6 @@ public class JobAndInstructionLoader {
     public void AddJobToBackupQueue() {
         int jobId = ++maxJobId;
         Job job = new Job(jobId, ClockInterruptHandlerThread.simulationTime, 20, CreateInstructions());
-        System.out.println(jobId);
         OSKernel.jobQueue.add(job);
     }
 

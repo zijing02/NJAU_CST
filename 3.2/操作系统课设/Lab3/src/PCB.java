@@ -24,7 +24,7 @@ public class PCB extends Job {
     private int createTime; // 进程的创建时间
     private int finishTime; // 进程的结束时间
     private int timeSlice; // 时间片
-    private int countPC; // 记录进程执行的指令数
+    private int countPC; // 记录进程执行的计算类指令数
     public ArrayList<Integer> readQueue = new ArrayList<>();// 存放该进程每次进入就绪队列的时刻
 
     public int GetPid() {

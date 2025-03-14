@@ -4,7 +4,7 @@ public class ClockInterruptHandlerThread extends Thread {
 
     public UI ui; // 图形化界面
     public static int simulationTime = 0; // 当前模拟时间
-    public static int milliseconds = 100; // 每次时钟流逝的时间（毫秒）
+    public static int milliseconds = 1000; // 每次时钟流逝的时间（毫秒）
 
     public ClockInterruptHandlerThread(UI ui) {
         this.ui = ui;

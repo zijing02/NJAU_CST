@@ -22,7 +22,7 @@ public class OutputBlockThread extends Thread {
             }
         }
     }
-
+    // 使用直接输出而不是用String message，有的地方要用final，有的地方不要，使用final后不能修改，不如直接复制粘贴
     public void ALL_IO() {
         if (!OSKernel.outBlockQueue.isEmpty()) {
             PCB pcb = OSKernel.outBlockQueue.peek();

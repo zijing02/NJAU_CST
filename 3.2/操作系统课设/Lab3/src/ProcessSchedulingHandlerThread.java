@@ -20,7 +20,6 @@ public class ProcessSchedulingHandlerThread extends Thread {
                 SyncManager.pstBeforeClk.signal();
                 // 等待作业调度线程的信号
                 SyncManager.pstCondition.await();
-                // CheckWaitQueue();
                 Schedule();
                 System.out.println("完成进程调度");
                 // 增加已完成调度线程的计数
@@ -39,6 +38,8 @@ public class ProcessSchedulingHandlerThread extends Thread {
     }
 
     public void Schedule() {
+        CheckWaitQueue();
+        // 第一次使用while时造成了死锁，不知道为什么
         if (!OSKernel.pcbQueue.isEmpty()) {
             for (int i = 0; i < OSKernel.pcbQueue.size(); i++) {
                 if (AbleToCreatePCB(OSKernel.pcbQueue.peek())) {
@@ -49,6 +50,10 @@ public class ProcessSchedulingHandlerThread extends Thread {
                     System.out.println(message);
                     SwingUtilities.invokeLater(() -> ui.AddReadyProcessMessage(message));
                     OSKernel.loader.AddMessageToSaveList(message);
+                }
+                else{
+                    PCB pcb = OSKernel.pcbQueue.poll();
+                    OSKernel.waitQueue.add(pcb);
                 }
             }
         }
@@ -71,30 +76,25 @@ public class ProcessSchedulingHandlerThread extends Thread {
             OSKernel.loader.AddMessageToSaveList(message);
             return false;
         }
-        // if (OSKernel.deviceA.AbleToAllocate(pcb.GetNeedA())) {
-        // String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " +
-        // pcb.GetPid() + "创建进程 "
-        // + "外部设备 A 已满!]";
-        // System.out.println(message);
-        // SwingUtilities.invokeLater(() ->
-        // OSKernel.ui.AddReadyProcessMessage(message));
-        // OSKernel.loader.AddMessageToSaveList(message);
-        // return false;
-        // }
-        // if (OSKernel.deviceB.AbleToAllocate(pcb.GetNeedB())) {
-        // String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " +
-        // pcb.GetPid() + "创建进程 "
-        // + "外部设备 B 已满!]";
-        // System.out.println(message);
-        // SwingUtilities.invokeLater(() ->
-        // OSKernel.ui.AddReadyProcessMessage(message));
-        // OSKernel.loader.AddMessageToSaveList(message);
-        // return false;
-        // }
-        else {
+        if (OSKernel.deviceA.AbleToAllocate(pcb.GetNeedA())) {
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " +
+                    pcb.GetPid() + "创建进程 "
+                    + "外部设备 A 已满!]";
+            System.out.println(message);
+            SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage(message));
+            OSKernel.loader.AddMessageToSaveList(message);
+            return false;
+        }
+        if (OSKernel.deviceB.AbleToAllocate(pcb.GetNeedB())) {
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " +
+                    pcb.GetPid() + "创建进程 "
+                    + "外部设备 B 已满!]";
+            System.out.println(message);
+            SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage(message));
+            OSKernel.loader.AddMessageToSaveList(message);
+            return false;
+        } else {
             if (OSKernel.memory.AllocateMemory(pcb)) {
-                // OSKernel.deviceA.Use(pcb.GetNeedA());
-                // OSKernel.deviceB.Use(pcb.GetNeedB());
                 OSKernel.readyQueue1.add(pcb);
                 pcb.SetState(0);
                 pcb.SetTimeSlice(OSKernel.timeSlice1);
@@ -102,7 +102,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
                 pcb.SetCreateTime(ClockInterruptHandlerThread.GetCurrentTime());
                 return true;
             } else {
-                String message = ClockInterruptHandlerThread.GetCurrentTime() + " [该时刻，内存已满，无法找到合适的连续来为内存块装配作业"
+                String message = ClockInterruptHandlerThread.GetCurrentTime() + " [该时刻，无法找到合适的连续来为内存块装配作业"
                         + pcb.GetPid() + "分配]";
                 System.out.println(message);
                 SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage(message));
@@ -113,19 +113,16 @@ public class ProcessSchedulingHandlerThread extends Thread {
     }
 
     public void CheckWaitQueue() {
+        int totalA = OSKernel.deviceA.GetTotalNumber();
+        int totalB = OSKernel.deviceB.GetTotalNumber();
         if (OSKernel.waitQueue.isEmpty())
             return;
         for (PCB pcb : OSKernel.waitQueue) {
-            if (OSKernel.deviceA.AbleToAllocate(pcb.GetNeedA()) && OSKernel.deviceB.AbleToAllocate(pcb.GetNeedB())) {
-                if (AbleToCreatePCB(pcb)) {
-                    String message = ClockInterruptHandlerThread.GetCurrentTime() + " [创建进程：进程" + pcb.GetPid()
-                            + "分配内存成功，内存块起始地址为：" + pcb.GetStartAddress() + "内存大小为：" + pcb.GetCalculateNum()
-                            + "B,进入就绪队列1,待执行指令条数为：" + (pcb.GetInstructionCount() - pcb.GetPc()) + "]";
-                    System.out.println(message);
-                    SwingUtilities.invokeLater(() -> ui.AddReadyProcessMessage(message));
-                    OSKernel.loader.AddMessageToSaveList(message);
-                }
-                OSKernel.waitQueue.remove();
+            if (totalA >= pcb.GetNeedA() && totalB >= pcb.GetNeedB()) {
+                totalA -= pcb.GetNeedA();
+                totalB -= pcb.GetNeedB();
+                OSKernel.pcbQueue.addFirst(pcb);
+                OSKernel.waitQueue.remove(pcb);
             }
         }
     }
@@ -161,6 +158,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
             OSKernel.cpu.RunProcess();
             if (OSKernel.cpu.GetPsw() == 0) {
                 FinishPCB(OSKernel.cpu.GetCurrentProcess());
+                CheckWaitQueue();
                 break;
             }
             if (OSKernel.cpu.GetPsw() == 1)
@@ -197,9 +195,6 @@ public class ProcessSchedulingHandlerThread extends Thread {
             pcb.SetFinishTime(ClockInterruptHandlerThread.GetCurrentTime());
             pcb.SetState(-1);
             OSKernel.memory.ReleaseMemory(pcb);
-            // OSKernel.deviceA.Release(pcb.GetNeedA());
-            // OSKernel.deviceB.Release(pcb.GetNeedB());
-            // CheckWaitQueue();
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [终止进程：进程" + pcb.GetPid() + " 执行结束,"
                     + "一共耗时："
                     + (pcb.GetFinishTime() - pcb.GetInTime()) + "。内存释放成功]";
@@ -244,34 +239,34 @@ public class ProcessSchedulingHandlerThread extends Thread {
     }
 
     // 将进程降级到下一优先级队列
-    private void ChangeToLowGrade(PCB process) {
-        if (OSKernel.readyQueue1.contains(process)) {
+    private void ChangeToLowGrade(PCB pcb) {
+        if (OSKernel.readyQueue1.contains(pcb)) {
             // 从一级队列降到二级队列
-            OSKernel.readyQueue1.remove(process);
-            OSKernel.readyQueue2.add(process);
-            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [进程" + process.GetPid() + " 降级到二级队列]";
+            OSKernel.readyQueue1.remove(pcb);
+            OSKernel.readyQueue2.add(pcb);
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [进程" + pcb.GetPid() + " 降级到二级队列]";
             System.out.println(message);
             SwingUtilities.invokeLater(() -> ui.AddReadyProcessMessage(message));
-            process.SetTimeSlice(OSKernel.timeSlice2);
+            pcb.SetTimeSlice(OSKernel.timeSlice2);
             OSKernel.loader.AddMessageToSaveList(message);
-        } else if (OSKernel.readyQueue2.contains(process)) {
+        } else if (OSKernel.readyQueue2.contains(pcb)) {
             // 从二级队列降到三级队列
-            OSKernel.readyQueue2.remove(process);
-            OSKernel.readyQueue3.add(process);
-            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [进程" + process.GetPid() + " 降级到三级队列]";
+            OSKernel.readyQueue2.remove(pcb);
+            OSKernel.readyQueue3.add(pcb);
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [进程" + pcb.GetPid() + " 降级到三级队列]";
             System.out.println(message);
             SwingUtilities.invokeLater(() -> ui.AddReadyProcessMessage(message));
-            process.SetTimeSlice(OSKernel.timeSlice3);
+            pcb.SetTimeSlice(OSKernel.timeSlice3);
             OSKernel.loader.AddMessageToSaveList(message);
         } else {
             // 在三级队列中继续执行
-            OSKernel.readyQueue3.remove(process);
-            OSKernel.readyQueue3.add(process);
-            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [进程" + process.GetPid()
+            OSKernel.readyQueue3.remove(pcb);
+            OSKernel.readyQueue3.add(pcb);
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [进程" + pcb.GetPid()
                     + " 保持在三级队列中,但是重新加入队列尾部]";
             System.out.println(message);
             SwingUtilities.invokeLater(() -> ui.AddReadyProcessMessage(message));
-            process.SetTimeSlice(OSKernel.timeSlice3);
+            pcb.SetTimeSlice(OSKernel.timeSlice3);
             OSKernel.loader.AddMessageToSaveList(message);
         }
     }

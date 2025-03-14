@@ -6,8 +6,8 @@ public class Device {
     }
 
     public boolean AbleToAllocate(int need) {
-        // return totalNumber < need;
-        return false;
+         return totalNumber < need;
+//        return false;
     }
 
     public void Use(int need) {
@@ -16,5 +16,9 @@ public class Device {
 
     public void Release(int need) {
         totalNumber += need;
+    }
+
+    public int GetTotalNumber() {
+        return totalNumber;
     }
 }

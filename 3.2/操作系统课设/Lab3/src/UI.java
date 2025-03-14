@@ -317,19 +317,6 @@ public class UI extends JFrame {
             }
         });
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (OSKernel.CheckEmpty())
-                    OSKernel.loader.SaveResults(ClockInterruptHandlerThread.GetCurrentTime());
-                // 保存调度信息到文件
-                else if (!OSKernel.CheckEmpty()) {
-                    System.out.println(ClockInterruptHandlerThread.GetCurrentTime() + " [系统中还有作业没有做完]");
-                    AddJobRequestMessage(ClockInterruptHandlerThread.GetCurrentTime() + " [系统中还有作业没有做完]");
-                }
-            }
-        });
-
         timeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -338,6 +325,18 @@ public class UI extends JFrame {
                 } catch (Exception e1) {
                     System.out.println(ClockInterruptHandlerThread.GetCurrentTime() + " [随机添加作业失败]");
                     AddJobRequestMessage(ClockInterruptHandlerThread.GetCurrentTime() + " [随机添加作业失败]");
+                }
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (OSKernel.CheckEmpty())
+                    OSKernel.loader.SaveResults(ClockInterruptHandlerThread.GetCurrentTime());
+                else {
+                    System.out.println(ClockInterruptHandlerThread.GetCurrentTime() + " [系统中还有作业没有做完]");
+                    AddJobRequestMessage(ClockInterruptHandlerThread.GetCurrentTime() + " [系统中还有作业没有做完]");
                 }
             }
         });
@@ -390,7 +389,7 @@ public class UI extends JFrame {
                 blockPanelInMemory.setBackground(Color.GREEN);
             }
             blockPanelInMemory.removeAll();
-            blockPanelInMemory.add(new JLabel(String.valueOf(block.GetBlockID() + 1))); 
+            blockPanelInMemory.add(new JLabel(String.valueOf(block.GetBlockID() + 1)));
         }
         memoryPanel.revalidate();
         memoryPanel.repaint();

@@ -90,6 +90,8 @@ public class Memory {
                     mmu.address.put(pcb.GetPid(), pcb.GetStartAddress());
                 }
             }
+            OSKernel.deviceA.Use(pcb.GetNeedA());
+            OSKernel.deviceB.Use(pcb.GetNeedB());
             RefreshReflectMap();
             SwingUtilities.invokeLater(() -> {
                 ui.UpdateMemoryStatus(memoryBlock);
@@ -105,7 +107,7 @@ public class Memory {
         if (pcb.GetState() == -1) {
             int startPhysicalAddress = pcb.GetStartAddress();
             int blockNumber = pcb.GetCalculateNum() / MemoryBlock.blockSize;
-            if (pcb.GetCalculateNum() % MemoryBlock.blockSize > 0) {
+            if (pcb.GetCalculateNum() % MemoryBlock.blockSize != 0) {
                 blockNumber++;
             }
             for (int i = 0; i < blockNumber; i++) {
@@ -115,6 +117,8 @@ public class Memory {
                 block.SetOccupiedSize(0);
                 block.SetPid(0);
             }
+            OSKernel.deviceA.Release(pcb.GetNeedA());
+            OSKernel.deviceB.Release(pcb.GetNeedB());
             RefreshReflectMap();
             SwingUtilities.invokeLater(() -> {
                 ui.UpdateMemoryStatus(memoryBlock);
@@ -127,7 +131,6 @@ public class Memory {
         return (OSKernel.outBlockQueue.size() +
                 OSKernel.readyQueue1.size() +
                 OSKernel.readyQueue2.size() +
-                OSKernel.readyQueue3.size() +
-                OSKernel.outBlock.size());
+                OSKernel.readyQueue3.size());
     }
 }

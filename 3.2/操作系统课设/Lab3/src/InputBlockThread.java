@@ -62,13 +62,14 @@ public class InputBlockThread extends Thread {
                                                                         + "执行结束" + "一共耗时："
                                                                         + (pcb.GetFinishTime() - pcb.GetInTime())
                                                                         + "内存释放成功]"));
-                                        OSKernel.loader.AddMessageToSaveList(ClockInterruptHandlerThread.GetCurrentTime()
-                                                        + " [终止进程：进程"
-                                                        + pcb.GetPid() + "执行结束" + "一共耗时："
-                                                        + (pcb.GetFinishTime() - pcb.GetInTime()) + "。内存释放成功]");
+                                        OSKernel.loader.AddMessageToSaveList(
+                                                        ClockInterruptHandlerThread.GetCurrentTime()
+                                                                        + " [终止进程：进程"
+                                                                        + pcb.GetPid() + "执行结束" + "一共耗时："
+                                                                        + (pcb.GetFinishTime() - pcb.GetInTime())
+                                                                        + "。内存释放成功]");
                                         OSKernel.loader.PrintBlockInfo();
                                 }
-
                                 else if (pc < pcb.GetInstructionCount()) {
                                         pcb.SetPc(pc);
                                         BackToReadyQueue(pcb);
@@ -116,10 +117,12 @@ public class InputBlockThread extends Thread {
                                                                         + "执行结束" + "一共耗时："
                                                                         + (pcb.GetFinishTime() - pcb.GetInTime())
                                                                         + "内存释放成功]"));
-                                        OSKernel.loader.AddMessageToSaveList(ClockInterruptHandlerThread.GetCurrentTime()
-                                                        + " [终止进程：进程"
-                                                        + pcb.GetPid() + "执行结束" + "一共耗时："
-                                                        + (pcb.GetFinishTime() - pcb.GetInTime()) + "。内存释放成功]");
+                                        OSKernel.loader.AddMessageToSaveList(
+                                                        ClockInterruptHandlerThread.GetCurrentTime()
+                                                                        + " [终止进程：进程"
+                                                                        + pcb.GetPid() + "执行结束" + "一共耗时："
+                                                                        + (pcb.GetFinishTime() - pcb.GetInTime())
+                                                                        + "。内存释放成功]");
                                         OSKernel.loader.PrintBlockInfo();
                                 }
 

@@ -41,10 +41,13 @@ public class JobSchedulingHandlerThread extends Thread {
                 for (int i = 0; i < OSKernel.jobQueue.size(); i++) {
                     if (OSKernel.jobQueue.peek().GetInTime() <= ClockInterruptHandlerThread.GetCurrentTime()) {
                         Job tempJob = OSKernel.jobQueue.poll();
-                        PCB pcb = new PCB(tempJob.GetJobId(), tempJob.GetInTime(),tempJob.GetNeedA(),tempJob.GetNeedB(), tempJob.GetInstructionCount(),
+                        PCB pcb = new PCB(tempJob.GetJobId(), tempJob.GetInTime(), tempJob.GetNeedA(),
+                                tempJob.GetNeedB(), tempJob.GetInstructionCount(),
                                 tempJob.GetInstructions());
                         OSKernel.pcbQueue.add(pcb);
-                        String message = tempJob.GetInTime() + " [新增作业: 作业" + tempJob.GetJobId() + "]";
+                        String message = tempJob.GetInTime() + " [新增作业: 作业" + tempJob.GetJobId() + " 进入时间"
+                                + tempJob.GetInTime() + " 指令数量" + tempJob.GetInstructionCount() + " 需要A"
+                                + tempJob.GetNeedA() + " 需要B" + tempJob.GetNeedB() + "]";
                         System.out.println(message);
                         SwingUtilities.invokeLater(() -> ui.AddJobRequestMessage(message));
                         OSKernel.loader.AddMessageToSaveList(message);
