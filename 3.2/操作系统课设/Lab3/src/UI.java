@@ -147,16 +147,6 @@ public class UI extends JFrame {
 
         JLabel memoryLabel = new JLabel("内存显示区", SwingConstants.CENTER);
         memoryPanel.add(memoryLabel, BorderLayout.NORTH);
-        // for (int i = 1; i <= 12; i++) {
-        // JPanel blockPanelInMemory = new JPanel();
-        // blockPanelInMemory.setBackground(Color.GREEN); // 初始颜色为绿色
-        // memoryGrid.add(blockPanelInMemory);
-        // blockPanelInMemory.setBorder(new LineBorder(Color.BLACK)); // 添加边框
-        // if (i >= 11) {
-        // continue;
-        // }
-        // blockPanelInMemory.add(new JLabel(String.valueOf(i)));
-        // }
         JScrollPane scrollPaneMemory = new JScrollPane(memoryGrid);
         scrollPaneMemory.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPaneMemory.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

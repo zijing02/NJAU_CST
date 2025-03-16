@@ -1,5 +1,3 @@
-// 作业调度线程
-
 import javax.swing.SwingUtilities;
 
 public class JobSchedulingHandlerThread extends Thread {
@@ -12,14 +10,12 @@ public class JobSchedulingHandlerThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            SyncManager.jstLock.lock(); // 使用作业调度的专属锁
+            SyncManager.jstLock.lock();
             try {
-                // 等待时钟线程的信号
                 SyncManager.jstBeforeClock = true;
                 SyncManager.jstBeforeClk.signal();
                 SyncManager.jstCondition.await();
 
-                // 模拟作业调度逻辑
                 System.out.println("完成作业调度");
 
                 JobRequest();
@@ -27,7 +23,7 @@ public class JobSchedulingHandlerThread extends Thread {
                 Thread.currentThread().interrupt();
                 e.printStackTrace();
             } finally {
-                SyncManager.jstLock.unlock(); // 释放锁
+                SyncManager.jstLock.unlock();
             }
         }
     }

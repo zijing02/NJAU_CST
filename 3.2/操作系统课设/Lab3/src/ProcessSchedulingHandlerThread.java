@@ -180,14 +180,14 @@ public class ProcessSchedulingHandlerThread extends Thread {
             }
         } else {
             if (!OSKernel.readyQueue1.isEmpty()) {
-                return timeSlice;
+                return 1;
             } else if (!OSKernel.readyQueue2.isEmpty()) {
-                return timeSlice;
+                return 2;
             } else if (!OSKernel.readyQueue3.isEmpty()) {
-                return timeSlice;
+                return 4;
             }
         }
-        return -1; // 如果所有队列都为空，返回 -1
+        return -1;
     }
 
     private boolean FinishPCB(PCB pcb) {
