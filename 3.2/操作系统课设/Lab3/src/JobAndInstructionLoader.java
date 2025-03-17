@@ -60,7 +60,7 @@ public class JobAndInstructionLoader {
         return jobs;
     }
 
-    // 指令以及作业路径，同时调用两种加载方法
+    // 指令以及作业路径，同时调用作业加载方法、指令加载方法
     public List<Job> LoadAllJobsAndInstructions() throws IOException {
         // 读取作业信息
         String jobsFilePath = inPath + "jobs-input.txt";
@@ -106,36 +106,39 @@ public class JobAndInstructionLoader {
         return instructions;
     }
 
-    // 创建instructions之后，将相应的job加入到后备队列
+    // 创建instructions之后，将相应的job加入到作业后备队列
     public void AddJobToBackupQueue() {
         int jobId = ++maxJobId;
         Job job = new Job(jobId, ClockInterruptHandlerThread.simulationTime, 20, CreateInstructions());
         OSKernel.jobQueue.add(job);
     }
 
-    // 检查是否阻塞，后续有时间这两个函数可以合为一个，使用一个参数区分input/output
-    public void CheckInputBlock(int pid, String s) {
+    // 检查是否阻塞
+    // 如果不在，为其创建一个新的列表
+    // 如果在，添加唤醒时间
+    public void CheckInputBlock(int pid, String mess) {
         if (!OSKernel.inBlock.containsKey(pid)) {
             OSKernel.inBlock.put(pid, new ArrayList<>());
         }
-        OSKernel.inBlock.get(pid).add(s);
+        OSKernel.inBlock.get(pid).add(mess);
     }
 
-    public void CheckOutputBlock(int pid, String s) {
+    public void CheckOutputBlock(int pid, String mess) {
         if (!OSKernel.outBlock.containsKey(pid)) {
             OSKernel.outBlock.put(pid, new ArrayList<>());
         }
-        OSKernel.outBlock.get(pid).add(s);
+        OSKernel.outBlock.get(pid).add(mess);
     }
 
     // 输出阻塞队列信息，两种阻塞,键盘输入、屏幕输出
     public void PrintBlockInfo() {
         // 输出键盘输入阻塞线程信息
         for (Map.Entry<Integer, List<String>> entry : OSKernel.inBlock.entrySet()) {
-            // 此处使用StringBuilder来拼接字符串，避免频繁创建String对象
+            // 此处使用StringBuilder来拼接字符串，避免频繁创建String对象，但好像也没啥用，其他地方都用的String
+            // 此时使用StringBuilder主要是因为String不可变
             // 因为String对象是不可变的，每次拼接都会创建一个新的String对象，会消耗大量内存
             StringBuilder message = new StringBuilder();
-            message.append("进程 ID" + entry.getKey() + "/");
+            message.append("进程 ID：" + entry.getKey() + "/");
             for (String str : entry.getValue()) {
                 message.append(str);
                 message.append(",");
@@ -148,7 +151,7 @@ public class JobAndInstructionLoader {
         // 输出屏幕输出阻塞线程信息
         for (Map.Entry<Integer, List<String>> entry : OSKernel.outBlock.entrySet()) {
             StringBuilder message = new StringBuilder();
-            message.append("进程 ID" + entry.getKey() + "/");
+            message.append("进程 ID：" + entry.getKey() + "/");
             for (String str : entry.getValue()) {
                 message.append(str);
                 message.append(",");
@@ -174,8 +177,7 @@ public class JobAndInstructionLoader {
             }
             isSaved = true;
             // 直接写和用SwingUtilities的区别：
-            // 如果方法涉及到更新 Swing 组件（例如在 UI 上显示消息），那么最好在事件调度线程（Event Dispatch
-            // Thread，EDT）中执行，以确保线程安全
+            // 如果方法涉及到更新 Swing 组件（例如在 UI 上显示消息），使用SwingUtilities好一点，但区别好像也不大
             SwingUtilities.invokeLater(() -> OSKernel.ui.AddJobRequestMessage("日志保存到文件: " + filePath));
         } catch (IOException e) {
             System.out.println("文件保存失败");
@@ -183,39 +185,43 @@ public class JobAndInstructionLoader {
         }
     }
 
-    // 初始化就绪队列，显示就绪队列中的指令
-    public void InitReadyQueue(int time) {
-        System.out.printf("%d [重新进入就绪队列:]\n", time);
-        SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage(time + " [重新进入就绪队列:]"));
-        AddMessageToSaveList(time + " [重新进入就绪队列:]");
+    // 重新进入就绪队列，显示就绪队列中的指令
+    public void PrintBackToReadyQueue(int time) {
         // 一级就绪队列
+        // 后续有时间可以把这个输出显示做一个函数，每一次都占用三行太费事了
         System.out.println("     [一级就绪队列进程ID列表         剩余指令数]");
-        SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage("       [一级就绪队列进程ID列表         剩余指令数]"));
+        SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady1ProcessMessage("       [一级就绪队列进程ID列表         剩余指令数]"));
         AddMessageToSaveList("       [一级就绪队列进程ID列表         剩余指令数]");
+        // 遍历每一个就绪队列，将其中的内容进行处理
         if (!OSKernel.readyQueue1.isEmpty()) {
+            System.out.printf("%d [重新进入就绪队列1:]\n", time);
+            SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady1ProcessMessage(time + " [重新进入就绪队列1:]"));
+            AddMessageToSaveList(time + " [重新进入就绪队列1:]");
             for (PCB pcb : OSKernel.readyQueue1) {
                 System.out.printf("     [%-30d %-17d]\n", pcb.GetPid(), (pcb.GetInstructionCount() - pcb.GetPc()));
-                SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage(
+                SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady1ProcessMessage(
                         "       [" + pcb.GetPid() + "                                                  "
                                 + (pcb.GetInstructionCount() - pcb.GetPc()) + "]"));
                 AddMessageToSaveList("       [" + pcb.GetPid() + "                                                  "
                         + (pcb.GetInstructionCount() - pcb.GetPc()) + "]");
-
             }
         } else {
             System.out.printf("     [无进程                          无指令]\n");
             SwingUtilities.invokeLater(
-                    () -> OSKernel.ui.AddReadyProcessMessage("       [无进程                                     无指令]"));
+                    () -> OSKernel.ui.AddReady1ProcessMessage("       [无进程                                     无指令]"));
             AddMessageToSaveList("       [无进程                                           无指令]");
         }
         // 二级就绪队列
         System.out.printf("     [二级就绪队列进程ID列表         剩余指令数]\n");
-        SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage("       [二级就绪队列进程ID列表         剩余指令数]"));
+        SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady2ProcessMessage("       [二级就绪队列进程ID列表         剩余指令数]"));
         AddMessageToSaveList("       [二级就绪队列进程ID列表         剩余指令数]");
         if (!OSKernel.readyQueue2.isEmpty()) {
+            System.out.printf("%d [重新进入就绪队列2:]\n", time);
+            SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady2ProcessMessage(time + " [重新进入就绪队列2:]"));
+            AddMessageToSaveList(time + " [重新进入就绪队列2:]");
             for (PCB pcb : OSKernel.readyQueue2) {
                 System.out.printf("     [%-30d %-17d]\n", pcb.GetPid(), (pcb.GetInstructionCount() - pcb.GetPc()));
-                SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage(
+                SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady2ProcessMessage(
                         "       [" + pcb.GetPid() + "                                                  "
                                 + (pcb.GetInstructionCount() - pcb.GetPc()) + "]"));
                 AddMessageToSaveList("       [" + pcb.GetPid() + "                                                  "
@@ -224,17 +230,20 @@ public class JobAndInstructionLoader {
         } else {
             System.out.printf("     [无进程                          无指令]\n");
             SwingUtilities.invokeLater(
-                    () -> OSKernel.ui.AddReadyProcessMessage("       [无进程                                     无指令]"));
+                    () -> OSKernel.ui.AddReady2ProcessMessage("       [无进程                                     无指令]"));
             AddMessageToSaveList("       [无进程                                           无指令]");
         }
         // 三级就绪队列
         System.out.printf("     [三级就绪队列进程ID列表         剩余指令数]\n");
-        SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage("       [三级就绪队列进程ID列表         剩余指令数]"));
+        SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady3ProcessMessage("       [三级就绪队列进程ID列表         剩余指令数]"));
         AddMessageToSaveList("      [三级就绪队列进程ID列表         剩余指令数]");
         if (!OSKernel.readyQueue3.isEmpty()) {
+            System.out.printf("%d [重新进入就绪队列3:]\n", time);
+            SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady3ProcessMessage(time + " [重新进入就绪队列3:]"));
+            AddMessageToSaveList(time + " [重新进入就绪队列3:]");
             for (PCB pcb : OSKernel.readyQueue3) {
                 System.out.printf("     [%-30d %-17d]\n", pcb.GetPid(), (pcb.GetInstructionCount() - pcb.GetPc()));
-                SwingUtilities.invokeLater(() -> OSKernel.ui.AddReadyProcessMessage(
+                SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady3ProcessMessage(
                         "       [" + pcb.GetPid() + "                                                 "
                                 + (pcb.GetInstructionCount() - pcb.GetPc()) + "]"));
                 AddMessageToSaveList("       [" + pcb.GetPid() + "                                                  "
@@ -243,12 +252,13 @@ public class JobAndInstructionLoader {
         } else {
             System.out.printf("     [无进程                          无指令]\n");
             SwingUtilities.invokeLater(
-                    () -> OSKernel.ui.AddReadyProcessMessage("       [无进程                                     无指令]"));
+                    () -> OSKernel.ui.AddReady3ProcessMessage("       [无进程                                     无指令]"));
             AddMessageToSaveList("       [无进程                                           无指令]");
         }
     }
 
-    public void InitBlockQueue(int time) {
+    // 将阻塞队列中的阻塞信息输出
+    public void AddInfoToBlockQueue(int time) {
         System.out.printf("%d [阻塞进程:输入阻塞队列:]\n", time);
         SwingUtilities.invokeLater(() -> OSKernel.ui.AddInBlockMessage(time + " [阻塞进程:输入阻塞队列:]"));
         AddMessageToSaveList(time + " [阻塞进程:输入阻塞队列:]");
@@ -278,7 +288,6 @@ public class JobAndInstructionLoader {
                 SwingUtilities.invokeLater(() -> OSKernel.ui.AddOutBlockMessage("          [" + pcb.GetPid() + "]"));
                 AddMessageToSaveList("          [" + pcb.GetPid() + "]");
             }
-
         } else {
             System.out.println("     [无进程]");
             SwingUtilities.invokeLater(() -> OSKernel.ui.AddOutBlockMessage("       [无进程]"));

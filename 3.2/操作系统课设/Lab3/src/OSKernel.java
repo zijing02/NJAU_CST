@@ -12,6 +12,7 @@ public class OSKernel {
     public static final int timeSlice1 = 1; // 时间片1
     public static final int timeSlice2 = 2; // 时间片2
     public static final int timeSlice3 = 4; // 时间片3
+    public static int totalProcess = 0;
     public static LinkedList<Job> jobQueue = new LinkedList<>(); // 后备队列，用于存放备份的作业
     public static LinkedList<PCB> pcbQueue = new LinkedList<>(); // 进程缓冲区队列
     public static LinkedBlockingQueue<PCB> waitQueue = new LinkedBlockingQueue<>(); // 无法满足需求的等待队列，线程安全队列
@@ -26,17 +27,11 @@ public class OSKernel {
     public static Device deviceB = new Device(1); // 设备 B 1个
 
     public static boolean CheckEmpty() {
-        // 当所有队列都为空时，返回 true
+        // 当所有队列都为空时，返回 true，供后续判断
         if (ClockInterruptHandlerThread.GetCurrentTime() != 0 && OSKernel.jobQueue.isEmpty() && pcbQueue.isEmpty()
-                && readyQueue1.isEmpty() && readyQueue2.isEmpty() && readyQueue2.isEmpty() && inBlockQueue.isEmpty()
+                && readyQueue1.isEmpty() && readyQueue2.isEmpty() && readyQueue3.isEmpty() && inBlockQueue.isEmpty()
                 && outBlockQueue.isEmpty() && waitQueue.isEmpty()) {
-            OSKernel.jobQueue.clear();
-            OSKernel.pcbQueue.clear();
-            OSKernel.readyQueue1.clear();
-            OSKernel.readyQueue2.clear();
-            OSKernel.readyQueue3.clear();
-            OSKernel.inBlockQueue.clear();
-            OSKernel.outBlockQueue.clear();
+
             return true;
         }
         return false;

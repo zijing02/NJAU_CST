@@ -1,9 +1,9 @@
 public class Instruction {
     private int id;
-    private int state; 
+    private int state;
 
     public Instruction(int id, int state) {
-        this.id = id; 
+        this.id = id;
         this.state = state;
     }
 

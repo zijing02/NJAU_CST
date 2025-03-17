@@ -2,7 +2,7 @@ public class MemoryBlock {
     private int blockID;// 每一个物理块的id
     private int pid; // 占用块的进程id
     private int occupiedSize; // 占用块的大小
-    public static int blockSize = 1000; // 块大小
+    public static int blockSize = 100; // 块大小
     private boolean takenUp; // 是否被占用
 
     public MemoryBlock(boolean takenUp, int pid, int blockID) {

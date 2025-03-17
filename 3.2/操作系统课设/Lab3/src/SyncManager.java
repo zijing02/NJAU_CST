@@ -31,7 +31,7 @@ public class SyncManager {
     // 计数器：用于统计已完成的调度线程数量
     public static int completedTasks = 0;
 
-    // 暂停运行锁、条件变量
+    // 暂停运行锁、系统运行条件变量
     public static final Lock pauseLock = new ReentrantLock();
     public static final Condition pauseCondition = pauseLock.newCondition();
     public static boolean pauseFlag = false; // 状态标志：false: 暂停 true: 继续

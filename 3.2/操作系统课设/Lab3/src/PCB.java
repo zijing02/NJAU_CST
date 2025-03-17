@@ -1,21 +1,7 @@
 import java.util.ArrayList;
 
 public class PCB extends Job {
-    public PCB(int jobId, int inTime, int needA, int needB, int instructionCount, ArrayList<Instruction> instructions) {
-        super(jobId, inTime, 0, needA, needB, instructionCount, instructions);
-        this.pid = jobId;
-        this.needA = needA;
-        this.needB = needB;
-        this.pc = 0;
-        this.state = 0;
-        this.startAddress = 0;
-        this.createTime = 0;
-        this.finishTime = 0;
-        this.timeSlice = 0;
-        this.countPC = 0;
-    }
-
-    private int pid;
+    private int pid = 0;
     private int pc; // 程序计数器
     private int state; // 进程状态 0: 就绪 1: 运行 -1: 阻塞
     private int startAddress; // 进程的起始物理地址
@@ -26,6 +12,19 @@ public class PCB extends Job {
     private int timeSlice; // 时间片
     private int countPC; // 记录进程执行的计算类指令数
     public ArrayList<Integer> readQueue = new ArrayList<>();// 存放该进程每次进入就绪队列的时刻
+
+    public PCB(int jobId, int inTime, int needA, int needB, int instructionCount, ArrayList<Instruction> instructions) {
+        super(jobId, inTime, 0, needA, needB, instructionCount, instructions);
+        this.needA = needA;
+        this.needB = needB;
+        this.pc = 0;
+        this.state = 0;
+        this.startAddress = 0;
+        this.createTime = 0;
+        this.finishTime = 0;
+        this.timeSlice = 0;
+        this.countPC = 0;
+    }
 
     public int GetPid() {
         return pid;
@@ -67,7 +66,7 @@ public class PCB extends Job {
         return needB;
     }
 
-    public int GetCreateTime(){
+    public int GetCreateTime() {
         return createTime;
     }
 
@@ -99,6 +98,7 @@ public class PCB extends Job {
         countPC++;
     }
 
+    // 计算当前指令集计算类指令所需内存
     public int GetCalculateNum() {
         int size = 0;
         for (Instruction instruction : super.GetInstructions()) {
@@ -109,6 +109,7 @@ public class PCB extends Job {
         return size * 100;
     }
 
+    // 获取指令状态
     public int GetInstructionState() {
         if (this.pc < this.GetInstructionCount()) {
             return this.GetInstructions().get(this.pc).getState();
@@ -119,6 +120,7 @@ public class PCB extends Job {
         return -1;
     }
 
+    // 转换指令类型，供屏幕输出
     public String GetInstructionStateToString() {
         if (this.pc >= super.GetInstructionCount()) {
             return "";

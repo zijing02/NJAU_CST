@@ -52,6 +52,7 @@ public class CPU {
         this.currentProcess = currentProcess;
     }
 
+    // 获取当前线程状态，决定是计算还是阻塞
     public void RunProcess() {
         if (GetCurrentProcess() == null) {
             System.out.println("当前没有进程在运行");
@@ -59,11 +60,12 @@ public class CPU {
         }
         int currentPC = this.GetCurrentProcess().GetPc();
         int irState = this.GetCurrentProcess().GetInstructionState();
+        // 对当前pc进行赋值
         pc = currentPC;
+        // 计算类指令，要求是不能中断，相当于直接运行跳过
         if (irState == 0) {
             SetPsw(0);
             this.GetCurrentProcess().INCCount();
-            // 计算类指令，要求是不能中断
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [运行进程：进程"
                     + this.GetCurrentProcess().GetPid()
                     + " 的第" + (currentPC + 1) + "条指令运行完成，该指令为计算指令,指令编号为0，数据大小为100B，指令的物理地址为："
@@ -74,10 +76,13 @@ public class CPU {
             currentPC++;
             this.GetCurrentProcess().SetPc(currentPC);
             psw = 0;
-        } else if (irState == 1) {
+        }
+        // 键盘输入类指令
+        // 输入阻塞，检测到输入阻塞就将其加入OSKernel中的输入阻塞队列中
+        else if (irState == 1) {
             SetPsw(1);
             PCB pcb = this.GetCurrentProcess();
-            // 键盘输入类指令
+            // 根据当前的时间片将对应就绪队列中的内容移除
             switch (pcb.GetTimeSlice()) {
                 case 1:
                     OSKernel.readyQueue1.remove(pcb);
@@ -92,18 +97,19 @@ public class CPU {
             OSKernel.inBlockQueue.add(pcb);
             OSKernel.loader.CheckInputBlock(pcb.GetPid(),
                     ("进入时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
-            System.out.println(
-                    ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid() + "进入输入阻塞队列，开始调度下一个进程]");
-            SwingUtilities.invokeLater(() -> ui.AddRunningProcessMessage(
-                    ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid() + "进入输入阻塞队列，开始调度下一个进程]"));
-            OSKernel.loader.AddMessageToSaveList(
-                    ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid() + "进入输入阻塞队列，开始调度下一个进程]");
-            OSKernel.loader.InitBlockQueue(ClockInterruptHandlerThread.GetCurrentTime());
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid()
+                    + "进入输入阻塞队列，开始调度下一个进程]";
+            System.out.println(message);
+            SwingUtilities.invokeLater(() -> ui.AddRunningProcessMessage(message));
+            OSKernel.loader.AddMessageToSaveList(message);
+            OSKernel.loader.AddInfoToBlockQueue(ClockInterruptHandlerThread.GetCurrentTime());
             psw = 1;
-        } else {
+        }
+        // 屏幕输出类指令
+        // 输出阻塞，检测到输入阻塞就将其加入OSKernel中的输出阻塞队列中
+        else {
             SetPsw(1);
             PCB pcb = this.GetCurrentProcess();
-            // 屏幕输出类指令
             switch (pcb.GetTimeSlice()) {
                 case 1:
                     OSKernel.readyQueue1.remove(pcb);
@@ -118,16 +124,14 @@ public class CPU {
             OSKernel.outBlockQueue.add(pcb);
             OSKernel.loader.CheckOutputBlock(pcb.GetPid(),
                     ("进入时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
-            System.out.println(
-                    ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid() + "进入输出阻塞队列,开始调度下一个进程]");
-            SwingUtilities.invokeLater(() -> ui.AddRunningProcessMessage(
-                    ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid() + "进入输入阻塞队列，开始调度下一个进程]"));
-            OSKernel.loader.AddMessageToSaveList(
-                    ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid() + "进入输出阻塞队列，开始调度下一个进程]");
-            OSKernel.loader.InitBlockQueue(ClockInterruptHandlerThread.GetCurrentTime());
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid()
+                    + "进入输出阻塞队列,开始调度下一个进程]";
+            System.out.println(message);
+            SwingUtilities.invokeLater(() -> ui.AddRunningProcessMessage(message));
+            OSKernel.loader.AddMessageToSaveList(message);
+            OSKernel.loader.AddInfoToBlockQueue(ClockInterruptHandlerThread.GetCurrentTime());
             psw = 1;
         }
-
     }
 
     // 保护和恢复在实际中仅通过SetPsw实现，直接调用，所以这俩函数没用上

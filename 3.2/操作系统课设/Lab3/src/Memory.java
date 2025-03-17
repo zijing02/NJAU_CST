@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 public class Memory {
     public UI ui; // 图形化界面
     public MMU mmu = new MMU();// 转换器
-    public static final int memorySize = 10; // 10个物理块，每个1000B，占用10个存储单元
+    public static final int memorySize = 100; // 10个物理块，每个1000B，占用10个存储单元，此处为了省事直接换成处理100个小物理块，每个小物理块100B
     public ArrayList<MemoryBlock> memoryBlock = new ArrayList<>(); // 物理块分配情况列表
     public HashMap<Integer, Integer> reflectMap = new HashMap<>();// 内存中起始物理地址和连续空间块的的映射
 
@@ -30,7 +30,7 @@ public class Memory {
         reflectMap.clear();
         int startAddress = -1;
         int freeBlock = 0;
-
+        // 刷新每一块内存
         for (int i = 0; i < memoryBlock.size(); i++) {
             MemoryBlock block = memoryBlock.get(i);
             if (!block.IsTakenUp()) {
@@ -61,23 +61,25 @@ public class Memory {
         if (calculateNum % MemoryBlock.blockSize != 0) {
             neededBlock++;
         }
+        // 在所有的块中进行寻找，最小的适合当前pcb的块
         for (Map.Entry<Integer, Integer> entry : reflectMap.entrySet()) {
             int startAddress = entry.getKey();
             int freeBlocks = entry.getValue();
-
             if (freeBlocks >= neededBlock && freeBlocks < bestFitBlockSize) {
                 bestFitStartAddress = startAddress;
                 bestFitBlockSize = freeBlocks;
             }
         }
+        // 找到内存进行分配
         if (bestFitStartAddress != -1) {
-            int block_id = bestFitStartAddress / MemoryBlock.blockSize;
+            int blockId = bestFitStartAddress / MemoryBlock.blockSize;
             if (bestFitStartAddress % MemoryBlock.blockSize > 0)
-                block_id++;
+                blockId++;
             int remainingSize = pcb.GetCalculateNum();
-            for (int i = block_id; i < block_id + neededBlock; i++) {
+            for (int i = blockId; i < blockId + neededBlock; i++) {
                 memoryBlock.get(i).SetTakenUp(true);
                 memoryBlock.get(i).SetPid(pcb.GetPid());
+                // 完全占有、部分占有，在块大小为1000B是有用，100B就没啥用了
                 if (remainingSize >= MemoryBlock.blockSize) {
                     memoryBlock.get(i).SetOccupiedSize(MemoryBlock.blockSize);
                     remainingSize -= MemoryBlock.blockSize;
@@ -86,7 +88,7 @@ public class Memory {
                     remainingSize = 0;
                 }
                 if (remainingSize == 0) {
-                    pcb.SetStartAddress(block_id * MemoryBlock.blockSize);
+                    pcb.SetStartAddress(blockId * MemoryBlock.blockSize);
                     mmu.address.put(pcb.GetPid(), pcb.GetStartAddress());
                 }
             }
@@ -101,8 +103,8 @@ public class Memory {
         return false;
     }
 
-    // 释放内存
-    // 只有当进程结束时才进行释放
+    // 释放内存，同时释放设备
+    // 只有当进程结束时才进行释放，释放内存的时候把设备占用也释放
     public void ReleaseMemory(PCB pcb) {
         if (pcb.GetState() == -1) {
             int startPhysicalAddress = pcb.GetStartAddress();
@@ -110,9 +112,10 @@ public class Memory {
             if (pcb.GetCalculateNum() % MemoryBlock.blockSize != 0) {
                 blockNumber++;
             }
+            // 遍历进程所占有的所有块进行操作
             for (int i = 0; i < blockNumber; i++) {
-                int block_id = (startPhysicalAddress / MemoryBlock.blockSize) + i;
-                MemoryBlock block = memoryBlock.get(block_id);
+                int blockId = (startPhysicalAddress / MemoryBlock.blockSize) + i;
+                MemoryBlock block = memoryBlock.get(blockId);
                 block.SetTakenUp(false);
                 block.SetOccupiedSize(0);
                 block.SetPid(0);
@@ -124,13 +127,5 @@ public class Memory {
                 ui.UpdateMemoryStatus(memoryBlock);
             });
         }
-    }
-
-    // 获取当前系统中并发的进程数目，要求是不能大于12
-    public int CheckTotalNum() {
-        return (OSKernel.outBlockQueue.size() +
-                OSKernel.readyQueue1.size() +
-                OSKernel.readyQueue2.size() +
-                OSKernel.readyQueue3.size());
     }
 }

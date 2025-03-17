@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 public class UI extends JFrame {
+    // 整个UI界面是一个6*6的GridLayout，在其中的每一个小组件：时间、作业请求、进程阻塞、内存区、进程就绪、进程运行都是BorderLayout
     JPanel clockPanel = new JPanel(new GridLayout(2, 1));
     JTextArea clockContent = new JTextArea();
     JPanel jobRequestPanel = new JPanel();
@@ -32,14 +33,16 @@ public class UI extends JFrame {
     JTextArea inputBlockContent = new JTextArea();
     JPanel outputBlockPanel = new JPanel(new BorderLayout());
     JTextArea outputBlockContent = new JTextArea();
-    JPanel memoryPanel = new JPanel(new GridLayout(4, 3));
-    JPanel memoryGrid = new JPanel(new GridLayout(4, 3));
-    JPanel bufferAPanel = new JPanel();
-    JTextArea bufferAContent = new JTextArea(5, 20);
-    JPanel bufferBPanel = new JPanel();
-    JTextArea bufferBContent = new JTextArea(5, 20);
+    JPanel memoryPanel = new JPanel();
+    JPanel memoryGrid = new JPanel(new GridLayout(10, 10));
     JPanel readyProcessPanel = new JPanel();
     JTextArea readyProcessContent = new JTextArea(5, 20);
+    JPanel ready1Panel = new JPanel(new BorderLayout());
+    JTextArea ready1Content = new JTextArea();
+    JPanel ready2Panel = new JPanel(new BorderLayout());
+    JTextArea ready2Content = new JTextArea();
+    JPanel ready3Panel = new JPanel(new BorderLayout());
+    JTextArea ready3Content = new JTextArea();
     JPanel runningProcessPanel = new JPanel();
     JTextArea runningProcessContent = new JTextArea(5, 20);
     public ArrayList<String> jobRequests = new ArrayList<>();
@@ -56,6 +59,7 @@ public class UI extends JFrame {
         // 如果后续需要变成小数，将gbc.weightx=gbc.gridwidth;gbc.weighty=gbc.gridheight;全部*base
 
         // 时钟显示区
+        // 时钟显示区分为上下两部分，上部分是title，下部分是具体时间
         clockPanel.setBorder(new LineBorder(Color.BLACK));
         clockPanel.setLayout(new BorderLayout());
 
@@ -102,7 +106,6 @@ public class UI extends JFrame {
 
         JLabel blockLabel = new JLabel("进程阻塞区", SwingConstants.CENTER);
         blockPanel.add(blockLabel, BorderLayout.NORTH);
-        blockPanel.setBorder(new LineBorder(Color.BLACK));
         JPanel blockPanelCenter = new JPanel(new GridLayout(1, 2));
         blockPanelCenter.setBorder(new LineBorder(Color.BLACK));
 
@@ -147,6 +150,16 @@ public class UI extends JFrame {
 
         JLabel memoryLabel = new JLabel("内存显示区", SwingConstants.CENTER);
         memoryPanel.add(memoryLabel, BorderLayout.NORTH);
+
+        for (int i = 0; i < 100; i++) {
+            JPanel blockPanel = new JPanel();
+            blockPanel.setBorder(new LineBorder(Color.BLACK));
+            memoryGrid.add(blockPanel);
+            // blockPanel.add(new JLabel("bid" + i / 10 + "-" + String.valueOf(i % 10)));
+            blockPanel.add(new JLabel(String.valueOf(i)));
+            blockPanel.setBackground(Color.GREEN);
+        }
+
         JScrollPane scrollPaneMemory = new JScrollPane(memoryGrid);
         scrollPaneMemory.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPaneMemory.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -207,12 +220,47 @@ public class UI extends JFrame {
 
         JLabel readyProcessLabel = new JLabel("进程就绪区", SwingConstants.CENTER);
         readyProcessPanel.add(readyProcessLabel, BorderLayout.NORTH);
-        readyProcessContent.setEditable(false);
+        JPanel readyCenter = new JPanel(new GridLayout(3, 1));
+        readyCenter.setBorder(new LineBorder(Color.BLACK));
 
-        JScrollPane scrollPaneReadyProcess = new JScrollPane(readyProcessContent);
-        scrollPaneReadyProcess.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPaneReadyProcess.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        readyProcessPanel.add(scrollPaneReadyProcess, BorderLayout.CENTER);
+        // 一级
+        ready1Panel.setBorder(new LineBorder(Color.BLACK));
+        JLabel ready1Label = new JLabel("一级队列", SwingConstants.CENTER);
+        ready1Panel.add(ready1Label, BorderLayout.NORTH);
+        ready1Content.setEditable(false);
+
+        JScrollPane scrollPanelReady1 = new JScrollPane(ready1Content);
+        scrollPanelReady1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPanelReady1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        ready1Panel.add(scrollPanelReady1, BorderLayout.CENTER);
+
+        // 二级
+        ready2Panel.setBorder(new LineBorder(Color.BLACK));
+        JLabel ready2Label = new JLabel("二级队列", SwingConstants.CENTER);
+        ready2Panel.add(ready2Label, BorderLayout.NORTH);
+        ready2Content.setEditable(false);
+
+        JScrollPane scrollPanelReady2 = new JScrollPane(ready2Content);
+        scrollPanelReady2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPanelReady2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        ready2Panel.add(scrollPanelReady2, BorderLayout.CENTER);
+
+        // 三级
+        ready3Panel.setBorder(new LineBorder(Color.BLACK));
+        JLabel ready3Label = new JLabel("三级队列", SwingConstants.CENTER);
+        ready3Panel.add(ready3Label, BorderLayout.NORTH);
+        ready3Content.setEditable(false);
+
+        JScrollPane scrollPanelReady3 = new JScrollPane(ready3Content);
+        scrollPanelReady3.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPanelReady3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        ready3Panel.add(scrollPanelReady3, BorderLayout.CENTER);
+
+        // 将一级、二级、三级队列面板添加到 readyCenter
+        readyCenter.add(ready1Panel);
+        readyCenter.add(ready2Panel);
+        readyCenter.add(ready3Panel);
+        readyProcessPanel.add(readyCenter, BorderLayout.CENTER);
 
         gbc.gridx = 4;
         gbc.gridy = 0;
@@ -243,10 +291,11 @@ public class UI extends JFrame {
         gbc.weighty = gbc.gridheight;
         add(runningProcessPanel, gbc);
 
-        // 添加窗口监听器，窗口关闭直接保存
+        // 添加窗口监听器，窗口关闭选择性保存
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                // 有为保存的信息才保存，否则直接关闭
                 if (!OSKernel.loader.isSaved || !OSKernel.CheckEmpty()) {
                     OSKernel.loader.SaveResults(ClockInterruptHandlerThread.GetCurrentTime());
                 }
@@ -322,12 +371,7 @@ public class UI extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (OSKernel.CheckEmpty())
-                    OSKernel.loader.SaveResults(ClockInterruptHandlerThread.GetCurrentTime());
-                else {
-                    System.out.println(ClockInterruptHandlerThread.GetCurrentTime() + " [系统中还有作业没有做完]");
-                    AddJobRequestMessage(ClockInterruptHandlerThread.GetCurrentTime() + " [系统中还有作业没有做完]");
-                }
+                OSKernel.loader.SaveResults(ClockInterruptHandlerThread.GetCurrentTime());
             }
         });
     }
@@ -364,39 +408,45 @@ public class UI extends JFrame {
     }
 
     public void UpdateMemoryStatus(ArrayList<MemoryBlock> memoryBlocks) {
-        for (int i = 0; i < memoryBlocks.size(); i++) {
+        for (int i = 0; i < 100; i++) {
             MemoryBlock block = memoryBlocks.get(i);
-            JPanel blockPanelInMemory;
-            if (memoryGrid.getComponentCount() > i) {
-                blockPanelInMemory = (JPanel) memoryGrid.getComponent(i);
-            } else {
-                blockPanelInMemory = new JPanel();
-                memoryGrid.add(blockPanelInMemory);
-            }
+            JPanel blockPanelInMemory = (JPanel) memoryGrid.getComponent(i);
+            // 块标签、颜色、作业标签
+            blockPanelInMemory.removeAll();
             if (block.IsTakenUp()) {
+                blockPanelInMemory.add(new JLabel("<html>" + i + "<br/>" + block.GetPid() + "</html>"));
                 blockPanelInMemory.setBackground(Color.RED);
             } else {
                 blockPanelInMemory.setBackground(Color.GREEN);
+                blockPanelInMemory.add(new JLabel("<html>" + i + "<br/>" + "</html>"));
             }
-            blockPanelInMemory.removeAll();
-            blockPanelInMemory.add(new JLabel(String.valueOf(block.GetBlockID() + 1)));
         }
         memoryPanel.revalidate();
         memoryPanel.repaint();
     }
 
+    // for(int i = 0;i<100;i++)
+    // {
+    // JPanel blockPanel = new JPanel();
+    // blockPanel.setBorder(new LineBorder(Color.BLACK));
+    // memoryGrid.add(blockPanel);
+    // }
+
     // 更新进程就绪区
-    public void AddReadyProcessMessage(String message) {
-        readyProcessContent.append(message + "\n");
+    public void AddReady1ProcessMessage(String message) {
+        ready1Content.append(message + "\n");
+    }
+
+    public void AddReady2ProcessMessage(String message) {
+        ready2Content.append(message + "\n");
+    }
+
+    public void AddReady3ProcessMessage(String message) {
+        ready3Content.append(message + "\n");
     }
 
     // 更新进程运行区
     public void AddRunningProcessMessage(String message) {
         runningProcessContent.append(message + "\n");
-    }
-
-    // 显示界面
-    public void createAndShowGUI() {
-        setVisible(true);
     }
 }
