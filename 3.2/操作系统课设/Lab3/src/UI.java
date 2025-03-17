@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -23,6 +25,7 @@ import javax.swing.border.LineBorder;
 
 public class UI extends JFrame {
     // 整个UI界面是一个6*6的GridLayout，在其中的每一个小组件：时间、作业请求、进程阻塞、内存区、进程就绪、进程运行都是BorderLayout
+    // 分为NORTH和CENTER，根据不同的需求，对CENTER进行修改
     JPanel clockPanel = new JPanel(new GridLayout(2, 1));
     JTextArea clockContent = new JTextArea();
     JPanel jobRequestPanel = new JPanel();
@@ -49,12 +52,19 @@ public class UI extends JFrame {
 
     public UI() {
         setTitle("操作系统仿真界面");
-        setSize(1020, 820);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(5, 5, 5, 5);
+
+        // 设置全屏模式
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        if (gd.isFullScreenSupported()) {
+            gd.setFullScreenWindow(this);
+        } else {
+            setSize(1020, 820);
+        }
         // double base = 0.165;
         // 如果后续需要变成小数，将gbc.weightx=gbc.gridwidth;gbc.weighty=gbc.gridheight;全部*base
 
@@ -106,12 +116,12 @@ public class UI extends JFrame {
 
         JLabel blockLabel = new JLabel("进程阻塞区", SwingConstants.CENTER);
         blockPanel.add(blockLabel, BorderLayout.NORTH);
-        JPanel blockPanelCenter = new JPanel(new GridLayout(1, 2));
+        JPanel blockPanelCenter = new JPanel(new GridLayout(2, 1));
         blockPanelCenter.setBorder(new LineBorder(Color.BLACK));
 
         // 输入阻塞区
         inputBlockPanel.setBorder(new LineBorder(Color.BLACK));
-        JLabel inputBlockLabel = new JLabel("输入阻塞区", SwingConstants.CENTER);
+        JLabel inputBlockLabel = new JLabel("键盘输入阻塞区", SwingConstants.CENTER);
         inputBlockPanel.add(inputBlockLabel, BorderLayout.NORTH);
         inputBlockContent.setEditable(false);
 
@@ -122,7 +132,7 @@ public class UI extends JFrame {
 
         // 输出阻塞区
         outputBlockPanel.setBorder(new LineBorder(Color.BLACK));
-        JLabel outputBlockLabel = new JLabel("输出阻塞区", SwingConstants.CENTER);
+        JLabel outputBlockLabel = new JLabel("屏幕输出阻塞区", SwingConstants.CENTER);
         outputBlockPanel.add(outputBlockLabel, BorderLayout.NORTH);
         outputBlockContent.setEditable(false);
 
@@ -156,7 +166,9 @@ public class UI extends JFrame {
             blockPanel.setBorder(new LineBorder(Color.BLACK));
             memoryGrid.add(blockPanel);
             // blockPanel.add(new JLabel("bid" + i / 10 + "-" + String.valueOf(i % 10)));
-            blockPanel.add(new JLabel(String.valueOf(i)));
+            JLabel label = new JLabel("bid: " + i);
+            label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 9));
+            blockPanel.add(label);
             blockPanel.setBackground(Color.GREEN);
         }
 
@@ -413,13 +425,17 @@ public class UI extends JFrame {
             JPanel blockPanelInMemory = (JPanel) memoryGrid.getComponent(i);
             // 块标签、颜色、作业标签
             blockPanelInMemory.removeAll();
+            JLabel label;
             if (block.IsTakenUp()) {
-                blockPanelInMemory.add(new JLabel("<html>" + i + "<br/>" + block.GetPid() + "</html>"));
+                label = new JLabel("<html>" + "bid: " + i + "<br/>" + "pid: " + block.GetPid() + "<br>" + "jid: "
+                        + block.GetJid() + "</html>");
                 blockPanelInMemory.setBackground(Color.RED);
             } else {
+                label = new JLabel("<html>" + "bid: " + i + "<br/>" + "</html>");
                 blockPanelInMemory.setBackground(Color.GREEN);
-                blockPanelInMemory.add(new JLabel("<html>" + i + "<br/>" + "</html>"));
             }
+            label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 9));
+            blockPanelInMemory.add(label);
         }
         memoryPanel.revalidate();
         memoryPanel.repaint();

@@ -42,8 +42,6 @@ public class ProcessSchedulingHandlerThread extends Thread {
                 if (AbleToInReadyQueue(OSKernel.pcbQueue.peek())) {
                     PCB pcb = OSKernel.pcbQueue.poll();
                     // 总进程ID加1，原来的做法是将作业id赋值给进程id，但作业并不是一进来就产生进程，所以在此将进程id修改
-                    OSKernel.totalProcess++;
-                    pcb.SetPid(OSKernel.totalProcess);
                     String message = ClockInterruptHandlerThread.GetCurrentTime() + " [创建进程：进程" + pcb.GetPid()
                             + "分配内存成功，内存块起始地址为：" + pcb.GetStartAddress() + "内存大小为：" + pcb.GetCalculateNum()
                             + "B,进入就绪队列1,待执行指令条数为：" + (pcb.GetInstructionCount() - pcb.GetPc()) + "]";

@@ -19,7 +19,7 @@ public class Memory {
 
     public void InitBlock() {
         for (int i = 0; i < Memory.memorySize; i++) {
-            MemoryBlock tmpMemoryBlock = new MemoryBlock(false, 0, i);
+            MemoryBlock tmpMemoryBlock = new MemoryBlock(false, 0, 0, i);
             tmpMemoryBlock.SetTakenUp(false);
             memoryBlock.add(tmpMemoryBlock);
         }
@@ -72,6 +72,8 @@ public class Memory {
         }
         // 找到内存进行分配
         if (bestFitStartAddress != -1) {
+            OSKernel.totalProcess++;
+            pcb.SetPid(OSKernel.totalProcess);
             int blockId = bestFitStartAddress / MemoryBlock.blockSize;
             if (bestFitStartAddress % MemoryBlock.blockSize > 0)
                 blockId++;
@@ -79,6 +81,7 @@ public class Memory {
             for (int i = blockId; i < blockId + neededBlock; i++) {
                 memoryBlock.get(i).SetTakenUp(true);
                 memoryBlock.get(i).SetPid(pcb.GetPid());
+                memoryBlock.get(i).SetJid(pcb.GetJobId());
                 // 完全占有、部分占有，在块大小为1000B是有用，100B就没啥用了
                 if (remainingSize >= MemoryBlock.blockSize) {
                     memoryBlock.get(i).SetOccupiedSize(MemoryBlock.blockSize);
@@ -119,6 +122,7 @@ public class Memory {
                 block.SetTakenUp(false);
                 block.SetOccupiedSize(0);
                 block.SetPid(0);
+                block.SetJid(0);
             }
             OSKernel.deviceA.Release(pcb.GetNeedA());
             OSKernel.deviceB.Release(pcb.GetNeedB());
