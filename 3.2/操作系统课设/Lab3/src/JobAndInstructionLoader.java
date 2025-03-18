@@ -134,9 +134,10 @@ public class JobAndInstructionLoader {
     public void PrintBlockInfo() {
         // 输出键盘输入阻塞线程信息
         for (Map.Entry<Integer, List<String>> entry : OSKernel.inBlock.entrySet()) {
-            // 此处使用StringBuilder来拼接字符串，避免频繁创建String对象，但好像也没啥用，其他地方都用的String
-            // 此时使用StringBuilder主要是因为String不可变
+            // 此处使用StringBuilder来拼接字符串，避免频繁创建String对象
             // 因为String对象是不可变的，每次拼接都会创建一个新的String对象，会消耗大量内存
+            // 好像也没啥用，其他地方都用的String
+            // 在进行判断奇偶以区分插入/还是，的时候出现了死锁，调试无果，没办法了，采取不区分
             StringBuilder message = new StringBuilder();
             message.append("进程 ID：" + entry.getKey() + "/");
             for (String str : entry.getValue()) {
@@ -169,19 +170,21 @@ public class JobAndInstructionLoader {
     }
 
     public void SaveResults(int runTime) {
-        String filePath = outPath + "/ProcessResults-" + runTime + "-DJFK.txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (String info : saveList) {
-                writer.write(info);
-                writer.newLine();
+        if (SyncManager.startFlag) {
+            String filePath = outPath + "/ProcessResults-" + runTime + "-DJFK.txt";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                for (String info : saveList) {
+                    writer.write(info);
+                    writer.newLine();
+                }
+                isSaved = true;
+                // 直接写和用SwingUtilities的区别：
+                // 如果方法涉及到更新 Swing 组件（例如在 UI 上显示消息），使用SwingUtilities好一点，但区别好像也不大
+                SwingUtilities.invokeLater(() -> OSKernel.ui.AddJobRequestMessage("日志保存到文件: " + filePath));
+            } catch (IOException e) {
+                System.out.println("文件保存失败");
+                e.printStackTrace();
             }
-            isSaved = true;
-            // 直接写和用SwingUtilities的区别：
-            // 如果方法涉及到更新 Swing 组件（例如在 UI 上显示消息），使用SwingUtilities好一点，但区别好像也不大
-            SwingUtilities.invokeLater(() -> OSKernel.ui.AddJobRequestMessage("日志保存到文件: " + filePath));
-        } catch (IOException e) {
-            System.out.println("文件保存失败");
-            e.printStackTrace();
         }
     }
 

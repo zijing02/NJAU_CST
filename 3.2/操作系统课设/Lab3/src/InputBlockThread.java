@@ -48,9 +48,10 @@ public class InputBlockThread extends Thread {
                                         pcb.SetFinishTime(ClockInterruptHandlerThread.GetCurrentTime());
                                         pcb.SetState(-1);
                                         OSKernel.memory.ReleaseMemory(pcb);
-                                        String message2 = ClockInterruptHandlerThread.GetCurrentTime() + " [结束进程，结束时间："
-                                                        + ClockInterruptHandlerThread.GetCurrentTime() + " 进程"
-                                                        + pcb.GetPid() + " 进入时间," + pcb.GetInTime() + "总耗时："
+                                        String message2 = ClockInterruptHandlerThread.GetCurrentTime() + " [终止进程"
+                                                        + pcb.GetPid() + "，结束时间："
+                                                        + ClockInterruptHandlerThread.GetCurrentTime() + " 请求时间,"
+                                                        + pcb.GetInTime() + "总耗时："
                                                         + (pcb.GetFinishTime() - pcb.GetInTime()) + "]";
                                         if (OSKernel.readyQueue3.contains(pcb)) {
                                                 OSKernel.readyQueue3.remove(pcb);
@@ -89,11 +90,11 @@ public class InputBlockThread extends Thread {
                 // pcb.SetFinishTime(ClockInterruptHandlerThread.GetCurrentTime());
                 // pcb.SetState(-1);
                 // OSKernel.memory.ReleaseMemory(pcb);
-                // String message2 = ClockInterruptHandlerThread.GetCurrentTime() +
-                // " [结束进程，结束时间：" +
-                // ClockInterruptHandlerThread.GetCurrentTime() + " 进程" + pcb.GetPid() + "
-                // 进入时间," + pcb.GetInTime() + "总耗时：" + (pcb.GetFinishTime() - pcb.GetInTime()) +
-                // "]";
+                // String message2 = ClockInterruptHandlerThread.GetCurrentTime() + " [终止进程"
+                // + pcb.GetPid() + "，结束时间："
+                // + ClockInterruptHandlerThread.GetCurrentTime() + " 请求时间,"
+                // + pcb.GetInTime() + "总耗时："
+                // + (pcb.GetFinishTime() - pcb.GetInTime()) + "]";
                 // System.out.println(message2);
                 // SwingUtilities.invokeLater(() -> OSKernel.ui.AddInBlockMessage(message2));
                 // OSKernel.loader.AddMessageToSaveList(message2);

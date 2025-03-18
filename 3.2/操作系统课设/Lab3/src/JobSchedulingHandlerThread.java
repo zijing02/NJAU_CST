@@ -1,3 +1,6 @@
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 import javax.swing.SwingUtilities;
 
 public class JobSchedulingHandlerThread extends Thread {
@@ -34,22 +37,28 @@ public class JobSchedulingHandlerThread extends Thread {
     private void JobRequest() {
         if (ClockInterruptHandlerThread.GetCurrentTime() % 2 == 0) {
             if (!OSKernel.jobQueue.isEmpty()) {
-                for (int i = 0; i < OSKernel.jobQueue.size(); i++) {
-                    if (OSKernel.jobQueue.peek().GetInTime() <= ClockInterruptHandlerThread.GetCurrentTime()) {
-                        Job tempJob = OSKernel.jobQueue.poll();
-                        PCB pcb = new PCB(tempJob.GetJobId(), tempJob.GetInTime(), tempJob.GetNeedA(),
-                                tempJob.GetNeedB(), tempJob.GetInstructionCount(),
-                                tempJob.GetInstructions());
-                        OSKernel.pcbQueue.add(pcb);
-                        String message = tempJob.GetInTime() + " [新增作业: 作业" + tempJob.GetJobId() + " 进入时间"
-                                + tempJob.GetInTime() + " 指令数量" + tempJob.GetInstructionCount() + " 需要A"
-                                + tempJob.GetNeedA() + " 需要B" + tempJob.GetNeedB() + "]";
-                        System.out.println(message);
-                        SwingUtilities.invokeLater(() -> ui.AddJobRequestMessage(message));
-                        OSKernel.loader.AddMessageToSaveList(message);
+                PriorityQueue<Job> sortedJobQueue = new PriorityQueue<>(Comparator.comparingInt(Job::GetInTime));
+                sortedJobQueue.addAll(OSKernel.jobQueue);
+
+                while (!sortedJobQueue.isEmpty()
+                        && sortedJobQueue.peek().GetInTime() <= ClockInterruptHandlerThread.GetCurrentTime()) {
+                    Job tempJob = sortedJobQueue.poll();
+                    if (OSKernel.jobQueue.contains(tempJob)) {
+                        OSKernel.jobQueue.remove(tempJob);
                     }
+                    PCB pcb = new PCB(tempJob.GetJobId(), tempJob.GetInTime(), tempJob.GetNeedA(),
+                            tempJob.GetNeedB(), tempJob.GetInstructionCount(),
+                            tempJob.GetInstructions());
+                    OSKernel.pcbQueue.add(pcb);
+                    String message = tempJob.GetInTime() + " [新增作业: 作业" + tempJob.GetJobId() + " 请求时间"
+                            + tempJob.GetInTime() + " 指令数量" + tempJob.GetInstructionCount() + " 需要A"
+                            + tempJob.GetNeedA() + " 需要B" + tempJob.GetNeedB() + "]";
+                    System.out.println(message);
+                    SwingUtilities.invokeLater(() -> ui.AddJobRequestMessage(message));
+                    OSKernel.loader.AddMessageToSaveList(message);
                 }
             }
+
         }
     }
 }

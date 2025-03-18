@@ -43,7 +43,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
                     PCB pcb = OSKernel.pcbQueue.poll();
                     // 总进程ID加1，原来的做法是将作业id赋值给进程id，但作业并不是一进来就产生进程，所以在此将进程id修改
                     String message = ClockInterruptHandlerThread.GetCurrentTime() + " [创建进程：进程" + pcb.GetPid()
-                            + "分配内存成功，内存块起始地址为：" + pcb.GetStartAddress() + "内存大小为：" + pcb.GetCalculateNum()
+                            + "PCB内存块起始地址：" + pcb.GetStartAddress() + "分配内存大小：" + pcb.GetCalculateNum()
                             + "B,进入就绪队列1,待执行指令条数为：" + (pcb.GetInstructionCount() - pcb.GetPc()) + "]";
                     System.out.println(message);
                     SwingUtilities.invokeLater(() -> ui.AddReady1ProcessMessage(message));
@@ -84,7 +84,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
                 OSKernel.readyQueue1.size() +
                 OSKernel.readyQueue2.size() +
                 OSKernel.readyQueue3.size() > 12) {
-            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " + pcb.GetPid() + "创建进程 "
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " + pcb.GetJobId() + "创建进程 "
                     + "系统最大并发进程数已经达到12!]";
             System.out.println(message);
             SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady1ProcessMessage(message));
@@ -94,7 +94,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
         // 设备A不满足
         if (OSKernel.deviceA.AbleToAllocate(pcb.GetNeedA())) {
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " +
-                    pcb.GetPid() + "创建进程 "
+                    pcb.GetJobId() + "创建进程 "
                     + "外部设备 A 已满!]";
             System.out.println(message);
             SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady1ProcessMessage(message));
@@ -104,7 +104,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
         // 设备B不满足
         if (OSKernel.deviceB.AbleToAllocate(pcb.GetNeedB())) {
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [无法为作业 " +
-                    pcb.GetPid() + "创建进程 "
+                    pcb.GetJobId() + "创建进程 "
                     + "外部设备 B 已满!]";
             System.out.println(message);
             SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady1ProcessMessage(message));
@@ -122,7 +122,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
             // 内存不足
             else {
                 String message = ClockInterruptHandlerThread.GetCurrentTime() + " [该时刻，无法找到合适的连续来为内存块装配作业"
-                        + pcb.GetPid() + "分配]";
+                        + pcb.GetJobId() + "分配]";
                 System.out.println(message);
                 SwingUtilities.invokeLater(() -> OSKernel.ui.AddReady1ProcessMessage(message));
                 OSKernel.loader.AddMessageToSaveList(message);
@@ -224,9 +224,9 @@ public class ProcessSchedulingHandlerThread extends Thread {
             pcb.SetFinishTime(ClockInterruptHandlerThread.GetCurrentTime());
             pcb.SetState(-1);
             OSKernel.memory.ReleaseMemory(pcb);
-            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [结束进程，结束时间："
-                    + ClockInterruptHandlerThread.GetCurrentTime() + " 进程" + pcb.GetPid() + " 进入时间," + pcb.GetInTime()
-                    + "总耗时：" + (pcb.GetFinishTime() - pcb.GetInTime()) + "]";
+            String message = ClockInterruptHandlerThread.GetCurrentTime() + " [终止进程" + pcb.GetPid() + "，结束时间："
+                    + ClockInterruptHandlerThread.GetCurrentTime() + " 请求时间," + pcb.GetInTime() + "总耗时："
+                    + (pcb.GetFinishTime() - pcb.GetInTime()) + "]";
             if (OSKernel.readyQueue3.contains(pcb)) {
                 OSKernel.readyQueue3.remove(pcb);
             }

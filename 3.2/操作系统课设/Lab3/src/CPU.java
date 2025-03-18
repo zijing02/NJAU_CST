@@ -67,9 +67,8 @@ public class CPU {
             SetPsw(0);
             this.GetCurrentProcess().INCCount();
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [运行进程：进程"
-                    + this.GetCurrentProcess().GetPid()
-                    + " 的第" + (currentPC + 1) + "条指令运行完成，该指令为计算指令,指令编号为0，数据大小为100B，指令的物理地址为："
-                    + OSKernel.memory.mmu.AddressTransformer(this.GetCurrentProcess()) + "]";
+                    + this.GetCurrentProcess().GetPid() + " 的第" + (currentPC + 1) + "条指令，计算类指令，编号为0，物理地址为："
+                    + OSKernel.memory.mmu.AddressTransformer(this.GetCurrentProcess()) + "数据大小100B]";
             System.out.println(message);
             SwingUtilities.invokeLater(() -> ui.AddRunningProcessMessage(message));
             OSKernel.loader.AddMessageToSaveList(message);
@@ -96,7 +95,7 @@ public class CPU {
             }
             OSKernel.inBlockQueue.add(pcb);
             OSKernel.loader.CheckInputBlock(pcb.GetPid(),
-                    ("进入时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
+                    ("请求时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid()
                     + "进入输入阻塞队列，开始调度下一个进程]";
             System.out.println(message);
@@ -123,7 +122,7 @@ public class CPU {
             }
             OSKernel.outBlockQueue.add(pcb);
             OSKernel.loader.CheckOutputBlock(pcb.GetPid(),
-                    ("进入时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
+                    ("请求时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [阻塞进程：进程" + pcb.GetPid()
                     + "进入输出阻塞队列,开始调度下一个进程]";
             System.out.println(message);

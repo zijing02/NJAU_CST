@@ -59,12 +59,12 @@ public class UI extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // 设置全屏模式
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        if (gd.isFullScreenSupported()) {
-            gd.setFullScreenWindow(this);
-        } else {
+        // GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        // if (gd.isFullScreenSupported()) {
+        //     gd.setFullScreenWindow(this);
+        // } else {
             setSize(1020, 820);
-        }
+        // }
         // double base = 0.165;
         // 如果后续需要变成小数，将gbc.weightx=gbc.gridwidth;gbc.weighty=gbc.gridheight;全部*base
 
