@@ -7,11 +7,11 @@ public class Instruction {
         this.state = state;
     }
 
-    public int getId() {
+    public int GetId() {
         return id;
     }
 
-    public int getState() {
+    public int GetState() {
         return state;
     }
 }

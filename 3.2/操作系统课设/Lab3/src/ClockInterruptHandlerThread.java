@@ -4,7 +4,7 @@ public class ClockInterruptHandlerThread extends Thread {
 
     public UI ui; // 图形化界面
     public static int simulationTime = 0; // 当前模拟时间
-    public static int milliseconds = 1000; // 每次时钟流逝的时间（毫秒）
+    public static int milliseconds = 100; // 每次时钟流逝的时间（毫秒）
 
     public ClockInterruptHandlerThread(UI ui) {
         this.ui = ui;
@@ -28,7 +28,8 @@ public class ClockInterruptHandlerThread extends Thread {
             // 时钟线程获取锁，准备启动
             SyncManager.jstLock.lock();
             SyncManager.pstLock.lock();
-            SyncManager.ioLock.lock();
+            SyncManager.inLock.lock();
+            SyncManager.outLock.lock();
             try {
                 // 此处需要确保其他线程在时钟线程前能获取到资源，否则会像实验二一样出现死锁
                 if (!SyncManager.jstBeforeClock)
@@ -63,7 +64,8 @@ public class ClockInterruptHandlerThread extends Thread {
                 // 释放锁
                 SyncManager.jstLock.unlock();
                 SyncManager.pstLock.unlock();
-                SyncManager.ioLock.unlock();
+                SyncManager.inLock.unlock();
+                SyncManager.outLock.unlock();
             }
         }
     }

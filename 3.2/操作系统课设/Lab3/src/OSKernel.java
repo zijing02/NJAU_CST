@@ -12,7 +12,7 @@ public class OSKernel {
     public static final int timeSlice1 = 1; // 时间片1
     public static final int timeSlice2 = 2; // 时间片2
     public static final int timeSlice3 = 4; // 时间片3
-    public static int totalProcess = 0;
+    public static int totalProcess = 0; // 当前系统中的中进程数量
     public static LinkedList<Job> jobQueue = new LinkedList<>(); // 后备队列，用于存放备份的作业
     public static LinkedList<PCB> pcbQueue = new LinkedList<>(); // 进程缓冲区队列
     public static LinkedBlockingQueue<PCB> waitQueue = new LinkedBlockingQueue<>(); // 无法满足需求的等待队列，线程安全队列

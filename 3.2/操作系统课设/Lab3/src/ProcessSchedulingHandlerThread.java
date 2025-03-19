@@ -4,7 +4,7 @@ public class ProcessSchedulingHandlerThread extends Thread {
     public UI ui;
     private int timeSlice = 2; // 当前时间片
     public boolean timeSliceIsUsed = true; // 是否使用完时间片
-    private int countFree = 0;
+    private int countFreeTime = 0; // cpu空闲时间
 
     public ProcessSchedulingHandlerThread(UI ui) {
         this.ui = ui;
@@ -43,11 +43,16 @@ public class ProcessSchedulingHandlerThread extends Thread {
                     PCB pcb = OSKernel.pcbQueue.poll();
                     // 总进程ID加1，原来的做法是将作业id赋值给进程id，但作业并不是一进来就产生进程，所以在此将进程id修改
                     String message = ClockInterruptHandlerThread.GetCurrentTime() + " [创建进程：进程" + pcb.GetPid()
-                            + "PCB内存块起始地址：" + pcb.GetStartAddress() + "分配内存大小：" + pcb.GetCalculateNum()
-                            + "B,进入就绪队列1,待执行指令条数为：" + (pcb.GetInstructionCount() - pcb.GetPc()) + "]";
+                            + "，PCB内存块起始地址：" + pcb.GetStartAddress() + "，分配内存大小：" + pcb.GetCalculateNum() + "B]";
                     System.out.println(message);
                     SwingUtilities.invokeLater(() -> ui.AddReady1ProcessMessage(message));
                     OSKernel.loader.AddMessageToSaveList(message);
+                    String message2 = ClockInterruptHandlerThread.GetCurrentTime() + " [进入就绪队列：进程" + pcb.GetPid()
+                            + "：待执行指令条数为："
+                            + (pcb.GetInstructionCount() - pcb.GetPc()) + "]";
+                    System.out.println(message2);
+                    SwingUtilities.invokeLater(() -> ui.AddReady1ProcessMessage(message2));
+                    OSKernel.loader.AddMessageToSaveList(message2);
                 }
                 // 不能就加入等待队列
                 else {
@@ -64,17 +69,17 @@ public class ProcessSchedulingHandlerThread extends Thread {
                 && OSKernel.readyQueue2.isEmpty() && OSKernel.readyQueue3.isEmpty()
                 && OSKernel.inBlockQueue.isEmpty() && OSKernel.outBlockQueue.isEmpty()) {
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [CPU空闲]";
-            countFree++;
-            if (countFree <= 3) {
+            countFreeTime++;
+            if (countFreeTime <= 3) {
                 System.out.println(message);
                 SwingUtilities.invokeLater(() -> ui.AddRunningProcessMessage(message));
                 OSKernel.loader.AddMessageToSaveList(message);
             }
-            if (countFree <= 1) {
+            if (countFreeTime <= 1 && ClockInterruptHandlerThread.simulationTime != 1) {
                 OSKernel.loader.SaveResults(ClockInterruptHandlerThread.GetCurrentTime());
             }
         } else {
-            countFree = 0;
+            countFreeTime = 0;
         }
     }
 
@@ -225,8 +230,8 @@ public class ProcessSchedulingHandlerThread extends Thread {
             pcb.SetState(-1);
             OSKernel.memory.ReleaseMemory(pcb);
             String message = ClockInterruptHandlerThread.GetCurrentTime() + " [终止进程" + pcb.GetPid() + "，结束时间："
-                    + ClockInterruptHandlerThread.GetCurrentTime() + " 请求时间," + pcb.GetInTime() + "总耗时："
-                    + (pcb.GetFinishTime() - pcb.GetInTime()) + "]";
+                    + ClockInterruptHandlerThread.GetCurrentTime() + " 请求时间," + pcb.GetInTime() + "， 总耗时："
+                    + (pcb.GetFinishTime() - pcb.GetCreateTime()) + "]";
             if (OSKernel.readyQueue3.contains(pcb)) {
                 OSKernel.readyQueue3.remove(pcb);
             }

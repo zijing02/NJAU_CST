@@ -102,7 +102,7 @@ public class PCB extends Job {
     public int GetCalculateNum() {
         int size = 0;
         for (Instruction instruction : super.GetInstructions()) {
-            if (instruction.getState() == 0) {
+            if (instruction.GetState() == 0) {
                 size++;
             }
         }
@@ -112,7 +112,7 @@ public class PCB extends Job {
     // 获取指令状态
     public int GetInstructionState() {
         if (this.pc < this.GetInstructionCount()) {
-            return this.GetInstructions().get(this.pc).getState();
+            return this.GetInstructions().get(this.pc).GetState();
         } else if (this.pc >= this.GetInstructionCount()) {
             System.out.println("PC越界");
             return -1;
@@ -121,7 +121,7 @@ public class PCB extends Job {
     }
 
     // 转换指令类型，供屏幕输出
-    public String GetInstructionStateToString() {
+    public String StateToString() {
         if (this.pc >= super.GetInstructionCount()) {
             return "";
         }

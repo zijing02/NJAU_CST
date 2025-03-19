@@ -1,8 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -372,7 +370,7 @@ public class UI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    OSKernel.loader.AddJobToBackupQueue();
+                    OSKernel.loader.AddJobToJobQueue();
                 } catch (Exception e1) {
                     System.out.println(ClockInterruptHandlerThread.GetCurrentTime() + " [随机添加作业失败]");
                     AddJobRequestMessage(ClockInterruptHandlerThread.GetCurrentTime() + " [随机添加作业失败]");

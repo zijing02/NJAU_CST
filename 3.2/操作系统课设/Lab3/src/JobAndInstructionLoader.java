@@ -107,7 +107,7 @@ public class JobAndInstructionLoader {
     }
 
     // 创建instructions之后，将相应的job加入到作业后备队列
-    public void AddJobToBackupQueue() {
+    public void AddJobToJobQueue() {
         int jobId = ++maxJobId;
         Job job = new Job(jobId, ClockInterruptHandlerThread.simulationTime, 20, CreateInstructions());
         OSKernel.jobQueue.add(job);
@@ -188,7 +188,7 @@ public class JobAndInstructionLoader {
         }
     }
 
-    // 重新进入就绪队列，显示就绪队列中的指令
+    // 进入就绪队列，显示就绪队列中的指令，不论是否是第一次，均是重新进入
     public void PrintBackToReadyQueue(int time) {
         // 一级就绪队列
         // 后续有时间可以把这个输出显示做一个函数，每一次都占用三行太费事了

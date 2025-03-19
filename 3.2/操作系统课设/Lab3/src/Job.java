@@ -64,20 +64,11 @@ public class Job {
         this.instructionCount = count;
     }
 
-    public void DecInstructionCount() {
-        this.instructionCount--;
-    }
-
     public ArrayList<Instruction> GetInstructions() {
         return instructions;
     }
 
     public void SetInstructions(ArrayList<Instruction> instructions) {
         this.instructions = instructions;
-    }
-
-    @Override
-    public String toString() {
-        return jobId + "," + inTime + "," + instructionCount;
     }
 }

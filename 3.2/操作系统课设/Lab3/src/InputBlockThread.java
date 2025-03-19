@@ -2,14 +2,12 @@ import javax.swing.SwingUtilities;
 
 public class InputBlockThread extends Thread {
         public int inputCount = 0;
-        public int outputCount = 0;
-        public static final int intTime = 2;
-        public static final int outTime = 3;
+        public static final int inTime = 2;
 
         @Override
         public void run() {
                 while (true) {
-                        SyncManager.ioLock.lock();
+                        SyncManager.inLock.lock();
                         try {
                                 SyncManager.inputBeforeClock = true;
                                 SyncManager.inputBeforeClk.signal();
@@ -18,7 +16,7 @@ public class InputBlockThread extends Thread {
                         } catch (InterruptedException e) {
                                 e.printStackTrace();
                         } finally {
-                                SyncManager.ioLock.unlock();
+                                SyncManager.inLock.unlock();
                         }
                 }
         }
@@ -30,14 +28,14 @@ public class InputBlockThread extends Thread {
                 if (!OSKernel.inBlockQueue.isEmpty()) {
                         PCB pcb = OSKernel.inBlockQueue.peek();
                         inputCount++;
-                        if (inputCount == intTime) {
+                        if (inputCount == inTime) {
                                 OSKernel.inBlockQueue.remove(pcb);
                                 OSKernel.loader.CheckInputBlock(pcb.GetPid(),
                                                 ("唤醒时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
                                 int pc = pcb.GetPc();
                                 String message = ClockInterruptHandlerThread.GetCurrentTime() + " [IO操作：进程"
                                                 + pcb.GetPid() + "的第"
-                                                + (pcb.GetPc() + 1) + "条指令" + pcb.GetInstructionStateToString()
+                                                + (pcb.GetPc() + 1) + "条指令" + pcb.StateToString()
                                                 + "执行完成]";
                                 System.out.println(message);
                                 SwingUtilities.invokeLater(() -> OSKernel.ui.AddInBlockMessage(message));
@@ -51,8 +49,8 @@ public class InputBlockThread extends Thread {
                                         String message2 = ClockInterruptHandlerThread.GetCurrentTime() + " [终止进程"
                                                         + pcb.GetPid() + "，结束时间："
                                                         + ClockInterruptHandlerThread.GetCurrentTime() + " 请求时间,"
-                                                        + pcb.GetInTime() + "总耗时："
-                                                        + (pcb.GetFinishTime() - pcb.GetInTime()) + "]";
+                                                        + pcb.GetInTime() + "，总耗时："
+                                                        + (pcb.GetFinishTime() - pcb.GetCreateTime()) + "]";
                                         if (OSKernel.readyQueue3.contains(pcb)) {
                                                 OSKernel.readyQueue3.remove(pcb);
                                         }
@@ -70,42 +68,6 @@ public class InputBlockThread extends Thread {
                                 inputCount = 0;
                         }
                 }
-                // if (!OSKernel.outBlockQueue.isEmpty()) {
-                // PCB pcb = OSKernel.outBlockQueue.peek();
-                // outputCount++;
-                // if (outputCount == outTime) {
-                // OSKernel.outBlockQueue.remove(pcb);
-                // OSKernel.loader.CheckOutputBlock(pcb.GetPid(),
-                // ("唤醒时间：" + ClockInterruptHandlerThread.GetCurrentTime()));
-                // int pc = pcb.GetPc();
-                // String message = ClockInterruptHandlerThread.GetCurrentTime() + " [IO操作：进程"
-                // + pcb.GetPid() + "的第"
-                // + (pcb.GetPc() + 1) + "条指令" + pcb.GetInstructionStateToString()
-                // + "执行完成]";
-                // System.out.println(message);
-                // SwingUtilities.invokeLater(() -> OSKernel.ui.AddInBlockMessage(message));
-                // OSKernel.loader.AddMessageToSaveList(message);
-                // pc++;
-                // if (pc >= pcb.GetInstructionCount()) {
-                // pcb.SetFinishTime(ClockInterruptHandlerThread.GetCurrentTime());
-                // pcb.SetState(-1);
-                // OSKernel.memory.ReleaseMemory(pcb);
-                // String message2 = ClockInterruptHandlerThread.GetCurrentTime() + " [终止进程"
-                // + pcb.GetPid() + "，结束时间："
-                // + ClockInterruptHandlerThread.GetCurrentTime() + " 请求时间,"
-                // + pcb.GetInTime() + "总耗时："
-                // + (pcb.GetFinishTime() - pcb.GetInTime()) + "]";
-                // System.out.println(message2);
-                // SwingUtilities.invokeLater(() -> OSKernel.ui.AddInBlockMessage(message2));
-                // OSKernel.loader.AddMessageToSaveList(message2);
-                // OSKernel.loader.PrintBlockInfo();
-                // } else if (pc < pcb.GetInstructionCount()) {
-                // pcb.SetPc(pc);
-                // BackToReadyQueue(pcb);
-                // }
-                // outputCount = 0;
-                // }
-                // }
         }
 
         // 阻塞队列之后要回到就绪队列中
