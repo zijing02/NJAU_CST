@@ -417,6 +417,7 @@ public class UI extends JFrame {
         outputBlockContent.append(message + "\n");
     }
 
+    // 更新内存区
     public void UpdateMemoryStatus(ArrayList<MemoryBlock> memoryBlocks) {
         for (int i = 0; i < 100; i++) {
             MemoryBlock block = memoryBlocks.get(i);

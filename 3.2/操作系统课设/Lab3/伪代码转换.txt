@@ -1,0 +1,60 @@
+ // 进程调度线程的 run 方法   
+2. method run()    
+3.     while (true) // 无限循环   
+4.         
+OSKernel.cpu.CPU_PRO() // 执行 CPU相关操作   
+5.         
+6.         
+lock1.lock() // 获取锁，确保线程安全   
+try    
+7.             
+8.             
+pst_clk = true // 设置进程调度标志为真   
+pst_clk_Condition.signal() // 通知等待的时钟线程   
+9.             
+10.             
+pstCondition.await() // 等待调度信号   
+runPCB() // 检查能否创建进程并开始调度   
+11.         
+12.             
+catch (Exception e)   
+print(e) // 处理异常   
+13.         
+14.             
+finally    
+OSKernel.cpu.CPU_REC() // 恢复 CPU状态   
+15.             
+lock1.unlock() // 释放锁   
+16.    
+17.    
+18. // 时钟线程的调度代码   
+19. method clockThreadRun()    
+20.     lock1.lock() // 获取进程调度锁   
+21.     try    
+21 
+《计算机操作系统课程设计测试分析与评价报告》 
+22.         
+if (!pst_clk)    
+23.             
+24.         
+pst_clk_Condition.await() // 等待进程调度线程的信号   
+pst_clk = false // 重置进程调度标志   
+25.         
+26.         
+simulateTimePassing(milliseconds) // 时钟走 1 秒   
+invokeLater(() -> ui.updateClock(simulationTime)) // 更新 UI 中
+的时钟显示   
+27.         
+28.         
+JobRequest() // 查询作业请求   
+pstCondition.signal() // 通知进程调度线程   
+29.     catch (Exception e)   
+30.         
+print(e) // 处理异常   
+31.     finally    
+32.         
+lock1.unlock() // 释放进程调度锁
+
+仿照上述格式去掉数字，在message赋值的地方换成info，将下列代码转换成伪代码   
+
+
